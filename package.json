@@ -14,12 +14,14 @@
     "web",
     "store"
   ],
-  "author": ["Otard95",
-             "WesterOne",
-             "LindaHBN",
-             "rikke59",
-             "synend16",
-             "sunnivagjervik"],
+  "author": [
+    "Otard95",
+    "WesterOne",
+    "LindaHBN",
+    "rikke59",
+    "synend16",
+    "sunnivagjervik"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Otard95/Smidig-Kolonial/issues"
