@@ -1,0 +1,142 @@
+curl - H "Accept: application/json" - H "Content-Type: application/json" - H "User-Agent: <user_agent>" - H "X-Client-Token: <token>"
+https: //kolonial.no/api/v1/products/9329/
+  {
+    "id": 9329,
+    "full_name": "Banan Chiquita, Colombia, 1 stk",
+    "brand": null,
+    "name": "Banan",
+    "name_extra": "Chiquita, Colombia, 1 stk",
+    "front_url": "https://kolonial.no/produkter/9329-banan-1-stk-colombia/",
+    "image_url": "https://kolonial.no/media/uploads/public/0/218/12218-8919f-product_detail.jpg",
+    "images": [{
+      "large": {
+        "url": "https://kolonial.no/media/uploads/public/0/218/12218-8919f-product_large.jpg"
+      },
+      "thumbnail": {
+        "url": "https://kolonial.no/media/uploads/public/0/218/12218-8919f-product_detail.jpg"
+      }
+    }],
+    "price": "5.50",
+    "gross_price": "5.50",
+    "unit_price": "23.91",
+    "gross_unit_price": "23.91",
+    "unit_price_quantity_abbreviation": "kg",
+    "unit_price_quantity_name": "Kilogram",
+    "discount": null,
+    "availability": {
+      "is_available": true,
+      "code": "available",
+      "description": "",
+      "description_short": ""
+    },
+    "categories": [{
+      "id": 21,
+      "name": "Frukt",
+      "parent": 20,
+      "ordering": 1010,
+      "description": "",
+      "children": []
+    }],
+    "category_items": [{
+      "id": 9174,
+      "product_category_id": 21,
+      "ordering": 30
+    }],
+    "info": {
+      "is_frozen": false
+    },
+    "client_classifiers": [],
+    "short_description": "",
+    "contents_html": "<div class=\"contents\">\n\n<h3>\nUtleveringsdager\n</h3>\n\n<p>\nAlle dager\n</p>\n\n<h3>\nStørrelse\n</h3>\n\n<p>\n230 gram\n</p>\n\n<h3>\nOppbevaring\n</h3>\n\n<p>\n12 - 14 °C\n</p>\n\n<p class=\"disclaimer\">\n\nLeverandøren\n\nhar levert informasjonen ovenfor.\n\n</p>\n\n</div>\n",
+    "nutrition_html": "<table class=\"nutrition\"><caption>Næringsinnhold pr. 100g/ml</caption><tbody><tr><th>Energi</th><td>352 kJ /83 kcal</td></tr><tr><th>Fett</th><td>0,30 g</td></tr><tr class=\"muted\"><td>&mdash; mettede fettsyrer</td><td>0,10 g</td></tr><tr class=\"muted\"><td>&mdash; flerumettede fettsyrer</td><td>0,10 g</td></tr><tr><th>Karbohydrater</th><td>18,10 g</td></tr><tr class=\"muted\"><td>&mdash; sukkerarter</td><td>13,90 g</td></tr><tr class=\"muted\"><td>&mdash; stivelse</td><td>4,40 g</td></tr><tr><th>Kostfiber</th><td>1,70 g</td></tr><tr><th>Protein</th><td>1,10 g</td></tr></tbody></table>\n",
+    "alternative_products": [{
+      "id": 24854,
+      "full_name": "Banan i Pose liten størrelse, ca. 1 kg",
+      "brand": null,
+      "name": "Banan i Pose",
+      "name_extra": "liten størrelse, ca. 1 kg",
+      "front_url": "https://kolonial.no/produkter/24854-banan-i-pose/",
+      "image_url": null,
+      "images": null,
+      "price": "15.90",
+      "gross_price": "15.90",
+      "unit_price": "15.90",
+      "gross_unit_price": "15.90",
+      "unit_price_quantity_abbreviation": "kg",
+      "unit_price_quantity_name": "Kilogram",
+      "discount": null,
+      "availability": {
+        "is_available": true,
+        "code": "available",
+        "description": "",
+        "description_short": ""
+      },
+      "categories": [{
+        "id": 21,
+        "name": "Frukt",
+        "parent": 20,
+        "ordering": 1010,
+        "description": "",
+        "children": []
+      }],
+      "category_items": [{
+        "id": 25611,
+        "product_category_id": 21,
+        "ordering": 520
+      }],
+      "info": {
+        "is_frozen": false
+      },
+      "client_classifiers": []
+    }, {
+      "id": 19432,
+      "full_name": "Økologiske Bananer 4-6 stk, Colombia, 600 g",
+      "brand": null,
+      "name": "Økologiske Bananer",
+      "name_extra": "4-6 stk, Colombia, 600 g",
+      "front_url": "https://kolonial.no/produkter/19432-okologiske-bananer-5-6-stk-colombia/",
+      "image_url": "https://kolonial.no/media/uploads/public/0/356/3556-998b7-product_detail.jpg",
+      "images": [{
+        "large": {
+          "url": "https://kolonial.no/media/uploads/public/0/356/3556-998b7-product_large.jpg"
+        },
+        "thumbnail": {
+          "url": "https://kolonial.no/media/uploads/public/0/356/3556-998b7-product_detail.jpg"
+        }
+      }],
+      "price": "22.90",
+      "gross_price": "22.90",
+      "unit_price": "38.17",
+      "gross_unit_price": "38.17",
+      "unit_price_quantity_abbreviation": "kg",
+      "unit_price_quantity_name": "Kilogram",
+      "discount": null,
+      "availability": {
+        "is_available": true,
+        "code": "available",
+        "description": "",
+        "description_short": ""
+      },
+      "categories": [{
+        "id": 21,
+        "name": "Frukt",
+        "parent": 20,
+        "ordering": 1010,
+        "description": "",
+        "children": []
+      }],
+      "category_items": [{
+        "id": 19033,
+        "product_category_id": 21,
+        "ordering": 40
+      }],
+      "info": {
+        "is_frozen": false
+      },
+      "client_classifiers": [{
+        "is_important": false,
+        "image_url": "https://kolonial.no/static/products/img/okologisk20x20@3x.ce61374c5376.png",
+        "name": "Økologisk"
+      }]
+    }]
+  }

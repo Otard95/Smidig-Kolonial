@@ -1,0 +1,17 @@
+configs/tokens.json
+
+# == NODE ==
+
+node_modules/*
+
+!node_modules/express
+!node_modules/request
+!node_modules/vue
+
+node_modules/express/*
+node_modules/request/*
+node_modules/vue/*
+
+!node_modules/express/LICENSE
+!node_modules/request/LICENSE
+!node_modules/vue/LICENSE
