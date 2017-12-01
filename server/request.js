@@ -20,10 +20,14 @@ function getProduct(url) {
   function callback(error, response, body) {
     if (!error && response.statusCode == 200) {
       console.log(body);
+    } else {
+      console.log(error);
     }
   }
 
   request(options, callback);
 }
-// let urlI = `https://kolonial.no/api/v1/products/9329/`
-// req(urlI)
+
+let urlI = `https://kolonial.no/api/v1/products/9329/`;
+
+getProduct(urlI);
