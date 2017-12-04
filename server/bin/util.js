@@ -20,6 +20,6 @@ class ServerUtil {
 
 }
 
-module.exports = base => {
+module.exports = (base) => {
   return new ServerUtil(base);
 };

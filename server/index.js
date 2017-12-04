@@ -29,6 +29,11 @@ app.get('*', (req, res) => {
     res.sendStatus(403);
     return;
   }
+
+  if (req.originalUrl == '/') {
+    req.originalUrl = '/index.html';
+  }
+
   let dir = path.resolve(base_dir, req.originalUrl.substring(1));
   res.sendFile(dir);
 
@@ -40,4 +45,7 @@ app.get('*', (req, res) => {
 
 app.listen(settings.server.port, () => {
   console.log('Server running on port ', settings.server.port);
+  console.log('----------------------------------------------------------------------');
+  console.log('| ## Open you favourite browsaer and navigate to "localhost:3000" ## |');
+  console.log('----------------------------------------------------------------------');
 });
