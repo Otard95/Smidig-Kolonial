@@ -1,31 +1,39 @@
 #!/bin/bash
 
-eval $node -v
-if [$? -ne 0] then goto noNode
+if hash node 2>/dev/null; then goto noNode
+fi
 
-eval npm -v
-if [$? -ne 0] then goto noNpm
+if hash npm 2>/dev/null; then goto noNpm
+fi
 
 clear
 
+cd ..
+cd ..
 npm install
+
+exit
 
 :noNode
 clear
-echo.
+echo
 echo NodeJs NOT installed.
 echo NodeJs is required.
 echo Your browser will open and navigate to the NodaJS download page in 30 seconds.
 echo If you want to find it yourself just close the installer now.
-echo Press any key to open download page now.
-timeout 35  > /dev/null
-start https://nodejs.org/en/download/
+echo Press Enter to open download page now.
+read -t 35
+
+xdg-open https://nodejs.org/en/download/ & > /dev/null
+
 exit
 
 :noNpm
 clear
-echo.
+echo
 echo There seems to be something wrong with your NodeJS install.
 echo npm was not found. You may want to reinstall NodeJS.
-echo.
+echo
 pause
+
+exit
