@@ -1,14 +1,13 @@
 #!/bin/bash
 
-if ! type "$node" > /dev/null; then
-  goto noNode
-fi
-if ! type "$npm" > /dev/null; then
-  goto noNpm
-fi
+if which node < /dev/null then goto noNode
+
+if which npm < /dev/null then goto noNpm
 
 clear
 
+cd ..
+cd ..
 npm install
 
 :noNode
@@ -19,9 +18,9 @@ echo NodeJs is required.
 echo Your browser will open and navigate to the NodaJS download page in 30 seconds.
 echo If you want to find it yourself just close the installer now.
 echo Press Enter to open download page now.
-read -t 10
+read -t 35
 
-xdg-open https://nodejs.org/en/download/ &
+xdg-open https://nodejs.org/en/download/ & > /dev/null
 
 exit
 
@@ -30,5 +29,8 @@ clear
 echo
 echo There seems to be something wrong with your NodeJS install.
 echo npm was not found. You may want to reinstall NodeJS.
-echo.
+echo
 pause
+
+exit
+

@@ -3,7 +3,8 @@ iif ! type "$node" > /dev/null; then
   goto noNode
 fi
 
-
+cd ..
+cd ..
 node ./server/index.js
 
 
@@ -14,6 +15,6 @@ echo NodeJs is required.
 echo Your browser will open and navigate to the NodaJS download page in 30 seconds.
 echo If you want to find it yourself just close the installer now.
 echo Press Enter to open download page now.
-read -t 10
+read -t 35
 
-xdg-open https://nodejs.org/en/download/ &
+xdg-open https://nodejs.org/en/download/ & > /dev/null
