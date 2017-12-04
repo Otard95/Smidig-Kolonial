@@ -22,19 +22,23 @@ const app = express();
 
 app.get('*', (req, res) => {
 
-  //console.log(req.path); // requested path/file
-  //console.log(req.originalUrl.substring(1));
-  //console.log(req.params);
-  if ( !ServerUtil.path_validate(req.originalUrl.substring(1)) ) {
+  let recource = req.originalUrl.substring(1);
+  if ( !ServerUtil.path_validate(recource) ) {
     res.sendStatus(403);
     return;
   }
 
   if (req.originalUrl == '/') {
-    req.originalUrl = '/index.html';
+    recource = 'index.html';
   }
 
-  let dir = path.resolve(base_dir, req.originalUrl.substring(1));
+  let dir = path.resolve(base_dir, recource);
+  dir = ServerUtil.resolve_for_folder (dir);
+  if (dir === null || !ServerUtil.exists(dir)) {
+    res.sendStatus(404);
+    return;
+  }
+
   res.sendFile(dir);
 
 });
