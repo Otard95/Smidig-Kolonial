@@ -1,9 +1,5 @@
-echo off
-title Server
-cls
-
-call node -v >nul
-if %errorlevel% NEQ 0 goto noNode
+eval $node -v
+if [$? -ne 0] then goto noNode
 
 
 node ./server/index.js
@@ -18,4 +14,3 @@ echo If you want to find it yourself just close the installer now.
 echo Press any key to open download page now.
 timeout 35 >nul
 start https://nodejs.org/en/download/
-exit
