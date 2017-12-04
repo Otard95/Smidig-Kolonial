@@ -1,6 +1,6 @@
 {
   "server": {
-    "base_dir": "/",
+    "base_dir": "/src",
     "port": 3000
   }
 }
