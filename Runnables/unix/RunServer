@@ -1,12 +1,12 @@
-eval $node -v
-iif ! type "$node" > /dev/null; then
-  goto noNode
+if hash node 2>/dev/null; then goto noNode
 fi
 
 cd ..
 cd ..
+xdg-open http://localhost:3000 & > /dev/null
 node ./server/index.js
 
+exit
 
 :noNode
 echo

@@ -1,14 +1,18 @@
 #!/bin/bash
 
-if which node < /dev/null then goto noNode
+if hash node 2>/dev/null; then goto noNode
+fi
 
-if which npm < /dev/null then goto noNpm
+if hash npm 2>/dev/null; then goto noNpm
+fi
 
 clear
 
 cd ..
 cd ..
 npm install
+
+exit
 
 :noNode
 clear
@@ -33,4 +37,3 @@ echo
 pause
 
 exit
-
