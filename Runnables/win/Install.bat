@@ -9,6 +9,8 @@ call npm -v >nul
 if %errorlevel% NEQ 0 goto noNpm
 
 
+cd..
+cd..
 npm install
 
 

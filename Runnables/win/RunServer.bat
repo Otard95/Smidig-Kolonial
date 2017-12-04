@@ -6,6 +6,9 @@ call node -v >nul
 if %errorlevel% NEQ 0 goto noNode
 
 
+cd..
+cd..
+start http://localhost:3000
 node ./server/index.js
 
 
