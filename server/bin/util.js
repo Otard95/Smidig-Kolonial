@@ -36,7 +36,7 @@ class ServerUtil {
 
     let stat = fs.statSync(x);
     if (stat.isDirectory()) {
-      return path.join(x, 'index.html')
+      return path.join(x, 'index.html');
     } else {
       return x;
     }

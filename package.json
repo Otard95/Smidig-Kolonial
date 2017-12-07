@@ -29,7 +29,16 @@
   "homepage": "https://github.com/Otard95/Smidig-Kolonial#readme",
   "dependencies": {
     "express": "^4.16.2",
+    "nuxt": "^1.0.0-rc11",
     "request": "^2.83.0",
     "vue": "^2.5.9"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.0.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-nodemon": "^2.2.1",
+    "gulp-pug2": "0.0.2",
+    "gulp-sass": "^3.1.0"
   }
 }
