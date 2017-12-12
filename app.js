@@ -40,7 +40,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // set routes
 app.use('/', index);
-app.use('/users', users);
 
 /*
  *  ## Error handling
