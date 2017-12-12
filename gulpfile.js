@@ -22,22 +22,17 @@ gulp.task('sass', () => {
   return gulp.src('_sass/**/*.sass')
     .pipe(sass().on('error', sass.logError))
     .pipe(autopref('last 2 version'))
-    .pipe(gulp.dest(settings.server.base_dir + 'assets/css/'));
-});
-
-gulp.task('pug', () => {
-  return gulp.src(['_pug/*.pug', '_pug/**/*.pug'])
-    .pipe(pug({ yourTemplate: 'Locals' }))
-    .pipe(gulp.dest(settings.server.base_dir));
+    .pipe(gulp.dest(settings.server.base_dir + '/css/'));
 });
 
 gulp.task('server', () => {
   nodemon({
-    'script': 'server/index.js',
-    'watch': ['./server/*.js', './server/**/.js'],
-    'ignore': ['./src/assets/js/*.js',
-               '_js/*',
-               '_sass/*']
+    'script': './bin/www',
+    'watch': ['./*.js',
+              './routes/*.js',
+              './bin/*.js',
+              './configs/*.json'],
+    'ignore': ['./public/*']
   });
 });
 
@@ -47,7 +42,6 @@ gulp.task('server', () => {
 
 gulp.task('watch', function() {
     gulp.watch(['_sass/*.sass', '_sass/**/*.sass'], ['sass']);
-    gulp.watch(['_pug/*.pug', '_pug/**/*.pug'], ['pug']);
 });
 
 gulp.task('default', ['server', 'watch']);
