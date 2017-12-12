@@ -4,13 +4,13 @@
 /*
  * ## require / import
  */
-const express = require('express');
-const hbs = require('express-handlebars');
-const path = require('path');
-const favicon = require('serve-favicon');
-const logger  = require('morgan');
+const express      = require('express');
+const hbs          = require('express-handlebars');
+const path         = require('path');
+const favicon      = require('serve-favicon');
+const logger       = require('morgan');
 const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
+const bodyParser   = require('body-parser');
 
 // import routes
 const index = require('./routes/index');
