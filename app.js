@@ -14,7 +14,7 @@ const bodyParser   = require('body-parser');
 
 // import routes
 const index = require('./routes/index');
-
+const helpers = require('./routes/helpers');
 /*
  * ## Init
  */
@@ -26,7 +26,8 @@ app.engine('hbs', hbs({
   extname: 'hbs',
   defaultLayout: __dirname + '/views/layouts/default.hbs',
   partialsDir: __dirname + '/views/partials',
-  layoutsDir: __dirname + '/views/layouts'
+  layoutsDir: __dirname + '/views/layouts',
+  helpers: helpers
 }));
 
 // view engine setup
