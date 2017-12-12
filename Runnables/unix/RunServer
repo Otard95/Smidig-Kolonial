@@ -4,7 +4,7 @@ fi
 cd ..
 cd ..
 xdg-open http://localhost:3000 & > /dev/null
-node ./server/index.js
+node ./bin/www
 
 exit
 
