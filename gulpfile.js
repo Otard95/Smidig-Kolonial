@@ -22,7 +22,7 @@ gulp.task('sass', () => {
   return gulp.src('_sass/**/*.sass')
     .pipe(sass().on('error', sass.logError))
     .pipe(autopref('last 2 version'))
-    .pipe(gulp.dest(settings.server.base_dir + '/css/'));
+    .pipe(gulp.dest(settings.server.base_dir + './css/'));
 });
 
 gulp.task('server', () => {
