@@ -1,4 +1,45 @@
 @import "./imports/colors.sass"
 
-h1
-  color: green
+@font-face
+  font-family: 'GT Walsheim Regular', sans-serif
+  src: url('../fonts/GT-Walsheim-Regular.ttf')
+
+body, html
+  font-family: 'GT Walsheim Regular', sans-serif
+  margin: 0
+  padding: 0
+
+footer
+  background: $Mork-aubergine
+  color: $Varmgra
+  position: fixed
+  bottom: 0
+  width: 100%
+  ul
+    list-style-type: none
+    padding: 0
+    margin: 0
+    box-shadow: 0 2px 4px $Varmgra, 0 -2px 4px $Varmgra
+  li
+    display: inline-block
+    width: 19.5%
+    text-align: center
+    padding: 10px 0
+  li:hover
+    background: $Varmgra
+    color: $Mork-aubergine
+    a
+      cursor: pointer
+      transition: 200ms
+
+  .handlekurv-menu
+    background: $Varmgra
+    width: 100%
+    position: relative
+    p
+      display: inline-block
+      padding: 0
+      margin: 0
+      color: $sort-aubergine
+    .handlekurv-name
+    .handlekurv-price
