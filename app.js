@@ -14,7 +14,11 @@ const bodyParser   = require('body-parser');
 
 // import routes
 const index = require('./routes/index');
+
+// HBS helpers
 const helpers = require('./helpers/helpers');
+
+
 /*
  * ## Init
  */
