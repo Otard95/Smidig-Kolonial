@@ -31,7 +31,7 @@ app.engine('hbs', hbs({
   defaultLayout: __dirname + '/views/layouts/default.hbs',
   partialsDir: __dirname + '/views/partials',
   layoutsDir: __dirname + '/views/layouts',
-  helpers: helpers
+  helpers
 }));
 
 // view engine setup

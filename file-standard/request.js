@@ -18,16 +18,11 @@ function getProduct(url) {
   };
 
   function callback(error, response, body) {
-    if (!error && response.statusCode == 200) {
-      console.log(body);
-    } else {
-      console.log(error);
-    }
+    (!error && response.statusCode == 200) ? console.log(body) : console.log(error)
   }
 
   request(options, callback);
 }
 
 let urlI = `https://kolonial.no/api/v1/products/269/`;
-//
 getProduct(urlI);
