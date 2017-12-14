@@ -8,6 +8,7 @@
  */
 
 const settings = require('./configs/settings.json');
+const path     = require('path');
 const gulp     = require('gulp');
 const sass     = require('gulp-sass');
 const pug      = require('gulp-pug2');
@@ -19,10 +20,10 @@ const autopref = require('gulp-autoprefixer');
  */
 
 gulp.task('sass', () => {
-  return gulp.src('_sass/(!imports)/*.sass')
+  return gulp.src(['./_sass/(!imports)/*.sass', './_sass/*.sass'])
     .pipe(sass().on('error', sass.logError))
     .pipe(autopref('last 2 version'))
-    .pipe(gulp.dest(settings.server.base_dir + './css/'));
+    .pipe(gulp.dest(path.resolve('./', settings.server.base_dir + 'css/')));
 });
 
 gulp.task('server', () => {
