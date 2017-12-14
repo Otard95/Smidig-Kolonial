@@ -28,6 +28,6 @@ function getProduct(url) {
   request(options, callback);
 }
 
-let urlI = `https://kolonial.no/api/v1/products/9329/`;
-
+let urlI = `https://kolonial.no/api/v1/products/269/`;
+//
 getProduct(urlI);

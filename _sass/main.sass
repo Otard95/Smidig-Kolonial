@@ -15,31 +15,40 @@ footer
   position: fixed
   bottom: 0
   width: 100%
+  a
+    cursor: pointer
+    transition: 200ms
   ul
     list-style-type: none
     padding: 0
     margin: 0
-    box-shadow: 0 2px 4px $Varmgra, 0 -2px 4px $Varmgra
+    height: 40px
+    box-shadow: 0 15px 75px rgba(0,0,0,0.2)
   li
     display: inline-block
-    width: 19.5%
     text-align: center
     padding: 10px 0
+    width: calc(20% - 3.6px)
   li:hover
     background: $Varmgra
     color: $Mork-aubergine
-    a
-      cursor: pointer
-      transition: 200ms
-
+  .handlekurv-menu *, .handlekurv-menu
+    position: absolute
   .handlekurv-menu
+    box-shadow: 0 15px 75px rgba(0,0,0,0.2)
     background: $Varmgra
     width: 100%
-    position: relative
+    bottom: 40px
+    height: 30px
+    line-height: 30px
+    .handlekurv-name
+      left: 0
+    .handlekurv-price
+      right: 0
     p
       display: inline-block
+      width: 20%
+      text-align: center
       padding: 0
       margin: 0
       color: $sort-aubergine
-    .handlekurv-name
-    .handlekurv-price
