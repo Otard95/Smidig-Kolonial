@@ -9,6 +9,15 @@ function yell(msg) {
   return (msg.toUpperCase()) + '!!!';
 }
 
+function section(name, options) {
+
+  if (!this._sections) this._sections = {};
+
+  this._sections[name] = options.fn(this);
+
+}
+
 module.exports = {
-  yell
+  yell,
+  section
 };
