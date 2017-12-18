@@ -9,6 +9,24 @@ function yell(msg) {
   return (msg.toUpperCase()) + '!!!';
 }
 
+function times(n, block) {
+  let out = '';
+  for (let i = 0; i < n; i++) {
+    out += block.fn(i);
+  }
+  return out;
+}
+
+function _for(i, n, inc, block) {
+  let out = '';
+  for (let j = i; i < n; j += inc) {
+    out += block.fn(j);
+  }
+  return out;
+}
+
 module.exports = {
-  yell
+  yell,
+  times,
+  _for
 };
