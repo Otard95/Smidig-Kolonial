@@ -13,12 +13,15 @@ ul {
 p {
   font-size: 2em;
 }
+
+
+
 </style>
 
 </head>
 <body>
 
-<p>Planleggeren</p>
+<p name ="cal-title ">Planleggeren</p>
 <p>Velg en dag eller uke å planlegge handelen på</p>
 
 
@@ -52,10 +55,10 @@ p {
   </ul>
 
   <ul class = "date">
-    {{#_for 1 5 1}}
+    {{#_for 27 31 1}}
       <li class="inactive">{{this}}</li>
     {{/_for}}
-    {{#_for 5 32 1}}
+    {{#_for 1 32 1}}
       <li class="active">{{this}}</li>
     {{/_for}}
   </ul>
