@@ -10,38 +10,40 @@ body, html {
 footer {
   background: #413746;
   color: #d7d7d2;
+  font-size: 1.5em;
   position: fixed;
   bottom: 0;
-  width: 100%; }
+  width: 100%;
+  height: 9%; }
   footer a {
-    cursor: pointer;
-    -webkit-transition: 200ms;
-    transition: 200ms; }
+    cursor: pointer; }
   footer ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
-    height: 40px;
+    height: 70%;
     -webkit-box-shadow: 0 15px 75px rgba(0, 0, 0, 0.2);
-            box-shadow: 0 15px 75px rgba(0, 0, 0, 0.2); }
-  footer li {
-    display: inline-block;
-    text-align: center;
-    padding: 10px 0;
-    width: calc(20% - 3.6px); }
-  footer li:hover {
-    background: #d7d7d2;
-    color: #413746; }
+            box-shadow: 0 15px 75px rgba(0, 0, 0, 0.2);
+    position: relative;
+    bottom: 0; }
+    footer ul li {
+      display: inline-block;
+      text-align: center;
+      padding: 10px 0;
+      width: calc(20% - 3.6px); }
+      footer ul li:hover {
+        background: #d7d7d2;
+        color: #413746; }
   footer .handlekurv-menu *, footer .handlekurv-menu {
-    position: absolute; }
+    position: relative; }
   footer .handlekurv-menu {
     -webkit-box-shadow: 0 15px 75px rgba(0, 0, 0, 0.2);
             box-shadow: 0 15px 75px rgba(0, 0, 0, 0.2);
     background: #d7d7d2;
     width: 100%;
-    bottom: 40px;
-    height: 30px;
-    line-height: 30px; }
+    top: 0;
+    height: 30%;
+    line-height: 150%; }
     footer .handlekurv-menu .handlekurv-name {
       left: 0; }
     footer .handlekurv-menu .handlekurv-price {
