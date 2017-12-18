@@ -19,7 +19,7 @@ function times(n, block) {
 
 function _for(i, n, inc, block) {
   let out = '';
-  for (let j = i; i < n; j += inc) {
+  for (let j = i; j < n; j += inc) {
     out += block.fn(j);
   }
   return out;
