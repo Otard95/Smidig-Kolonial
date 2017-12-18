@@ -12,6 +12,10 @@
   height: 400px;
   overflow: hidden;
   background: #fafafa; }
+  .inspiration.hero {
+    height: 500px; }
+    .inspiration.hero img {
+      min-height: 500px; }
   .inspiration h3 {
     color: #d7d7d2;
     text-align: center;
@@ -19,5 +23,7 @@
     position: relative; }
   .inspiration img {
     position: absolute;
-    -webkit-filter: blur(3px) brightness(40%);
-            filter: blur(3px) brightness(40%); }
+    min-width: 100%;
+    min-height: 400px;
+    -webkit-filter: blur(3px) brightness(70%) saturate(140%);
+            filter: blur(3px) brightness(70%) saturate(140%); }

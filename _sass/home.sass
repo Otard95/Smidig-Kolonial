@@ -9,6 +9,12 @@
   overflow: hidden
   background: #fafafa
 
+  &.hero
+    height: 500px
+
+    img
+      min-height: 500px
+
   h3
     color: $Varmgra
     text-align: center
@@ -17,4 +23,6 @@
 
   img
     position: absolute
-    filter: blur(3px) brightness(40%)
+    min-width: 100%
+    min-height: 400px
+    filter: blur(3px) brightness(70%) saturate(140%)
