@@ -29,7 +29,7 @@ function progress(current, max, id) {
   } else {
     this._sections.head += '<link rel="stylesheet" href="/css/progress_bars.css">';
   }
-  console.log(typeof id);
+  
   out = '<div class="progress-bar-wrapper"'+
         (typeof id === 'string' ? ` id="${id}">` : '>');
   let cbar = '<div class="bar compleated"></div>';
