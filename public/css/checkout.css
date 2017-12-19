@@ -11,15 +11,24 @@
 
 .boks{
   padding: 40px;
-  border: 1px solid #D3D3D3;
+  border: 1px solid #C0C0C0;
+  font-size: 40px;
+  margin-top: 20px;
 }
 
 #total{
- margin: 20px;
+ margin-top: 100px;
 }
 
 #betaling-btn{
   padding: 30px;
-  margin-left: 30px;
+  font-size: 40px;
+  font-family: sans-serif;
+  background: #ffa51e;
+  color: #FFFFFF;
+  border-radius:90px;
+  margin-top: 100px;
+  margin-left: 390px;
+  border: 0;
 
 }
