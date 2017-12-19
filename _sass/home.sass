@@ -1,0 +1,28 @@
+@import "./imports/colors.sass"
+
+.inspiration
+  display: flex
+  justify-content: center
+  align-items: center
+  text-align: center
+  height: 400px
+  overflow: hidden
+  background: #fafafa
+
+  &.hero
+    height: 500px
+
+    img
+      min-height: 500px
+
+  h3
+    color: $Varmgra
+    text-align: center
+    font-size: 3rem
+    position: relative
+
+  img
+    position: absolute
+    min-width: 100%
+    min-height: 400px
+    filter: blur(3px) brightness(70%) saturate(140%)

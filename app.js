@@ -14,7 +14,7 @@ const bodyParser   = require('body-parser');
 
 // import routes
 const index = require('./routes/index');
-const calender = require('./routes/calender');
+const calender = require('./routes/calender.js');
 
 // HBS helpers
 const helpers = require('./helpers/helpers');
