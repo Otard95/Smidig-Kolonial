@@ -1,27 +1,27 @@
+@font-face {
+  font-family: 'GT Walsheim Regular', sans-serif;
+  src: url("../fonts/GT-Walsheim-Regular.ttf"); }
 
-ul {
-  list-style-type: none;
-  font-size: 3vh;
+.container{
+  font-family: 'GT Walsheim Regular', sans-serif;
 }
 
-p {
-
+ ul {
+  list-style-type: none;
+  font-size: 3vh;
 }
 
 .calendar-text{
   margin-top: 10%;
   width: 100%;
   text-align: center;
-
-}
-#calendar-title{
-  font-size: 2.5vh;
-  color: rgb(255,192,0);
-}
-
-#calendar-info{
   font-size: 2.2vh;
   margin-top: 20%;
+}
+.calendar-title{
+  text-align: center;
+  font-size: 2.5vh;
+  color: rgb(255,192,0);
 }
 
 .month{
