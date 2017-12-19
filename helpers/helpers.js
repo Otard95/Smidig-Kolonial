@@ -9,7 +9,23 @@ function yell(msg) {
   return (msg.toUpperCase()) + '!!!';
 }
 
-function section(str_name, hbs_options) {
+function times(n, block) {
+  let out = '';
+  for (let i = 0; i < n; i++) {
+    out += block.fn(i);
+  }
+  return out;
+}
+
+function _for(i, n, inc, block) {
+  let out = '';
+  for (let j = i; j < n; j += inc) {
+    out += block.fn(j);
+  }
+  return out;
+}
+
+function section(name, options) {
 
   if (!this._sections) this._sections = {};
   if (!this._sections.head) {
@@ -52,7 +68,6 @@ function progress(num_current, num_max, str_id) {
   out += '</div>';
 
   return out;
-
 }
 
 function selector_group (str_type, str_name, json_choices, str_id) {
@@ -82,6 +97,8 @@ function selector_group (str_type, str_name, json_choices, str_id) {
 
 module.exports = {
   yell,
+  times,
+  _for,
   section,
   progress,
   selector_group

@@ -1,0 +1,135 @@
+@font-face {
+  font-family: 'GT Walsheim Regular', sans-serif;
+  src: url("../fonts/GT-Walsheim-Regular.ttf"); }
+
+.container{
+  font-family: 'GT Walsheim Regular', sans-serif;
+  color: grey;
+  height: 100%;
+}
+
+ ul {
+  list-style-type: none;
+  font-size: 2.2vh;
+}
+
+.calendar-title{
+  text-align: center;
+  font-size: 2.1vh;
+  color: rgb(255,192,0);
+  margin-top: 9%;
+  font-weight: 500;
+}
+
+.calendar-text{
+  width: 100%;
+  text-align: center;
+  font-size: 2vh;
+  margin-top: 17%;
+  font-weight: bold;
+}
+
+.month{
+  text-align: center;
+  margin-top: 8%;
+  color: grey;
+}
+
+.pointer{
+  color: rgb(255,192,0);
+  font-size: 3.5vh;
+  margin-top: 7.5%;
+}
+
+#this-year{
+  font-size: 2vh;
+}
+
+#this-month{
+  font-size: 2vh;
+}
+
+#previous-pointer{
+  margin-left: 27%;
+  padding-left: 10%;
+  float: left;
+}
+#next-pointer{
+  margin-right: 27%;
+  padding-right: 10%;
+  float: right;
+}
+
+#this-date{
+  font-size: 5.5vh;
+  color: black;
+  padding: 1.5%;
+}
+
+.cal{
+  margin: auto;
+  width: 90%;
+  height: 80%;
+  border: 2px solid green;
+}
+
+.weeks{
+  width: 12.5%;
+  text-align: center;
+  float: left;
+  font-size: 2vh;
+}
+
+#week-name{
+  width: 100%;
+  padding: 0%;
+  font-size: 2vh;
+}
+.weeks li{
+  color: rgb(255,192,0);
+  display: inline-block;
+  width: 100%;
+  padding: 30%;
+  font-size: 2.2vh;
+  border: 2px solid red;
+}
+
+.weekdays{
+  color: black;
+  margin-left: 12.5%;
+  text-align: center;
+  width: 87.5%;
+  font-size: 2vh;
+  font-weight: 500;
+}
+
+.weekdays li{
+  float: left;
+  padding-right: 3%;
+  width: 14.2%;
+  display: inline-block;
+  border: 2px solid red;
+}
+
+.date{
+  text-align: center;
+  margin-left: 12.5%;
+}
+
+.date li{
+  float: left;
+  padding: 3%;
+  width: 14.2%;
+  display: inline-block;
+  border: 2px solid red;
+}
+
+.inactive{
+  color: lightgrey;
+}
+
+#grey-line{
+  margin: auto;
+  width: 70%;
+  border-bottom: 2px solid lightgrey;
+}
