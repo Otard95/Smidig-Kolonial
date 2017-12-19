@@ -1,0 +1,39 @@
+#test {
+  position: relative;
+  top: 30px;
+  left: 50%;
+  -webkit-transform: translate(-50%, 0);
+          transform: translate(-50%, 0); }
+
+.progress-bar-wrapper {
+  height: 40px;
+  width: 600px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+  .progress-bar-wrapper .bar {
+    height: 6px;
+    width: 100%;
+    background: #d7d7d2; }
+    .progress-bar-wrapper .bar.compleated {
+      background: #ffa51e; }
+  .progress-bar-wrapper .stage {
+    height: 0;
+    width: 0; }
+    .progress-bar-wrapper .stage div {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      background: #d7d7d2;
+      -webkit-transform: translate(-50%, -50%);
+              transform: translate(-50%, -50%); }
+    .progress-bar-wrapper .stage.current div {
+      height: 40px;
+      width: 40px;
+      border: 12px solid #ffa51e;
+      background: white; }
+    .progress-bar-wrapper .stage.compleated div {
+      background: #ffa51e; }
