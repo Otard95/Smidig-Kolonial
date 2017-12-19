@@ -28,12 +28,13 @@ gulp.task('sass', () => {
 
 gulp.task('server', () => {
   nodemon({
-    'script': './bin/www',
-    'watch': ['./*.js',
-              './routes/*.js',
-              './bin/*.js',
-              './configs/*.json'],
-    'ignore': ['./public/*']
+    script: './bin/www',
+    ext: 'js',
+    ignore: [
+              './public/*',
+              'views/*',
+              '_sass/*'
+            ]
   });
 });
 
