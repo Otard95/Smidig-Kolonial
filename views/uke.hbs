@@ -1,0 +1,41 @@
+{{#section 'head'}}
+  <script src="js/app.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="/css/week.css">
+{{/section}}
+
+{{#> layout }}
+  <div class="week-grid">
+    <div class="week-header">
+      <h1><</h1>
+      <h1 class="font-yellow">Planlegger</h1>
+      <h1>&#9881;</h1>
+    </div>
+
+    <div class="week-view-container">
+      <div class="week-view-header">
+        <div class="week-view-month">
+          December 2017, Sondag
+        </div>
+        <div class="week-view-days">
+          <ul>
+            <h3 class="font-yellow">Uke</h3>
+            {{#each daysstring}}
+              <li>{{this}}</li>
+            {{/each}}
+            <h3 class="font-yellow">{{uke}}</h3>
+            {{#each daysnum}}
+              <li class="font-aubergine">{{this}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+      <!-- Fixar när vi vet height på fotter -->
+      <div class="week-view-list">
+      <!-- List content -->
+      </div>
+      <div class="week-add-button">
+        <h3>Legg til varer</h3>
+      </div>
+    </div>
+  </div>
+  {{/layout}}
