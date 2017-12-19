@@ -1,0 +1,32 @@
+@import "./imports/colors.sass"
+
+.selector-group-input
+  position: absolute
+  visibility: hidden
+  display: none
+
+  &:checked + label
+    color: $white
+    background: $eggeplomme
+
+.selector-group-label
+  height: 100%
+  width: 100%
+  color: $eggeplomme
+  text-align: center
+  line-height: 45px
+  font-size: 2em
+  display: block
+  cursor: pointer
+  font-weight: bold
+
+.selector-group-label + .selector-group-input + .selector-group-label
+  border-left: solid 4px $eggeplomme
+
+.selector-group-wrapper
+  height: 60px
+  width: 600px
+  border: solid 6px $eggeplomme
+  display: flex
+  border-radius: 30px
+  overflow: hidden
