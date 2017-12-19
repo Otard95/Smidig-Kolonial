@@ -1,165 +1,55 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Calendar</title>
+{{#section 'head'}}
+  <link rel="stylesheet" href="/css/calendar.css">
+{{/section}}
 
-<style>
+{{#> layout }}
 
-ul {
-  list-style-type: none;
-  font-size: 3vh;
-}
+  <div class="calendar-title">
+    <p id="title">Planleggeren</p>
+  </div>
 
-p {
+  <div class="calendar-text">
+      <p id="text">Velg en dag eller uke å planlegge handelen på</p>
+  </div>
 
-}
+  <div class = "month">
+    <ul>
+      <li class = "pointer" id="next-pointer">&#10095;</li>
+      <li class = "pointer" id="previous-pointer">&#10094;</li>
+      <li id="this-year">2017</li>
+      <li id="this-date">1</li>
+      <li id="this-month">DESEMBER</li>
+    </ul>
+  </div>
 
-.calendar-text{
-  margin-top: 10%;
-  width: 100%;
-  text-align: center;
+  <div class = "cal">
+    <ul class = "weeks">
+      <li id="week-name">Uke</li>
+      <li>48</li>
+      <li>49</li>
+      <li>50</li>
+      <li>51</li>
+      <li>52</li>
+    </ul>
 
-}
-#calendar-title{
-  font-size: 2.5vh;
-  color: rgb(255,192,0);
-}
+    <ul class = "weekdays">
+      <li>Man</li>
+      <li>Tir</li>
+      <li>Ons</li>
+      <li>Tor</li>
+      <li>Fre</li>
+      <li>Lør</li>
+      <li>Søn</li>
+    </ul>
 
-#calendar-info{
-  font-size: 2.2vh;
-  margin-top: 20%;
-}
+    <ul class = "date">
+      {{#_for 27 31 1}}
+        <li class="inactive">{{this}}</li>
+      {{/_for}}
+      {{#_for 1 32 1}}
+        <li class="active">{{this}}</li>
+      {{/_for}}
+    </ul>
+  </div>
 
-.month{
-  text-align: center;
-  margin-top: 10%;
-  color: grey;
-}
-
-.pointer{
-  color: rgb(255,192,0);
-  font-size: 4vh;
-  margin-top: 10%;
-}
-
-#previous-pointer{
-  margin-left: 25%;
-  padding-left: 10%;
-  float: left;
-}
-#next-pointer{
-  margin-right: 25%;
-  padding-right: 10%;
-  float: right;
-}
-
-#this-date{
-  font-size: 8vh;
-  color: black;
-}
-
-.cal{
-  width: 100%;
-  padding: 5%;
-}
-
-.weeks{
-  width: 12.5%;
-  text-align: center;
-  float: left;
-}
-
-#week-name{
-  width: 100%;
-  padding: 0%;
-}
-.weeks li{
-  color: rgb(255,192,0);
-  display: inline-block;
-  width: 100%;
-  padding: 31%;
-}
-
-.weekdays{
-  margin-left: 12.5%;
-  background-color: yellow;
-  text-align: center;
-  width: 87.5%;
-}
-
-.weekdays li{
-  float: left;
-  padding-right: 3%;
-  width: 14.2%;
-  display: inline-block;
-
-}
-
-.date{
-  text-align: center;
-  margin-left: 12.5%;
-  background-color: yellow;
-}
-
-.date li{
-  float: left;
-  padding: 3%;
-  width: 14.2%;
-  display: inline-block;
-}
-
-</style>
-
-</head>
-<body>
-
-<div class="calendar-title">
-  <p id="title">Planleggeren</p>
-</div>
-
-<div class="calendar-text">
-    <p id="text">Velg en dag eller uke å planlegge handelen på</p>
-</div>
-
-<div class = "month">
-  <ul>
-    <li class = "pointer" id="next-pointer">&#10095;</li>
-    <li class = "pointer" id="previous-pointer">&#10094;</li>
-    <li id="this-year">2017</li>
-    <li id="this-date">1</li>
-    <li id="this-month">DESEMBER</li>
-  </ul>
-</div>
-
-<div class = "cal">
-  <ul class = "weeks">
-    <li id="week-name">Uke</li>
-    <li>48</li>
-    <li>49</li>
-    <li>50</li>
-    <li>51</li>
-    <li>52</li>
-  </ul>
-
-  <ul class = "weekdays">
-    <li>Man</li>
-    <li>Tir</li>
-    <li>Ons</li>
-    <li>Tor</li>
-    <li>Fre</li>
-    <li>Lør</li>
-    <li>Søn</li>
-  </ul>
-
-  <ul class = "date">
-    {{#_for 27 31 1}}
-      <li class="inactive">{{this}}</li>
-    {{/_for}}
-    {{#_for 1 32 1}}
-      <li class="active">{{this}}</li>
-    {{/_for}}
-  </ul>
-</div>
-
-</body>
-</html>
+{{/layout}}

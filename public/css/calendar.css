@@ -1,0 +1,103 @@
+
+ul {
+  list-style-type: none;
+  font-size: 3vh;
+}
+
+p {
+
+}
+
+.calendar-text{
+  margin-top: 10%;
+  width: 100%;
+  text-align: center;
+
+}
+#calendar-title{
+  font-size: 2.5vh;
+  color: rgb(255,192,0);
+}
+
+#calendar-info{
+  font-size: 2.2vh;
+  margin-top: 20%;
+}
+
+.month{
+  text-align: center;
+  margin-top: 10%;
+  color: grey;
+}
+
+.pointer{
+  color: rgb(255,192,0);
+  font-size: 4vh;
+  margin-top: 10%;
+}
+
+#previous-pointer{
+  margin-left: 25%;
+  padding-left: 10%;
+  float: left;
+}
+#next-pointer{
+  margin-right: 25%;
+  padding-right: 10%;
+  float: right;
+}
+
+#this-date{
+  font-size: 8vh;
+  color: black;
+}
+
+.cal{
+  width: 100%;
+  padding: 5%;
+}
+
+.weeks{
+  width: 12.5%;
+  text-align: center;
+  float: left;
+}
+
+#week-name{
+  width: 100%;
+  padding: 0%;
+}
+.weeks li{
+  color: rgb(255,192,0);
+  display: inline-block;
+  width: 100%;
+  padding: 31%;
+}
+
+.weekdays{
+  margin-left: 12.5%;
+  background-color: yellow;
+  text-align: center;
+  width: 87.5%;
+}
+
+.weekdays li{
+  float: left;
+  padding-right: 3%;
+  width: 14.2%;
+  display: inline-block;
+
+}
+
+.date{
+  text-align: center;
+  margin-left: 12.5%;
+  background-color: yellow;
+}
+
+.date li{
+  float: left;
+  padding: 3%;
+  width: 14.2%;
+  display: inline-block;
+}
