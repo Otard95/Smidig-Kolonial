@@ -55,6 +55,9 @@
 }
 
 #payment-selector{
-  margin-top: 50px;
-  margin-left:100px;
+  position: relative;
+  top: 80px;
+  left: 50%;
+  transform-origin: center;
+  transform: translateX(-50%) scale(1.1);
 }
