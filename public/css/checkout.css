@@ -1,6 +1,25 @@
 #chechout-prog {
   position: relative;
-  top: 40px;
+  top: 120px;
   left: 50%;
   transform: translateX(-50%);
+}
+
+#wrapper{
+  margin-top:300px;
+}
+
+.boks{
+  padding: 40px;
+  border: 1px solid #D3D3D3;
+}
+
+#total{
+ margin: 20px;
+}
+
+#betaling-btn{
+  padding: 30px;
+  margin-left: 30px;
+
 }
