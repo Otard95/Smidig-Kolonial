@@ -1,4 +1,4 @@
-(function() {
+function start() {
   let weekbtn, weeklist;
   let boolean = true;
 
@@ -22,4 +22,6 @@
       }
     }();
   }();
-}());
+}
+
+$(document).ready(start);
