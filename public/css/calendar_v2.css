@@ -1,13 +1,52 @@
-ul {
-  list-style-type: none;
-  font-size: 2.2vh; }
+.side-overlay {
+  position: fixed;
+  height: 100%;
+  width: 40%;
+  background: red;
+  top: 0;
+  right: -40%;
+  z-index: 1000;
+  -webkit-transition: right 500ms ease-in-out;
+  transition: right 500ms ease-in-out; }
+  .side-overlay.show {
+    right: 0; }
+
+.container.overlay {
+  -webkit-filter: blur(3px) brightness(90%);
+          filter: blur(3px) brightness(90%); }
+
+.burger {
+  height: 50px;
+  width: 70px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  position: absolute;
+  top: 60px;
+  right: 60px;
+  font-size: 1em;
+  color: #2d2832; }
+  .burger div {
+    width: 100%;
+    height: 7px;
+    background: #2d2832;
+    border-radius: 3px; }
+
+hr {
+  width: 70%; }
 
 .calendar-title {
   text-align: center;
-  font-size: 2.1vh;
+  font-size: 2.2em;
   color: #ffc000;
-  margin-top: 9%;
-  font-weight: 500; }
+  margin-top: 7%;
+  font-weight: 600; }
 
 .calendar-text {
   width: 100%;
@@ -43,14 +82,15 @@ ul {
 .pointer {
   color: #ffc000;
   font-size: 3.5em;
-  margin: 0 1.5em; }
+  margin: 0 1em; }
 
 #this-year, #this-month {
-  font-size: 2.2em; }
+  font-size: 2.2em;
+  color: #d7d7d2; }
 
 #this-date {
   font-size: 5.5em;
-  color: black;
+  color: #2d2832;
   padding: 1.5%; }
 
 .cal {
@@ -87,13 +127,14 @@ ul {
     display: flex;
     -ms-flex-pack: distribute;
         justify-content: space-around;
-    color: #ffa51e;
+    color: #2d2832;
     font-size: 2.5rem; }
   .cal .date {
     grid-area: month;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: repeat(5, 1fr); }
+    grid-template-rows: repeat(5, 1fr);
+    color: #2d2832; }
     .cal .date div {
       height: 2em;
       line-height: 2em; }
