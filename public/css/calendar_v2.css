@@ -1,19 +1,47 @@
 .side-overlay {
   position: fixed;
   height: 100%;
-  width: 40%;
-  background: red;
+  width: 59%;
+  background: white;
   top: 0;
-  right: -40%;
+  right: -59%;
   z-index: 1000;
   -webkit-transition: right 500ms ease-in-out;
   transition: right 500ms ease-in-out; }
   .side-overlay.show {
     right: 0; }
+  .side-overlay .shoppinglist-box {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    margin: 150px auto;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    width: 90%;
+    height: 190px;
+    background-color: #f0f0ec;
+    border-radius: 20px;
+    font-size: 1.7em;
+    color: #d7d7d2; }
+    .side-overlay .shoppinglist-box div {
+      margin-left: 12px; }
+    .side-overlay .shoppinglist-box img {
+      height: 125px;
+      width: 125px;
+      margin-right: 40px;
+      border-radius: 50%; }
+    .side-overlay .shoppinglist-box .list-name {
+      color: #2d2832;
+      font-size: 2.3rem;
+      margin: 10px 12px; }
 
 .container.overlay {
-  -webkit-filter: blur(3px) brightness(90%);
-          filter: blur(3px) brightness(90%); }
+  -webkit-filter: blur(3px);
+          filter: blur(3px); }
 
 .burger {
   height: 50px;
@@ -31,12 +59,23 @@
   top: 60px;
   right: 60px;
   font-size: 1em;
-  color: #2d2832; }
+  color: #2d2832;
+  z-index: 2000; }
   .burger div {
     width: 100%;
     height: 7px;
     background: #2d2832;
-    border-radius: 3px; }
+    border-radius: 3px;
+    -webkit-transition: 300ms ease-in-out;
+    transition: 300ms ease-in-out; }
+  .burger.close div:nth-child(2) {
+    opacity: 0; }
+  .burger.close div:nth-child(1) {
+    -webkit-transform: translateY(16.5px) rotate(40deg);
+            transform: translateY(16.5px) rotate(40deg); }
+  .burger.close div:nth-child(3) {
+    -webkit-transform: translateY(-16.5px) rotate(-40deg);
+            transform: translateY(-16.5px) rotate(-40deg); }
 
 hr {
   width: 70%; }
