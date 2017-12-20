@@ -16,6 +16,7 @@ const bodyParser   = require('body-parser');
 const index = require('./routes/index');
 const uke = require('./routes/uke.js');
 const calender = require('./routes/calender.js');
+const checkout = require('./routes/checkout.js');
 
 // HBS helpers
 const helpers = require('./helpers/helpers');
@@ -50,6 +51,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/uke', uke);
 app.use('/calender', calender);
+app.use('/checkout', checkout);
 
 /*
  *  ## Error handling

@@ -45,7 +45,7 @@ function progress(num_current, num_max, str_id) {
   } else {
     this._sections.head += '<link rel="stylesheet" href="/css/progress_bars.css">';
   }
-
+  
   out = '<div class="progress-bar-wrapper"'+
         (typeof str_id === 'string' ? ` id="${str_id}">` : '>');
   let cbar = '<div class="bar compleated"></div>';
