@@ -16,7 +16,7 @@
           weeklist.style.cssText = `height: 0em`;
           boolean = false;
         } else {
-          weeklist.style.cssText = `height: 35em`;
+          weeklist.style.cssText = `height: 31em`;
           boolean = true;
         }
       }
