@@ -10,45 +10,79 @@ body, html
   padding: 0
 
 footer
-  background: $Mork-aubergine
+  background: #555
   color: $Varmgra
+  font-size: 1.5em
   position: fixed
   bottom: 0
   width: 100%
+  height: 9%
+
   a
     cursor: pointer
-    transition: 200ms
-  ul
-    list-style-type: none
+
+  .nav-menu
+    display: flex
+    justify-content: space-between
     padding: 0
     margin: 0
-    height: 40px
+    height: 70%
     box-shadow: 0 15px 75px rgba(0,0,0,0.2)
-  li
-    display: inline-block
-    text-align: center
-    padding: 10px 0
-    width: calc(20% - 3.6px)
-  li:hover
-    background: $Varmgra
-    color: $Mork-aubergine
+    position: relative
+    bottom: 0
+
+    a
+      display: block
+      background: $Mork-aubergine
+      text-align: center
+      font-size: 1.5em
+      line-height: 300%
+      height: 100%
+      width: 19.5%
+
+      &:hover
+        background: $Varmgra
+        color: $Mork-aubergine
+
   .handlekurv-menu *, .handlekurv-menu
-    position: absolute
+
   .handlekurv-menu
+    position: relative
     box-shadow: 0 15px 75px rgba(0,0,0,0.2)
     background: $Varmgra
     width: 100%
-    bottom: 40px
-    height: 30px
-    line-height: 30px
+    top: 0
+    height: 30%
+    line-height: 200%
+
     .handlekurv-name
+      position: absolute
       left: 0
+
     .handlekurv-price
+      position: absolute
+      text-align: right
+      padding: 0 10px
+      width: 20%
       right: 0
+
     p
       display: inline-block
-      width: 20%
-      text-align: center
-      padding: 0
+      width: 80%
+      padding: 0 10px
       margin: 0
       color: $sort-aubergine
+
+.grid-large
+  width: 100%
+  display: grid
+  grid-template-columns: repeat(2, 1fr)
+  grid-gap: 5px
+
+  .full-width
+    position: relative
+    grid-column: 1/3
+
+  .half-width
+    position: relative
+    grid-column: span 1

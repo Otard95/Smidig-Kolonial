@@ -14,7 +14,11 @@ const bodyParser   = require('body-parser');
 
 // import routes
 const index = require('./routes/index');
+<<<<<<< HEAD
 const uke = require('./routes/uke');
+=======
+const calender = require('./routes/calender.js');
+>>>>>>> origin/helpers
 
 // HBS helpers
 const helpers = require('./helpers/helpers');
@@ -47,7 +51,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // set routes
 app.use('/', index);
+<<<<<<< HEAD
 app.use('/uke', uke);
+=======
+app.use('/calender', calender);
+>>>>>>> origin/helpers
 
 /*
  *  ## Error handling
