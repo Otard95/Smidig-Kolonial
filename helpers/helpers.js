@@ -25,7 +25,7 @@ function _for(i, n, inc, block) {
   return out;
 }
 
-function section(name, options) {
+function section(str_name, hbs_options) {
 
   if (!this._sections) this._sections = {};
   if (!this._sections.head) {
