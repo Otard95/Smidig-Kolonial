@@ -81,7 +81,7 @@
   padding: 20px;
   line-height: 150%;
   margin: 10px 20px;
-  border: 2px solid #C0C0C0;
+  border: 2px solid #D3D3D3;
   font-size: 40px;
 }
 
@@ -91,7 +91,3 @@
   width: 50%;
   text-align: right;
 }
-
-/*.text-color{
-  color:#C0C0C0;
-}*/
