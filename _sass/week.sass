@@ -6,24 +6,12 @@
 .font-aubergine
   color: $Mork-aubergine
 
-.week-grid
-  display: grid
-  font-size: 2vh
-  text-align: center
-
-  .week-header
-    display: inline-grid
-    grid-row: 1
-    grid-template-columns: repeat(3, 1fr)
-
-    h1
-      margin: .5em 0 .25em
-
 .week-view-container
   margin: 0 1em
   padding: 0.5em 0
   background: $Lys-varmgra
   border-radius: 10px
+  position: relative
 
   .week-view-month
     text-align: left
@@ -54,16 +42,18 @@
     background: $white
     margin: .5em .5em 0
     border-radius: 10px
-    height: 35em
+    height: 31em
     transition: 200ms
 
 .week-add-button
   background: $eggeplomme
   border-bottom-left-radius: 10px
   border-bottom-right-radius: 10px
-  position: relative
-  margin: 0 .5em
+  position: absolute
+  width: calc(100% - 1em)
+  margin: .5em
   z-index: 0
+  bottom: 0
 
   $size: 3vh
 

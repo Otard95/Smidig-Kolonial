@@ -4,22 +4,12 @@
 .font-aubergine {
   color: #413746; }
 
-.week-grid {
-  display: grid;
-  font-size: 2vh;
-  text-align: center; }
-  .week-grid .week-header {
-    display: inline-grid;
-    grid-row: 1;
-    grid-template-columns: repeat(3, 1fr); }
-    .week-grid .week-header h1 {
-      margin: .5em 0 .25em; }
-
 .week-view-container {
   margin: 0 1em;
   padding: 0.5em 0;
   background: #f0f0ec;
-  border-radius: 10px; }
+  border-radius: 10px;
+  position: relative; }
   .week-view-container .week-view-month {
     text-align: left;
     font-size: 1.5vh;
@@ -44,7 +34,7 @@
     background: white;
     margin: .5em .5em 0;
     border-radius: 10px;
-    height: 35em;
+    height: 31em;
     -webkit-transition: 200ms;
     transition: 200ms; }
 
@@ -52,9 +42,11 @@
   background: #ffa51e;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  position: relative;
-  margin: 0 .5em;
-  z-index: 0; }
+  position: absolute;
+  width: calc(100% - 1em);
+  margin: .5em;
+  z-index: 0;
+  bottom: 0; }
   .week-add-button::after {
     content: '';
     position: absolute;
