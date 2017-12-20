@@ -6,13 +6,16 @@
 }
 
 #Oversikt {
-  margin-top: 100px;
+  margin-top: 140px;
   font-size: 30px;
-  padding: 30px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .process-infoline {
+  width: 100%;
   font-size: 35px;
+  text-align: center;
 }
 
 #processbar-handlekurv {
@@ -21,21 +24,32 @@
 
 #processbar-betaling {
   color: #ffa51e;
-  text-align: center;
 }
 
 #processbar-pavei {
   color: #C0C0C0;
-  text-align: right;
+}
+
+#payment-methodwrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 60px;
+}
+
+#payment-selector {
+  margin: 20px;
+  transform: scale(1.1);
 }
 
 #payment-method {
   font-size: 35px;
-  margin-left: 50px;
+  margin: 20px;
 }
 
 #wrapper {
-  margin-top: 200px;
+  margin-top: 60px;
   font-size: 25px;
 }
 
@@ -78,10 +92,6 @@
   text-align: right;
 }
 
-#payment-selector {
-  position: relative;
-  top: 80px;
-  left: 50%;
-  transform-origin: center;
-  transform: translateX(-50%) scale(1.1);
-}
+/*.text-color{
+  color:#C0C0C0;
+}*/
