@@ -1,0 +1,101 @@
+ul {
+  list-style-type: none;
+  font-size: 2.2vh; }
+
+.calendar-title {
+  text-align: center;
+  font-size: 2.1vh;
+  color: #ffc000;
+  margin-top: 9%;
+  font-weight: 500; }
+
+.calendar-text {
+  width: 100%;
+  text-align: center;
+  font-size: 2vh;
+  margin-top: 17%;
+  font-weight: bold; }
+
+.month {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  text-align: center;
+  margin: 40px 0; }
+
+.navigator {
+  margin: 10px 0;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
+
+.pointer {
+  color: #ffc000;
+  font-size: 3.5em;
+  margin: 0 1.5em; }
+
+#this-year, #this-month {
+  font-size: 2.2em; }
+
+#this-date {
+  font-size: 5.5em;
+  color: black;
+  padding: 1.5%; }
+
+.cal {
+  display: grid;
+  grid-template-areas: "corner weekdays" "weeks  month";
+  grid-template-rows: 1fr 7fr;
+  grid-template-columns: 1fr 5fr;
+  margin: 100px auto;
+  width: 90%;
+  height: 80%;
+  font-size: 3em;
+  text-align: center; }
+  .cal .week-label {
+    grid-area: corner;
+    color: #ffa51e;
+    font-size: 2.5rem; }
+  .cal .weeks {
+    grid-area: weeks;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+    color: #ffa51e;
+    font-size: 2.5rem; }
+  .cal .weekdays {
+    grid-area: weekdays;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+    color: #ffa51e;
+    font-size: 2.5rem; }
+  .cal .date {
+    grid-area: month;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(5, 1fr); }
+    .cal .date div {
+      height: 2em;
+      line-height: 2em; }
+      .cal .date div.inactive {
+        color: #d7d7d2; }

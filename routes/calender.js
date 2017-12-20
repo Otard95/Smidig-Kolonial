@@ -3,7 +3,7 @@ const router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('calender');
+  res.render('calendar_v2');
 });
 
 module.exports = router;
