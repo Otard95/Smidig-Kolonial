@@ -2,43 +2,66 @@
   position: relative;
   top: 120px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) scale(1.1);
 }
 
-#Oversikt{
+#Oversikt {
   margin-top: 100px;
   font-size: 30px;
-  padding:30px;
+  padding: 30px;
 }
 
-#wrapper{
-  margin-top:200px;
+.process-infoline {
+  font-size: 35px;
+}
+
+#processbar-handlekurv {
+  color: #C0C0C0;
+}
+
+#processbar-betaling {
+  color: #ffa51e;
+  text-align: center;
+}
+
+#processbar-pavei {
+  color: #C0C0C0;
+  text-align: right;
+}
+
+#payment-method {
+  font-size: 35px;
+  margin-left: 50px;
+}
+
+#wrapper {
+  margin-top: 200px;
   font-size: 25px;
 }
 
-.boks{
+.boks {
   height: 100%;
   width: 100%;
 }
 
-#total{
- margin-top: 100px;
+#total {
+  margin-top: 100px;
 }
 
-#betaling-btn{
+#betaling-btn {
   padding: 30px;
   font-size: 40px;
   font-family: sans-serif;
   background: #ffa51e;
   color: #FFFFFF;
   width: 40%;
-  border-radius:90px;
+  border-radius: 90px;
   margin-top: 100px;
   margin-left: 300px;
   border: 0;
-
 }
-.info-line{
+
+.info-line {
   display: flex;
   height: 110px;
   padding: 20px;
@@ -48,14 +71,14 @@
   font-size: 40px;
 }
 
-.style{
+.style-textColor {
   display: block;
   height: 100%;
   width: 50%;
   text-align: right;
 }
 
-#payment-selector{
+#payment-selector {
   position: relative;
   top: 80px;
   left: 50%;
