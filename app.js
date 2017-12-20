@@ -14,7 +14,7 @@ const bodyParser   = require('body-parser');
 
 // import routes
 const index = require('./routes/index');
-const uke = require('./routes/uke.js');
+const week = require('./routes/week.js');
 const calender = require('./routes/calender.js');
 const checkout = require('./routes/checkout.js');
 
@@ -49,9 +49,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // set routes
 app.use('/', index);
-app.use('/uke', uke);
-app.use('/calender', calender);
-app.use('/checkout', checkout);
+app.use('/uke', week);
+app.use('/kalender', calender);
+app.use('/betaling', checkout);
 
 /*
  *  ## Error handling
