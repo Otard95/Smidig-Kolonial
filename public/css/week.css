@@ -1,0 +1,64 @@
+.font-yellow {
+  color: #ffa51e; }
+
+.font-aubergine {
+  color: #413746; }
+
+.week-view-container {
+  margin: 0 1em;
+  padding: 0.5em 0;
+  background: #f0f0ec;
+  border-radius: 10px;
+  position: relative; }
+  .week-view-container .week-view-month {
+    text-align: left;
+    font-size: 1.5vh;
+    padding: 0 .5em;
+    margin: 0 .5em;
+    color: #413746; }
+  .week-view-container .week-view-days h3 {
+    margin: .25em; }
+  .week-view-container .week-view-days ul {
+    list-style: none;
+    padding: 0 .5em;
+    margin: 0;
+    display: inline-grid;
+    width: 100%;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(2, 1fr); }
+  .week-view-container .week-view-days {
+    margin-bottom: 1em; }
+    .week-view-container .week-view-days li {
+      margin: auto; }
+  .week-view-container .week-view-list {
+    background: white;
+    margin: .5em .5em 0;
+    border-radius: 10px;
+    height: 31em;
+    -webkit-transition: 200ms;
+    transition: 200ms; }
+
+.week-add-button {
+  background: #ffa51e;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  position: absolute;
+  width: calc(100% - 1em);
+  margin: .5em;
+  z-index: 0;
+  bottom: 0; }
+  .week-add-button::after {
+    content: '';
+    position: absolute;
+    top: -1.5vh;
+    left: calc(50% - 5vh);
+    background: #ffa51e;
+    width: 9vh;
+    height: 3vh;
+    z-index: -1;
+    border-top-left-radius: 3vh;
+    border-top-right-radius: 3vh; }
+  .week-add-button h3 {
+    color: white;
+    margin: 0 .5em;
+    line-height: 4.5vh; }

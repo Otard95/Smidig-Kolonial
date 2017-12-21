@@ -1,55 +1,114 @@
 @font-face {
-  font-family: 'GT Walsheim Regular', sans-serif;
-  src: url("../fonts/GT-Walsheim-Regular.ttf"); }
+  font-family: 'GT Walsheim Regular';
+  src: url("../fonts/GT-Walsheim-Regular.ttf");
+  font-weight: 400;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'GT Walsheim Bold';
+  src: url("../fonts/GT-Walsheim-Bold.ttf");
+  font-weight: 900;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'GT Walsheim Medium';
+  src: url("../fonts/GT-Walsheim-Medium.ttf");
+  font-weight: 700;
+  font-style: normal; }
 
 body, html {
-  font-family: 'GT Walsheim Regular', sans-serif;
+  font-family: 'GT Walsheim Medium';
   margin: 0;
-  padding: 0; }
+  padding: 0;
+  background: white; }
 
 footer {
-  background: #413746;
+  background: #555;
   color: #d7d7d2;
+  font-size: 1.5em;
   position: fixed;
   bottom: 0;
-  width: 100%; }
+  width: 100%;
+  height: 9%; }
+  footer.overlay {
+    -webkit-filter: blur(3px);
+            filter: blur(3px); }
   footer a {
     cursor: pointer;
-    -webkit-transition: 200ms;
-    transition: 200ms; }
-  footer ul {
-    list-style-type: none;
+    color: #d7d7d2;
+    text-decoration: none; }
+    footer a:visited {
+      color: #d7d7d2;
+      text-decoration: none; }
+  footer .nav-menu {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
     padding: 0;
     margin: 0;
-    height: 40px;
+    height: 70%;
     -webkit-box-shadow: 0 15px 75px rgba(0, 0, 0, 0.2);
-            box-shadow: 0 15px 75px rgba(0, 0, 0, 0.2); }
-  footer li {
-    display: inline-block;
-    text-align: center;
-    padding: 10px 0;
-    width: calc(20% - 3.6px); }
-  footer li:hover {
-    background: #d7d7d2;
-    color: #413746; }
-  footer .handlekurv-menu *, footer .handlekurv-menu {
-    position: absolute; }
+            box-shadow: 0 15px 75px rgba(0, 0, 0, 0.2);
+    position: relative;
+    bottom: 0; }
+    footer .nav-menu a {
+      display: block;
+      background: #413746;
+      text-align: center;
+      font-size: 1.5em;
+      line-height: 300%;
+      height: 100%;
+      width: 19.5%; }
+      footer .nav-menu a:hover {
+        background: #d7d7d2;
+        color: #413746; }
   footer .handlekurv-menu {
+    position: relative;
     -webkit-box-shadow: 0 15px 75px rgba(0, 0, 0, 0.2);
             box-shadow: 0 15px 75px rgba(0, 0, 0, 0.2);
     background: #d7d7d2;
     width: 100%;
-    bottom: 40px;
-    height: 30px;
-    line-height: 30px; }
+    top: 0;
+    height: 30%;
+    line-height: 200%; }
     footer .handlekurv-menu .handlekurv-name {
+      position: absolute;
       left: 0; }
     footer .handlekurv-menu .handlekurv-price {
+      position: absolute;
+      text-align: right;
+      padding: 0 10px;
+      width: 20%;
       right: 0; }
     footer .handlekurv-menu p {
       display: inline-block;
-      width: 20%;
-      text-align: center;
-      padding: 0;
+      width: 80%;
+      padding: 0 10px;
       margin: 0;
       color: #2d2832; }
+
+.grid-large {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 5px; }
+  .grid-large .full-width {
+    position: relative;
+    grid-column: 1/3; }
+  .grid-large .half-width {
+    position: relative;
+    grid-column: span 1; }
+
+.planner-grid {
+  display: grid;
+  font-size: 2vh;
+  text-align: center; }
+  .planner-grid .planner-header {
+    display: inline-grid;
+    grid-row: 1;
+    grid-template-columns: 1fr 3fr 1fr; }
+    .planner-grid .planner-header h1 {
+      margin: .5em 0 .25em; }

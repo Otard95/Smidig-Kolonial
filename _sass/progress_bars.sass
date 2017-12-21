@@ -1,0 +1,37 @@
+@import "./imports/colors.sass"
+
+.progress-bar-wrapper
+  height: 40px
+  width: 600px
+  display: flex
+  align-items: center
+
+  .bar
+    height: 6px
+    width: 100%
+    background: $Varmgra
+
+    &.compleated
+      background: $eggeplomme
+
+  .stage
+    height: 0
+    width: 0
+
+    div
+      height: 40px
+      width: 40px
+      border-radius: 50%
+      background: $Varmgra
+      transform: translate(-50%, -50%)
+
+    &.current
+      div
+        height: 40px
+        width: 40px
+        border: 12px solid $eggeplomme
+        background: $white
+
+    &.compleated
+      div
+        background: $eggeplomme

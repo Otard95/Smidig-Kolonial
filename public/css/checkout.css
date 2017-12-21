@@ -1,0 +1,93 @@
+#chechout-prog {
+  position: relative;
+  top: 120px;
+  left: 50%;
+  transform: translateX(-50%) scale(1.1);
+}
+
+#Oversikt {
+  margin-top: 140px;
+  font-size: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.process-infoline {
+  width: 100%;
+  font-size: 35px;
+  text-align: center;
+}
+
+#processbar-handlekurv {
+  color: #C0C0C0;
+}
+
+#processbar-betaling {
+  color: #ffa51e;
+}
+
+#processbar-pavei {
+  color: #C0C0C0;
+}
+
+#payment-methodwrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 60px;
+}
+
+#payment-selector {
+  margin: 20px;
+  transform: scale(1.1);
+}
+
+#payment-method {
+  font-size: 35px;
+  margin: 20px;
+}
+
+#wrapper {
+  margin-top: 60px;
+  font-size: 25px;
+}
+
+.section-line {
+  height: 100%;
+  width: 100%;
+}
+
+#total {
+  margin-top: 100px;
+}
+
+#betaling-btn {
+  padding: 30px;
+  font-size: 40px;
+  font-family: sans-serif;
+  background: #ffa51e;
+  color: #FFFFFF;
+  width: 40%;
+  border-radius: 90px;
+  margin-top: 100px;
+  margin-left: 300px;
+  border: 0;
+}
+
+.info-line {
+  display: flex;
+  height: 110px;
+  padding: 20px;
+  line-height: 150%;
+  margin: 10px 20px;
+  border: 2px solid #D3D3D3;
+  font-size: 40px;
+}
+
+.style-textColor {
+  display: block;
+  height: 100%;
+  width: 50%;
+  text-align: right;
+}

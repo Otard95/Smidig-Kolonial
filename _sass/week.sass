@@ -1,0 +1,75 @@
+@import "./imports/colors.sass"
+
+.font-yellow
+  color: $eggeplomme
+
+.font-aubergine
+  color: $Mork-aubergine
+
+.week-view-container
+  margin: 0 1em
+  padding: 0.5em 0
+  background: $Lys-varmgra
+  border-radius: 10px
+  position: relative
+
+  .week-view-month
+    text-align: left
+    font-size: 1.5vh
+    padding: 0 .5em
+    margin: 0 .5em
+    color: $Mork-aubergine
+
+  .week-view-days h3
+    margin: .25em
+
+  .week-view-days ul
+    list-style: none
+    padding: 0 .5em
+    margin: 0
+    display: inline-grid
+    width: 100%
+    grid-template-columns: repeat(8, 1fr)
+    grid-template-rows: repeat(2, 1fr)
+
+  .week-view-days
+    margin-bottom: 1em
+
+    li
+      margin: auto
+
+  .week-view-list
+    background: $white
+    margin: .5em .5em 0
+    border-radius: 10px
+    height: 31em
+    transition: 200ms
+
+.week-add-button
+  background: $eggeplomme
+  border-bottom-left-radius: 10px
+  border-bottom-right-radius: 10px
+  position: absolute
+  width: calc(100% - 1em)
+  margin: .5em
+  z-index: 0
+  bottom: 0
+
+  $size: 3vh
+
+  &::after
+    content: ''
+    position: absolute
+    top: -1.5vh
+    left: calc(50% - 5vh)
+    background: $eggeplomme
+    width: $size * 3
+    height: $size
+    z-index: -1
+    border-top-left-radius: $size
+    border-top-right-radius: $size
+
+  h3
+    color: $white
+    margin: 0 .5em
+    line-height: 4.5vh

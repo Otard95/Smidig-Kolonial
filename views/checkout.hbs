@@ -1,0 +1,33 @@
+{{#section 'head'}}
+  <link rel="stylesheet" href="./css/checkout.css" />
+{{/section}}
+
+{{#> layout }}
+
+<div id="processbar-wrap">
+  {{#progress 2 3 'chechout-prog'}}{{/progress}}
+  <div id="Oversikt">
+    <div class="process-infoline" id="processbar-handlekurv">Handlekurv</div>
+    <div class="process-infoline" id="processbar-betaling">Betal</div>
+    <div class="process-infoline" id="processbar-pavei">På vei</div>
+  </div>
+</div>
+
+<div id="payment-methodwrap">
+  <div id="payment-method">Betalingsmåte</div>
+  {{#selector_group 'radio' 'payment_method' '[{"value": "visa", "label": "Visa"},{"value":"vipps", "label": "Vipps"}, {"value":"paypal", "label": "PayPal"}]' 'payment-selector' }}{{/selector_group}}
+</div>
+
+ <div id="wrapper">
+  <div class="info-line"><div id="kort" class="section-line">Kort: <span style="color:#A9A9A9">Visa</span></div></div>
+  <div class="info-line"><div id="kortnummber"class="section-line">Kortnummer: <span style="color:#A9A9A9">1234 5457 8943 1290</span></div></div>
+  <div class="info-line"><div id="kortinnhaver"class="section-line">Kortinnhavers navn: <span style="color:#A9A9A9">Mikkel Jensen</span></div></div>
+  <div class="info-line"><div id="utlopsdato"class="section-line">Utløpsdato: <span style="color:#A9A9A9">01/19</span> </div><div class="style-textColor">CVC: <span style="color:#A9A9A9">898</span></div></div>
+  <div class="info-line"><div id="Total"class="section-line">Total: </div><div class="style-textColor">36,00kr</div></div>
+
+ <div id="betaling">
+  <input id="betaling-btn" type="button" value="Betaling">
+</div>
+</div>
+
+{{/layout}}
