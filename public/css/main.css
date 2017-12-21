@@ -30,6 +30,9 @@ footer {
   bottom: 0;
   width: 100%;
   height: 9%; }
+  footer.overlay {
+    -webkit-filter: blur(3px);
+            filter: blur(3px); }
   footer a {
     cursor: pointer;
     color: #d7d7d2;

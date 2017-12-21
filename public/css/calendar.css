@@ -1,8 +1,23 @@
+.shadow {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #333;
+  opacity: 0;
+  z-index: 999;
+  -webkit-transition: 300ms ease-in-out;
+  transition: 300ms ease-in-out; }
+  .shadow.show {
+    opacity: 0.05; }
+
 .side-overlay {
   position: fixed;
   height: 100%;
   width: 59%;
   background: white;
+  border-left: 1px solid #d7d7d2;
   top: 0;
   right: -59%;
   z-index: 1000;
@@ -27,17 +42,18 @@
     border-radius: 20px;
     font-size: 1.7em;
     color: #d7d7d2; }
-    .side-overlay .shoppinglist-box div {
+    .side-overlay .shoppinglist-box .list-info {
       margin-left: 12px; }
-    .side-overlay .shoppinglist-box img {
-      height: 125px;
-      width: 125px;
-      margin-right: 40px;
-      border-radius: 50%; }
     .side-overlay .shoppinglist-box .list-name {
       color: #2d2832;
       font-size: 2.3rem;
-      margin: 10px 12px; }
+      margin: 10px 0; }
+    .side-overlay .shoppinglist-box .image-container {
+      height: 125px;
+      width: 125px;
+      margin-right: 40px;
+      border-radius: 50%;
+      overflow: hidden; }
 
 .container.overlay {
   -webkit-filter: blur(3px);
@@ -71,11 +87,11 @@
   .burger.close div:nth-child(2) {
     opacity: 0; }
   .burger.close div:nth-child(1) {
-    -webkit-transform: translateY(16.5px) rotate(40deg);
-            transform: translateY(16.5px) rotate(40deg); }
+    -webkit-transform: translateY(16.5px) rotate(45deg);
+            transform: translateY(16.5px) rotate(45deg); }
   .burger.close div:nth-child(3) {
-    -webkit-transform: translateY(-16.5px) rotate(-40deg);
-            transform: translateY(-16.5px) rotate(-40deg); }
+    -webkit-transform: translateY(-16.5px) rotate(-45deg);
+            transform: translateY(-16.5px) rotate(-45deg); }
 
 hr {
   width: 70%; }

@@ -1,41 +1,41 @@
 /*jshint esversion: 6 */
 /*jshint node: true */
 
-let DOM_burger_button, DOM_side_overlay, DOM_content;
-let bool_overlay_open = false;
+let DOM_burger_button, DOM_side_overlay, DOM_content, DOM_footer, DOM_shadow;
 
-$(window).ready(() => {
+$(document).ready(() => {
 
-  DOM_burger_button = $('.burger')[0];
-  DOM_content = $('.container')[0];
-  DOM_side_overlay = $('.side-overlay')[0];
+  // ## Click events for side panel
+  DOM_burger_button = $('.burger');
+  DOM_content       = $('.container');
+  DOM_side_overlay  = $('.side-overlay');
+  DOM_footer        = $('footer');
+  DOM_shadow        = $('.shadow');
 
-  DOM_burger_button.addEventListener('click', () => {
+  DOM_burger_button.click(() => {
 
-    if (!bool_overlay_open){
+    DOM_burger_button.toggleClass('close');
+    DOM_content.toggleClass('overlay');
+    DOM_side_overlay.toggleClass('show');
+    DOM_footer.toggleClass('overlay');
+    DOM_shadow.toggleClass('show');
 
-      bool_overlay_open = true;
+  });
 
-      DOM_side_overlay.className += ' show';
-      DOM_content.className += ' overlay';
-      DOM_burger_button.className += ' close';
+  // fit images in shoppinglist info
+  $('.shoppinglist-box').each(function (i) {
 
+    let img_container = $(this).find('.image-container');
+    let img = img_container.find('img');
+    let h = img.height();
+    let w = img.width();
+
+    let r = h / w;
+
+    if (r < 0) {
+      img.css('width', '100%');
     } else {
-
-      bool_overlay_open = false;
-
-      let cname = DOM_side_overlay.className;
-      cname = cname.replace(' show', '');
-      DOM_side_overlay.className = cname;
-
-      cname = DOM_content.className;
-      cname = cname.replace(' overlay', '');
-      DOM_content.className = cname;
-
-      cname = DOM_burger_button.className;
-      cname = cname.replace(' close', '');
-      DOM_burger_button.className = cname;
-
+      img.css('height', '100%');
     }
 
   });

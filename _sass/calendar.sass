@@ -1,10 +1,25 @@
 @import "./imports/colors.sass"
 
+.shadow
+  position: fixed
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  background: #333
+  opacity: 0
+  z-index: 999
+  transition: 300ms ease-in-out
+
+  &.show
+    opacity: 0.05
+
 .side-overlay
   position: fixed
   height: 100%
   width: 59%
   background: $white
+  border-left: 1px solid $Varmgra
   top: 0
   right: -59%
   z-index: 1000
@@ -25,20 +40,20 @@
     font-size: 1.7em
     color: $Varmgra
 
-    div
+    .list-info
       margin-left: 12px
-
-    img
-      height: 125px
-      width: 125px
-      margin-right: 40px
-      border-radius: 50%
 
     .list-name
       color: $sort-aubergine
       font-size: 2.3rem
-      margin: 10px 12px
+      margin: 10px 0
 
+    .image-container
+      height: 125px
+      width: 125px
+      margin-right: 40px
+      border-radius: 50%
+      overflow: hidden
 
 .container
   &.overlay
@@ -69,9 +84,9 @@
       opacity: 0
 
     div:nth-child(1)
-      transform: translateY(16.5px) rotate(40deg)
+      transform: translateY(16.5px) rotate(45deg)
     div:nth-child(3)
-      transform: translateY(-16.5px) rotate(-40deg)
+      transform: translateY(-16.5px) rotate(-45deg)
 
 hr
   width: 70%
