@@ -21,35 +21,47 @@ class Database {
 		if (typeof str_query !== 'string') 
 			throw 'Database::GetDocument() --- Parameter type missmatch.';
 
+		// Split path into its components
 		let path = str_query.split('/');
 
+		// Any path to a document has to have a multiple of two componets
 		if (path.length % 2 != 0)
 			throw 'Database::GetDocument() --- Parameter format invalid.';
 
+		// temporary store for the document to be returned
 		let doc;
 
+		// As long as there is more of the path to traverse
 		while (path.length != 0) {
+			// isolate and remove the (sub-)collection and document filter form the path componets
 			let collection_name = path.shift();
 			let filter = JSON.parse(path.shift());
 
+			// if no document was previously found get the collection from firebase
+			// if a document is pressent get the sub-collection
 			let collection_query = doc ? doc.ref.collection(collection_name) : this.firestore.collection(collection_name);
 
+			// filter the out documents in the collection that does not have the key-value pair of the porvided filter
 			for (var key in filter) {
 				if (filter.hasOwnProperty(key)) {
 					collection_query = collection_query.where(key, '==', filter[key]);
 				}
 			}
 
+			// get the snappshot and make sure it contains exactlu one item
 			let query_snappshot = await collection_query.get();
 			if (query_snappshot.empty)
 				throw `Could not find a document matching '${JSON.stringify(filter)}' in '${collection_name}'`;
 			if (query_snappshot.size > 1)
 				throw 'Database::GetDocument() --- Multiple matches found.';
 			
+			// get the single item
 			doc = query_snappshot.docs[0];
 
+			// repeat til path is traversed
 		}
 
+		// Return the document
 		return doc;
 
 	}

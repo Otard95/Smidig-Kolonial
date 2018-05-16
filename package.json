@@ -15,13 +15,13 @@
     "web",
     "store"
   ],
-  "author": [
-    "Otard95",
-    "WesterOne",
-    "LindaHBN",
-    "rikke59",
-    "synend16",
-    "sunnivagjervik"
+  "author": { "name": "Otard95" },
+  "contributors": [
+    { "name": "WesterOne" },
+    { "name": "LindaHBN" },
+    { "name": "rikke59" },
+    { "name": "synend16" },
+    { "name": "sunnivagjervik" }
   ],
   "license": "MIT",
   "bugs": {
