@@ -1,7 +1,13 @@
 .selector-group-input {
   position: absolute;
   visibility: hidden;
-  display: none; }
+  display: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent; }
   .selector-group-input:checked + label {
     color: white;
     background: #ffa51e; }
