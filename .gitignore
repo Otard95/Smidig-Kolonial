@@ -1,4 +1,5 @@
 configs/tokens.json
+.vscode
 
 # == NODE ==
 
@@ -6,12 +7,36 @@ node_modules/*
 
 !node_modules/express
 !node_modules/request
-!node_modules/vue
+!node_modules/firebase
+!node_modules/helmet
+!node_modules/express-session
+!node_modules/express-handlebars
+!node_modules/morgan
+!node_modules/body-parser
+!node_modules/cookie-parser
+!node_modules/debug
+!node_modules/serve-favicon
 
 node_modules/express/*
 node_modules/request/*
-node_modules/vue/*
+node_modules/firebase/*
+node_modules/helmet/*
+node_modules/express-session/*
+node_modules/express-handlebars/*
+node_modules/morgan/*
+node_modules/body-parser/*
+node_modules/cookie-parser/*
+node_modules/debug/*
+node_modules/serve-favicon/*
 
 !node_modules/express/LICENSE
 !node_modules/request/LICENSE
-!node_modules/vue/LICENSE
+!node_modules/firebase/LICENSE
+!node_modules/helmet/LICENSE
+!node_modules/express-session/LICENSE
+!node_modules/express-handlebars/LICENSE
+!node_modules/morgan/LICENSE
+!node_modules/body-parser/LICENSE
+!node_modules/cookie-parser/LICENSE
+!node_modules/debug/LICENSE
+!node_modules/serve-favicon/LICENSE
