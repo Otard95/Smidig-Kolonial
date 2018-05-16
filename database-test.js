@@ -5,13 +5,15 @@ const unit = require('./testing/unit');
 
 async function RunTest (test) {
 
-	console.log(`${RunTest.indent || ''}${test.name} -- ${test.description || 'Missing description'}`);
+	if (test.name)
+		console.log(`${RunTest.indent || ''}${test.name} -- ${test.description || 'Missing description'}`);
 
 	try {
 
 		await test();
 
-		console.log(`${RunTest.indent || ''}${test.name} -- Passed`.green);
+		if (test.name)
+			console.log(`${RunTest.indent || ''}${test.name} -- Passed`.green);
 		return true;
 
 	} catch (err) {
@@ -20,6 +22,18 @@ async function RunTest (test) {
 		console.log(`${RunTest.indent || ''}${test.name} -- Failed`.red);
 		return false;
 
+	}
+
+}
+
+function WaitForSeconds (num_sec) {
+	
+	return () => {
+		console.log('\t        |');
+		console.log(`\t Waiting ${num_sec} seconds`);
+		console.log('\t        |');
+
+		return new Promise(resolve => setTimeout(resolve, num_sec*1000));
 	}
 
 }
@@ -114,24 +128,54 @@ GetInSubColletion.description = 'Try getting test data in a subcollection';
 
 // -----------
 
+async function CreateDocumentTest() {
+
+	let newdoc = {
+		email: "new.mail@somedomain.com",
+		name: "John Doe",
+		password: "some pass"
+	};
+
+	let res = await db.CreateDocument('customers', newdoc);
+
+	assert.ok(res != null && res != undefined);
+
+} CreateDocumentTest.description = 'Try to create a new document in the database';
+
+// -----------
+
+async function ValidateNewDocument() {
+	let res = await db.GetDocument('customers/{"name": "John Doe"}');
+
+	let data = {
+		email: "new.mail@somedomain.com",
+		name: "John Doe",
+		password: "some pass"
+	};
+
+	assert.deepEqual(res.data(), data);
+
+}
+ValidateNewDocument.description = 'Make sure the data recovered from the database matches expectations.';
+
+// -----------
 
 
-console.log('\n\nDatabase Test\n\n');
+
+console.log('\n\nDatabase Test');
 
 // let test_getters = unit.parallel(GetDocumentTest, GetInSubColletion);
 // let main = unit.series(DatabaseNotNull, test_getters, ValidateTestDocument);
 // unit.test(main)().then(process.exit);
 
-RunTest(DatabaseNotNull)
+RunSequentially(DatabaseNotNull,
+								GetDocumentTest,
+								GetInSubColletion,
+								ValidateTestDocument,
+								CreateDocumentTest,
+								WaitForSeconds(2),
+								ValidateNewDocument)
 .then(() => {
-	return RunParallel(GetDocumentTest, GetInSubColletion);
-})
-.then(() => {
-	return RunTest(ValidateTestDocument)
-})
-.then(() => {
-
-	console.log('\n\nDone!\n');
+	console.log('Done!\n');
 	process.exit();
-
 });
