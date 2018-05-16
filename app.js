@@ -11,6 +11,8 @@ const favicon      = require('serve-favicon');
 const logger       = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser   = require('body-parser');
+const session      = require('express-session');
+const helmet       = require('helmet');
 
 // import routes
 const index = require('./routes/index');
@@ -40,7 +42,9 @@ app.engine('hbs', hbs({
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
+app.use(helmet());
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(session());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
