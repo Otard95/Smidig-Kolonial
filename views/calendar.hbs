@@ -52,11 +52,9 @@
     <div class="week-label">Uke</div>
 
     <div class = "weeks">
-      <div>48</div>
-      <div>49</div>
-      <div>50</div>
-      <div>51</div>
-      <div>52</div>
+      {{#weeks 2018 5}}
+       <div>{{this}}</div>
+       {{/weeks}}
     </div>
 
     <div class = "weekdays">
@@ -70,12 +68,10 @@
     </div>
 
     <div class = "date">
-      {{#_for 27 31 1}}
-        <div class="inactive">{{this}}</div>
-      {{/_for}}
-      {{#_for 1 32 1}}
+      {{!-- Takes in year and month --}}
+      {{#calendar 2018 5}}
         <div class="active">{{this}}</div>
-      {{/_for}}
+      {{/calendar}}
     </div>
   </div>
 </div>
