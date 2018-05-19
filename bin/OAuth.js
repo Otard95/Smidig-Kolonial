@@ -26,13 +26,19 @@ class OAuth {
 			if (user.password == password)
 				return new OAuthResponse(OAuthResponse.status_codes.OK, user);
 			else
-				return new OAuthResponse(OAuthResponse.status_codes.INVALID_PASSWORD,
-																 null,
-																 'Provided password did not match with the one saved to theprofile');
+				return new OAuthResponse(
+					OAuthResponse.status_codes.INVALID_PASSWORD,
+					null,
+					'Provided password did not match with the one saved to theprofile'
+				);
 
 		} catch (err) {
 
-			throw new OAuthResponse(OAuthResponse.status_codes.DATABASE_ERROR, err, 'Failed to retrieve the document');
+			throw new OAuthResponse(
+				OAuthResponse.status_codes.DATABASE_ERROR,
+				err,
+				'Failed to retrieve the document'
+			);
 
 		}
 
@@ -41,10 +47,13 @@ class OAuth {
 	Authenticate (username_paramerter_name, password_parameter_name) {
 
 		return (req, res, next) => {
-			this.AuthenticateUser(req.params[username_paramerter_name], req.params[password_parameter_name])
-			.then(res => {
+			this.AuthenticateUser(
+				req.params[username_paramerter_name],
+				req.params[password_parameter_name]
+			)
+			.then(Auth_res => {
 
-				req.authenticated = OAuthResponse.OK(res);
+				req.authenticated = OAuthResponse.OK(Auth_res);
 
 				if (req.authenticated) {
 					req.user = res.user;
@@ -78,9 +87,9 @@ class OAuth {
 
 			if (req.session.id) {
 				this.IsAuthorized(req.session.id)
-				.then(res => {
+				.then(Auth_res => {
 
-					req.autorized = res;
+					req.autorized = Auth_res;
 
 					next();
 
@@ -107,8 +116,14 @@ class OAuth {
 
 		new_session_id = this.RandomId(12);
 		while (this.sessions[new_session_id]) new_session_id = this.RandomId(12);
-
-		this.sessions.push(new Session(new_session_id, user.id, user));
+	
+		let session = new Session(
+			new_session_id,
+			user.id,
+			user,
+			Date.now() + 60 * 60 * 1000
+		);
+		this.sessions.push(session);
 		return new_session_id;
 
 	}
