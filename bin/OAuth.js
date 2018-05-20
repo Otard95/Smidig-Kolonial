@@ -21,16 +21,21 @@ class OAuth {
 		try {
 
 			// get the user filtered by username
-			user = await db.GetDocument(`customers/{"email": "${username}"`);
+			user = await db.GetDocument(`customers/{"email": "${username}"}`);
 
-			if (user.password == password)
+			if (user.data().password == password) {
+
 				return new OAuthResponse(OAuthResponse.status_codes.OK, user);
-			else
+
+			} else {
+
 				return new OAuthResponse(
 					OAuthResponse.status_codes.INVALID_PASSWORD,
 					null,
-					'Provided password did not match with the one saved to theprofile'
+					'Provided password did not match with the one saved to the profile'
 				);
+
+			}
 
 		} catch (err) {
 

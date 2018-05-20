@@ -1,14 +1,6 @@
 
 class OAuthResponse {
 
-	static status_codes = {
-		OK: 0,
-		USER_NOT_FOUND: 1,
-		INVALID_PASSWORD: 2,
-		UNEXPECTED_ERROR_NON_UNIQUE_USERNAME: 101,
-		DATABASE_ERROR: 201
-	}
-
 	constructor (status, data, message) {
 		this.status = status;
 		OAuthResponse.OK(status) ? this.user = data : this.err = data;
@@ -25,6 +17,14 @@ class OAuthResponse {
 		}
 	}
 
+}
+
+OAuthResponse.status_codes = {
+	OK: 0,
+	USER_NOT_FOUND: 1,
+	INVALID_PASSWORD: 2,
+	UNEXPECTED_ERROR_NON_UNIQUE_USERNAME: 101,
+	DATABASE_ERROR: 201
 }
 
 module.exports = OAuthResponse;
