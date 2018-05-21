@@ -7,6 +7,14 @@ class ShoppingList {
 
 
     constructor(){
+        if (!ShoppingList._instance) {
+
+            // construct
+
+            ShoppingList._instance = this;
+        }
+
+        return ShoppingList._instance;
 
     }
 
