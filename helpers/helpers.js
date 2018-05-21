@@ -19,40 +19,40 @@ function times(n, block) {
 
 function month_name(number, hbs_block) {
   switch (number) {
-    case 1:
+    case 0:
       return hbs_block.fn('JANUAR');
       break;
-    case 2:
+    case 1:
       return hbs_block.fn('FEBRUAR');
       break;
-    case 3:
+    case 2:
       return hbs_block.fn('MARS');
       break;
-    case 4:
+    case 3:
       return hbs_block.fn('APRIL');
       break;
-    case 5:
+    case 4:
       return hbs_block.fn('MAI');
       break;
-    case 6:
+    case 5:
       return hbs_block.fn('JUNI');
       break;
-    case 7:
+    case 6:
       return hbs_block.fn('JULI');
       break;
-    case 8:
+    case 7:
       return hbs_block.fn('AUGUST');
       break;
-    case 9:
+    case 8:
       return hbs_block.fn('SEPTEMBER');
       break;
-    case 10:
+    case 9:
       return hbs_block.fn('OKTOBER');
       break;
-    case 11:
+    case 10:
       return hbs_block.fn('NOVEMBER');
       break;
-    case 12:
+    case 11:
       return hbs_block.fn('DESEMBER');
       break;
   }
@@ -63,7 +63,7 @@ function month_name(number, hbs_block) {
 function weeks(year, month, hbs_block) {
   let output = ''
   // First day in month
-  let date = new Date(year, month - 1, 0)
+  let date = new Date(year, month, 0)
   date.setHours(0, 0, 0)
   // Make Sunday's day number 7  
   date.setDate(date.getDate() + 4 - (date.getDay() || 7))
@@ -80,12 +80,11 @@ function weeks(year, month, hbs_block) {
 
 // {{#calendar 2018 5}}
 function calendar(year, month, hbs_block) {
-  let output = '',
-    currentMonth = month - 1;
+  let output = ''
 
   // Dont know why i need to plus the month+1 only on the getDate()
   let daysInMonth = new Date(year, month, 0).getDate()
-  let getStartingDayOfMonth = new Date(year, currentMonth, 1).getDay()
+  let getStartingDayOfMonth = new Date(year, month, 1).getDay()
 
   // Fills up first inactive datys with empty divs
   if (getStartingDayOfMonth === 0) getStartingDayOfMonth = 7

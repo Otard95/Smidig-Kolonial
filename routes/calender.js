@@ -7,7 +7,7 @@ const router = express.Router();
 /* GET home page. */
 router.get('/', async function (req, res, next) {
 
-  let month = new Date().getMonth()+1;
+  let month = new Date().getMonth();
 
   res.render('calendar', {
     title: 'Kalender',
