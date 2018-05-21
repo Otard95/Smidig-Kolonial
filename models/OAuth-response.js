@@ -3,7 +3,7 @@ class OAuthResponse {
 
 	constructor (status, data, message) {
 		this.status = status;
-		OAuthResponse.OK(status) ? this.user = data : this.err = data;
+		status == OAuthResponse.status_codes.OK ? this.user = data : this.err = data;
 		this.msg = message;
 	}
 
