@@ -1,6 +1,10 @@
 const readline = require('readline');
 const fs       = require('fs');
 
+
+/**
+ * ## Stup Readline
+*/
 const rl = readline.createInterface({
 	input: process.stdin,
 	output: process.stdout
@@ -28,6 +32,16 @@ rl.on('line', async input => {
 	rl.lock = false;
 
 });
+
+/**
+ * ## Print a welcome message
+*/
+
+console.log('This is the tesing program. Use the `help` command to see your options.');
+
+/**
+ * ## Functions
+*/
 
 async function run (test_name) {
 
@@ -83,7 +97,7 @@ function print_usage () {
 	console.log(
 `\nUsage: <command> <argument(s)>
 	Commands:
-		run  -- Runs the test spesified in the parameter.
+		run  -- Runs the test spesified in the provided argument.
 		list -- Available tests.
 		help -- Display help.
 		quit -- Exites the program.\n`

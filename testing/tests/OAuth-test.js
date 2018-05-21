@@ -97,6 +97,44 @@ async function TestAuthenticateFunctionPassErr() {
 }
 TestAuthenticateFunctionPassErr.description = 'Test the OAuth::Authenticate() with wrong password.';
 
+// -------------
+
+async function TestAuthenticateMiddleware () {
+
+	let done = false;
+
+	let wait_for_done = () => { 
+		return new Promise((resolve, reject) => {
+			while (!done);
+			resolve();
+		});
+	}
+
+	function next (err) {
+		if (err) assert.fail(err);
+		done = true;
+	}
+
+	// create fake post request
+	let req = {
+		params: {
+			email: 'test@test.com',
+			password: 'Test1234'
+		},
+		session: {}
+	}
+	
+	await OAuth.Authenticate('email','password')(req, null, next);
+
+	// console.log(req.user.data(), user);
+
+	assert(req.authenticated);
+	assert.deepEqual(user, req.user.data());
+	assert(req.session.id);
+
+}
+TestAuthenticateMiddleware.description = 'Test the OAuth::Authenticate() function and middleware.';
+
 /**
  * ## Unit test setup
 */
@@ -104,7 +142,8 @@ TestAuthenticateFunctionPassErr.description = 'Test the OAuth::Authenticate() wi
 let test_authenticate = unit.series(
 	TestAuthenticateFunction,
 	TestAuthenticateFunctionPassErr,
-	TestAuthenticateFunctionUsernameErr
+	TestAuthenticateFunctionUsernameErr,
+	TestAuthenticateMiddleware
 );
 
 let main = unit.series(TestAuthResponse, test_authenticate);

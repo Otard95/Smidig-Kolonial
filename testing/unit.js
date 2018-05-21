@@ -14,8 +14,6 @@ function WaitForSeconds(num_sec) {
 
 async function RunTest(_test) {
 
-
-
 	console.log(
 		`${_test.pre_line ? '\n' : ''}${RunTest.indent || ''}${_test.name} -- ${_test.description || 'Missing description'}`
 	);
@@ -31,9 +29,7 @@ async function RunTest(_test) {
 
 	} catch (err) {
 
-		console.log(
-			`${RunTest.indent || ''}${_test.name} -- Error: \n${RunTest.indent || ''}${JSON.stringify(err)}`.yellow
-		);
+		console.log(`${RunTest.indent || ''}${_test.name} -- Error: \n${RunTest.indent || ''}${JSON.stringify(err)}\n${err.stack}`.yellow);
 		console.log(`${RunTest.indent || ''}${_test.name} -- Failed${_test.post_line ? '\n' : ''}`.red);
 		return false;
 
