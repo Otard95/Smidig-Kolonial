@@ -5,38 +5,54 @@
 
 {{#> layout }}
 
-<div class="shadow"></div>
-<div class="side-overlay">
-  <div class="shoppinglist-box">
-    <div class="list-info">
-      <div class="list-date">22.12.17</div>
-      <div class="list-name">Julie 5 år!</div>
-      <div class="list-cost">240kr</div>
+  <div class="shadow"></div>
+  <div class="side-overlay">
+    <div class="shoppinglist-box">
+      <div class="list-info">
+        <div class="list-date">22.12.17</div>
+        <div class="list-name">Julie 5 år!</div>
+        <div class="list-cost">240kr</div>
+      </div>
+      <div class="image-container">
+        <img src="imgs/kid.jpg" alt="Søt unge">
+      </div>
     </div>
-    <div class="image-container">
-      <img src="imgs/kid.jpg" alt="Søt unge">
+  </div>
+
+  <div class="burger">
+    <!--legg inn ikon-->
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <div class="container">
+    <div class="calendar-title">
+      <p id="title">Planleggeren</p>
     </div>
-  </div>
-</div>
 
-<div class="burger">
-  <div></div>
-  <div></div>
-  <div></div>
-</div>
+    <hr>
 
-<div class="container">
-  <div class="calendar-title">
-    <p id="title">Planleggeren</p>
-  </div>
 
-  <div class="calendar-text">
-    <p id="text">Velg en dag eller uke å planlegge handelen på</p>
-    <div id="grey-divne"></div>
-  </div>
+    <div class="calendar-text">
+      <p class="text" id="text1">Velg en dag å planlegge</p>
+      <p class="text" id="text2">handelen på!</p>
+    </div>
 
-  <hr>
+    <div class="calendar-container">
+      <div class="date-containar">
+        <div class="pointer" id="previous-pointer">&#10094;</div>
+        <div class="date">
+          <p>8.JUNI 2018</p><!--Sett in dato her-->
+        </div>
+        <div class="pointer" id="next-pointer">&#10095;</div>
+      </div>
 
+
+
+    </div>
+
+    <!--
   <div class = "month">
     <div id="this-year">2017</div>
     <div class="navigator">
@@ -79,4 +95,5 @@
     </div>
   </div>
 </div>
-{{/layout}}
+-->
+    {{/layout}}

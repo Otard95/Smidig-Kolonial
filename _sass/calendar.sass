@@ -90,50 +90,85 @@
       transform: translateY(-16.5px) rotate(-45deg)
 
 hr
-  width: 70%
+  width: 100%
+
+
 
 .calendar-title
   text-align: center
-  font-size: 2.2em
-  color: rgb(255, 192, 0)
+  font-size: 2.7em
+  color: rgb(0, 0, 0)
   margin-top: 7%
-  font-weight: 600
+  font-weight: 100
+  margin-bottom: -2%
 
 .calendar-text
   width: 100%
   text-align: center
-  font-size: 2vh
-  margin-top: 17%
-  font-weight: bold
+  font-size: 2.8vh
+  margin-top: 11%
 
-.month
+#text2
+  margin-top: -5%
+
+.calendar-container
+  margin: 5%
+  width: 90%
+  height: 52%
+  background-color: rgb(240,240,240)
+  position: absolute
+  border-radius: 20px
+
+.date-containar
+  margin: 5% 0
+  width: 100%
+  display: flex
+  align-items: center
+  justify-content: center
+.pointer
+  margin: 0 auto
+  font-size: 2.9vh
+#previous-pointer
+  margin-left: 10%
+#next-pointer
+  margin-right: 10%
+.date
+  margin: 0 auto
+  width: 60%
+  text-align: center
+  font-size: 2.5vh
+
+
+
+
+//.month
   display: flex
   flex-direction: column
   text-align: center
   margin: 40px 0
 
-.navigator
+//.navigator
   margin: 10px 0
   width: 100%
   display: flex
   align-items: center
   justify-content: center
 
-.pointer
+//.pointer
   color: rgb(255, 192, 0)
   font-size: 3.5em
   margin: 0 1em
 
-#this-year, #this-month
+//#this-year, #this-month
   font-size: 2.2em
   color: $Varmgra
 
-#this-date
+//#this-date
   font-size: 5.5em
   color: $sort-aubergine
   padding: 1.5%
 
-.cal
+//.cal
   display: grid
   grid-template-areas: "corner weekdays" "weeks  month"
   grid-template-rows: 1fr 7fr
