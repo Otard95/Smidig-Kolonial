@@ -72,7 +72,7 @@
           <div class = "date">
             {{!-- Takes in year and month --}}
             {{#calendar 2018 month}}
-              <div class="active">{{this}}</div>
+              <div data-month={{../month}} data-day="{{this}}" class="active calendar-btn">{{this}}</div>
             {{/calendar}}
           </div>
         </div>

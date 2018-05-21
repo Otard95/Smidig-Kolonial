@@ -40,4 +40,13 @@ $(document).ready(() => {
 
   });
 
+  
+  $('.calendar-btn').on('click', function() {
+    let day = $(this).data('day'), month = $(this).data('month')
+    // Kobler sammen med week data
+
+    if (!day) return $(this).off()
+    window.location.href = `uke/month/${month}/day/${day}`
+  })
+
 });

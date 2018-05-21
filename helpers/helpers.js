@@ -20,40 +20,40 @@ function times(n, block) {
 function month_name(number, hbs_block) {
   switch (number) {
     case 1:
-      return hbs_block.fn('Januar');
+      return hbs_block.fn('JANUAR');
       break;
     case 2:
-      return hbs_block.fn('Februar');
+      return hbs_block.fn('FEBRUAR');
       break;
     case 3:
-      return hbs_block.fn('Mars');
+      return hbs_block.fn('MARS');
       break;
     case 4:
-      return hbs_block.fn('April');
+      return hbs_block.fn('APRIL');
       break;
     case 5:
-      return hbs_block.fn('Mai');
+      return hbs_block.fn('MAI');
       break;
     case 6:
-      return hbs_block.fn('Juni');
+      return hbs_block.fn('JUNI');
       break;
     case 7:
-      return hbs_block.fn('Juli');
+      return hbs_block.fn('JULI');
       break;
     case 8:
-      return hbs_block.fn('August');
+      return hbs_block.fn('AUGUST');
       break;
     case 9:
-      return hbs_block.fn('September');
+      return hbs_block.fn('SEPTEMBER');
       break;
     case 10:
-      return hbs_block.fn('Oktober');
+      return hbs_block.fn('OKTOBER');
       break;
     case 11:
-      return hbs_block.fn('November');
+      return hbs_block.fn('NOVEMBER');
       break;
     case 12:
-      return hbs_block.fn('December');
+      return hbs_block.fn('DESEMBER');
       break;
   }
 }
@@ -68,8 +68,8 @@ function weeks(year, month, hbs_block) {
   // Make Sunday's day number 7  
   date.setDate(date.getDate() + 4 - (date.getDay() || 7))
   // Get first day of year  
-  var firstDay = new Date(date.getFullYear(), 0, 1)
-  var num = Math.ceil((((date - firstDay) / 86400000) + 1) / 7)
+  let firstDay = new Date(date.getFullYear(), 0, 1)
+  let num = Math.ceil((((date - firstDay) / 86400000) + 1) / 7)
 
   for (let i = 0; i < 5; i++) {
     output += hbs_block.fn(num + i)
