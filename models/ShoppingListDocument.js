@@ -1,4 +1,4 @@
-class ShoppingList {
+class ShoppingListDocument {
 
     constructor (date, name, groups, products, ...id) {
         this.date = date;
@@ -10,4 +10,4 @@ class ShoppingList {
 
 }
 
-module.exports = ShoppingList;
+module.exports = ShoppingListDocument;

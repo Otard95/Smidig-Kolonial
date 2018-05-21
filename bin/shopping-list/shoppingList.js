@@ -1,5 +1,5 @@
 const db = require('./../database');
-const ListModel = require('../models/ShoppingList');
+const ShoppingListDocument = require('../models/ShoppingListDocument');
 const moment = require('moment');
 
 
@@ -19,18 +19,24 @@ class ShoppingList {
     }
 
 
-    async createShoppingList(name, ...groups){
-        let listObj = new ListModel;
-        const date = moment('2016-03-12 13:00:00');
+    async createShoppingList(userId, name, date, users){
+        let listObj = new ShoppingListDocument(name, date);
 
-        listObj.name = name;
-        listObj.date = date;
+        const docRef = db.CreateDocument("shoppingLists", listObj);
 
-        if (groups){
-            listObj.groups = groups;
+        let userObj = {
+            shoppingListId : docRef,
+            sharedWith : []
+        };
+
+        if (users.length() > 0) {
+            userObj.sharedWith = users;
+            users.forEach( (user) => {
+                db.CreateDocument(`customers/${user}/sharedShoppingLists`,
+                    {shoppingListID : docRef, owner : userId});
+            })
         }
 
-        //TODO get email from user to create path for this document
-        db.CreateDocument()
+        db.CreateDocument(`customers/${docRef}/shoppingLists`, userObj);
     }
 }
