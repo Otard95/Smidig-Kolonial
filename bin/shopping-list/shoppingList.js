@@ -39,4 +39,12 @@ class ShoppingList {
 
         db.CreateDocument(`customers/${docRef}/shoppingLists`, userObj);
     }
+    
+    
+    async addProductToList(listId, product){
+        //product : kolonialId, amount, groupId
+        if (listId && product) {
+            return await db.CreateDocument(`shoppingLists/${listId}/products`, product);
+        }
+    }
 }
