@@ -217,6 +217,11 @@ class Database {
 
 	}
 
+
+	//TODO lage en metode for å hente en hel collection
+
+	//TODO metode for å oppdatere et eksisterende dokuemnt
+
 }
 
 const inst = new Database();

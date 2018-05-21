@@ -29,6 +29,7 @@ class ShoppingList {
 
         let DBres = await db.CreateDocument("shoppingLists", listObj);
 
+        //TODO kaste feilmedling om det ikke går
         if (DBResponse.OK(DBres)) {
             let userObj = {
                 shoppingListId: DBres.data.id,
@@ -50,10 +51,16 @@ class ShoppingList {
 
     async addProductToList(listId, product) {
         //product : kolonialId, amount, groupId
+        //TODO returnere respons dersom liste ikke finnes
         if (listId && product) {
             return await db.CreateDocument(`shoppingLists/${listId}/products`, product);
         }
     }
+
+
+    //TODO lage en metode for å hente en hel collection
+
+    //TODO metode for å oppdatere et eksisterende dokuemnt
 }
 
 
