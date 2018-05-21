@@ -39,6 +39,14 @@ class ShoppingList {
 
         await db.CreateDocument(`customers/${docRef}/shoppingLists`, userObj);
     }
+
+    async addProductToList(listId, product) {
+        //product : kolonialId, amount, groupId
+        if (listId && product) {
+            return await db.CreateDocument(`shoppingLists/${listId}/products`, product);
+        }
+    }
 }
+
 
 module.exports = new ShoppingList();
