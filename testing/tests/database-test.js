@@ -72,11 +72,28 @@ async function GetDocumentTest () {
 }
 GetDocumentTest.description = 'Try getting test data.';
 
+// -------------
+
+async function GetDocumentWithId () {
+
+	let res = await db.GetDocument('customers/cEx6uZdHs5K7KfUfz6cT');
+
+	assert(DBRes.OK(res));
+
+	assert.ok(res.data != null && res.data != undefined);
+
+	assert.deepEqual(res.data.data(), test_doc);
+
+}
+GetDocumentWithId.description = 'Test Database::GetDocument() using path with document id.';
+
 // -----------
 
 async function ValidateTestDocument () {
 
 	let res = await db.GetDocument('customers/{"name": "Test Tester"}');
+
+	assert(DBRes.OK(res));
 
 	assert.deepEqual(res.data.data(), test_doc);
 
@@ -87,7 +104,7 @@ ValidateTestDocument.description = 'Make sure the data recovered from the databa
 
 async function GetInSubColletion () {
 
-	let res = await db.GetDocument('customers/{"name": "Test Tester"}/test/{}');
+	let res = await db.GetDocument('customers/{"name": "Test Tester"}/shoppingLists/{}');
 
 	assert(DBRes.OK(res));
 
@@ -102,6 +119,8 @@ async function CreateDocumentTest() {
 
 	let res = await db.CreateDocument('customers', new_doc);
 
+	assert(DBRes.OK(res));
+
 	assert.ok(res.data != null && res.data != undefined);
 
 } CreateDocumentTest.description = 'Try to create a new document in the database';
@@ -112,15 +131,43 @@ async function ValidateNewDocument() {
 
 	let res = await db.GetDocument('customers/{"name": "John Doe"}');
 
+	assert(DBRes.OK(res));
+
 	assert.deepEqual(res.data.data(), new_doc);
 
 }
 ValidateNewDocument.description = 'Make sure the data recovered from the database matches expectations.';
 
+// -------------
+
+async function CreateDocumentInSubCollection () {
+
+	let res = await db.CreateDocument('customers/{"email": "test@test.com"}/testCollection', { some: 'test data' });
+
+	assert(DBRes.OK(res));
+
+	assert(res);
+
+}
+CreateDocumentInSubCollection.description = 'Test if Database::CreateDocument() can create a document in a non ecsistent sub collection.';
+
 // -----------
 
-let test_getters = unit.parallel(GetDocumentTest, GetInSubColletion);
-let test_setters = unit.series(CreateDocumentTest, ValidateNewDocument)
+async function CreateDocumentWithIdInPath() {
+
+	let res = await db.CreateDocument('customers/cEx6uZdHs5K7KfUfz6cT/testCollection', new_doc);
+
+	assert(DBRes.OK(res));
+
+	assert.ok(res.data != null && res.data != undefined);
+
+}
+CreateDocumentWithIdInPath.description = 'Try to create a new document in the database';
+
+// -----------
+
+let test_getters = unit.parallel(GetDocumentTest, GetInSubColletion, GetDocumentWithId);
+let test_setters = unit.series(CreateDocumentTest, ValidateNewDocument, CreateDocumentInSubCollection, CreateDocumentWithIdInPath)
 let main = unit.series(TestDBResponse, DatabaseNotNull, test_getters, ValidateTestDocument, test_setters);
 
 module.exports = unit.test(main);
