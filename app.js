@@ -19,6 +19,7 @@ const index = require('./routes/index');
 const week = require('./routes/week.js');
 const calender = require('./routes/calender.js');
 const checkout = require('./routes/checkout.js');
+const oppskrifter = require('./routes/oppskrifter.js')
 
 // HBS helpers
 const helpers = require('./helpers/helpers');
@@ -61,6 +62,7 @@ app.use('/', index);
 app.use('/uke', week);
 app.use('/kalender', calender);
 app.use('/betaling', checkout);
+app.use('/oppskrifter', oppskrifter);
 
 /*
  *  ## Error handling
