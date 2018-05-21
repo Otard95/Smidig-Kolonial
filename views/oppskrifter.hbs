@@ -1,0 +1,15 @@
+
+
+{{#> layout }}
+
+    <div>
+        <h1>This is oppskrifter</h1>
+        {{#each recipe}}
+            {{#each this}}
+                <p>{{this.title}}</p>
+                <img src="{{this.feature_image_url}}" alt="resept-bilde">
+            {{/each}}
+        {{/each}}
+    </div>
+
+{{/layout}}
