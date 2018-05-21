@@ -42,54 +42,40 @@
     <div class="calendar-container">
       <div class="date-containar">
         <div class="pointer" id="previous-pointer">&#10094;</div>
-        <div class="date">
-          <p>8.JUNI 2018</p><!--Sett in dato her-->
+        <div class="date-head">
+          <p>JUNI 2018</p><!--Sett in dato her-->
         </div>
         <div class="pointer" id="next-pointer">&#10095;</div>
-      </div>
+        </div>
+
+        <div class = "cal">
+
+          <div class="week-label">Uke</div>
+
+          <div class = "weeks">
+            {{#weeks 2018 5}}
+             <div>{{this}}</div>
+             {{/weeks}}
+          </div>
 
 
+          <div class = "weekdays">
+            <div>Man</div>
+            <div>Tir</div>
+            <div>Ons</div>
+            <div>Tor</div>
+            <div>Fre</div>
+            <div>Lør</div>
+            <div>Søn</div>
+          </div>
 
+          <div class = "date">
+            {{!-- Takes in year and month --}}
+            {{#calendar 2018 5}}
+              <div class="active">{{this}}</div>
+            {{/calendar}}
+          </div>
+        </div>
     </div>
 
-    <!--
-  <div class = "month">
-    <div id="this-year">2017</div>
-    <div class="navigator">
-      <div class = "pointer" id="previous-pointer">&#10094;</div>
-      <div id="this-date">20</div>
-      <div class = "pointer" id="next-pointer">&#10095;</div>
-    </div>
-    <div id="this-month">DESEMBER</div>
-  </div>
-
-  <div class = "cal">
-
-    <div class="week-label">Uke</div>
-
-    <div class = "weeks">
-      {{#weeks 2018 5}}
-       <div>{{this}}</div>
-       {{/weeks}}
-    </div>
-
-    <div class = "weekdays">
-      <div>Man</div>
-      <div>Tir</div>
-      <div>Ons</div>
-      <div>Tor</div>
-      <div>Fre</div>
-      <div>Lør</div>
-      <div>Søn</div>
-    </div>
-
-    <div class = "date">
-      {{!-- Takes in year and month --}}
-      {{#calendar 2018 5}}
-        <div class="active">{{this}}</div>
-      {{/calendar}}
-    </div>
-  </div>
-</div>
--->
     {{/layout}}

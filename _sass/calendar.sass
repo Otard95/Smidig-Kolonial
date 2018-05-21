@@ -132,76 +132,61 @@ hr
   margin-left: 10%
 #next-pointer
   margin-right: 10%
-.date
+
+.date-head
   margin: 0 auto
-  width: 60%
+  width: 100%
   text-align: center
   font-size: 2.5vh
 
-
-
-
-//.month
+.weekdays
+  grid-area: weekdays
   display: flex
-  flex-direction: column
-  text-align: center
-  margin: 40px 0
+  justify-content: space-around
+  color: grey
+  font-size: 2.3vh
 
-//.navigator
-  margin: 10px 0
-  width: 100%
-  display: flex
-  align-items: center
-  justify-content: center
 
-//.pointer
-  color: rgb(255, 192, 0)
-  font-size: 3.5em
-  margin: 0 1em
-
-//#this-year, #this-month
-  font-size: 2.2em
+#this-year, #this-month
+  font-size: 2.7vh
   color: $Varmgra
 
-//#this-date
-  font-size: 5.5em
+#this-date
+  font-size: 2.7vh
   color: $sort-aubergine
   padding: 1.5%
 
-//.cal
+.cal
   display: grid
   grid-template-areas: "corner weekdays" "weeks  month"
   grid-template-rows: 1fr 7fr
   grid-template-columns: 1fr 5fr
-  margin: 100px auto
+  margin: -30px auto
   width: 90%
-  height: 80%
-  font-size: 3em
+  height: 67%
+  font-size: 2.3vh
   text-align: center
 
   .week-label
     grid-area: corner
-    color: $eggeplomme
-    font-size: 2.5rem
+    color: grey
+    font-size: 2.3vh
 
   .weeks
     grid-area: weeks
-    display: flex
-    flex-direction: column
-    justify-content: space-around
-    color: $eggeplomme
-    font-size: 2.5rem
+    display: grid
+    grid: repeat(5, 1fr)/1fr
+    align-items: center
+    color: grey
+    font-size: 2.3vh
 
-  .weekdays
-    grid-area: weekdays
-    display: flex
-    justify-content: space-around
-    color: $sort-aubergine
-    font-size: 2.5rem
+
 
   .date
     grid-area: month
+    width: 100%
     display: grid
+    align-items: center
     grid-template-columns: repeat(7, 1fr)
     grid-template-rows: repeat(5, 1fr)
     color: $sort-aubergine

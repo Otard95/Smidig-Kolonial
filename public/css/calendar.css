@@ -145,8 +145,66 @@ hr {
 #next-pointer {
   margin-right: 10%; }
 
-.date {
+.date-head {
   margin: 0 auto;
-  width: 60%;
+  width: 100%;
   text-align: center;
   font-size: 2.5vh; }
+
+.weekdays {
+  grid-area: weekdays;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  color: grey;
+  font-size: 2.3vh; }
+
+#this-year, #this-month {
+  font-size: 2.7vh;
+  color: #d7d7d2; }
+
+#this-date {
+  font-size: 2.7vh;
+  color: #2d2832;
+  padding: 1.5%; }
+
+.cal {
+  display: grid;
+  grid-template-areas: "corner weekdays" "weeks  month";
+  grid-template-rows: 1fr 7fr;
+  grid-template-columns: 1fr 5fr;
+  margin: -30px auto;
+  width: 90%;
+  height: 67%;
+  font-size: 2.3vh;
+  text-align: center; }
+  .cal .week-label {
+    grid-area: corner;
+    color: grey;
+    font-size: 2.3vh; }
+  .cal .weeks {
+    grid-area: weeks;
+    display: grid;
+    grid: repeat(5, 1fr)/1fr;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    color: grey;
+    font-size: 2.3vh; }
+  .cal .date {
+    grid-area: month;
+    width: 100%;
+    display: grid;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    color: #2d2832; }
+    .cal .date div {
+      height: 2em;
+      line-height: 2em; }
+      .cal .date div.inactive {
+        color: #d7d7d2; }
