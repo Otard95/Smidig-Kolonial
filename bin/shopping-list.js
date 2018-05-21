@@ -1,5 +1,5 @@
 const db = require('./../database');
-const ShoppingListDocument = require('../models/ShoppingListDocument');
+const ShoppingListDocument = require('../models/shopping-list-document');
 const moment = require('moment');
 
 

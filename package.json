@@ -49,6 +49,7 @@
     "express-session": "^1.15.6",
     "firebase": "^5.0.2",
     "helmet": "^3.12.0",
+    "kolonial_api_wrapper": "github:Otard95/Kolonial-API-Wrapper",
     "moment": "^2.22.1",
     "morgan": "^1.9.0",
     "request": "^2.83.0",
