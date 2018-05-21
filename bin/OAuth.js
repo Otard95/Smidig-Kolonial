@@ -1,6 +1,7 @@
-const db = require('./database');
+const db            = require('./database');
 const OAuthResponse = require("../models/OAuth-response");
-const Session = require('../models/session')
+const DBResponse    = require('../models/database-response');
+const Session       = require('../models/session')
 
 class OAuth {
 
@@ -21,18 +22,54 @@ class OAuth {
 		try {
 
 			// get the user filtered by username
-			user = await db.GetDocument(`customers/{"email": "${username}"`);
+			let res = await db.GetDocument(`customers/{"email": "${username}"}`);
 
-			if (user.password == password)
-				return new OAuthResponse(OAuthResponse.status_codes.OK, user);
-			else
-				return new OAuthResponse(OAuthResponse.status_codes.INVALID_PASSWORD,
-																 null,
-																 'Provided password did not match with the one saved to theprofile');
+			if (!DBResponse.OK(res)) {
+				if (res.status == DBResponse.status_codes.MULTI_MATCH_ERROR) {
+					throw new OAuthResponse (
+						OAuthResponse.status_codes.UNEXPECTED_ERROR_NON_UNIQUE_USERNAME,
+						res,
+						'The username is not unique.'
+					);
+				}
+				else if (res.status == DBResponse.status_codes.DOCUMENT_NOT_FOUND) {
+					return new OAuthResponse (
+						OAuthResponse.status_codes.USER_NOT_FOUND,
+						res,
+						'Could not ind any user with that username/email.'
+					);
+				} else {
+					throw new OAuthResponse (
+						OAuthResponse.status_codes.DATABASE_ERROR,
+						res,
+						'Unexprected response.'
+					);
+				}
+			}
+
+			user = res.data;
+
+			if (user.data().password == password) {
+
+				return new OAuthResponse (OAuthResponse.status_codes.OK, user);
+
+			} else {
+
+				return new OAuthResponse (
+					OAuthResponse.status_codes.INVALID_PASSWORD,
+					null,
+					'Provided password did not match with the one saved to the profile'
+				);
+
+			}
 
 		} catch (err) {
 
-			throw new OAuthResponse(OAuthResponse.status_codes.DATABASE_ERROR, err, 'Failed to retrieve the document');
+			throw new OAuthResponse (
+				OAuthResponse.status_codes.DATABASE_ERROR,
+				err,
+				'The database encountered and error'
+			);
 
 		}
 
@@ -41,13 +78,17 @@ class OAuth {
 	Authenticate (username_paramerter_name, password_parameter_name) {
 
 		return (req, res, next) => {
-			this.AuthenticateUser(req.params[username_paramerter_name], req.params[password_parameter_name])
-			.then(res => {
+			this.AuthenticateUser(
+				req.params[username_paramerter_name],
+				req.params[password_parameter_name]
+			)
+			.then(Auth_res => {
 
-				req.authenticated = OAuthResponse.OK(res);
+				req.authenticated = OAuthResponse.OK(Auth_res);
 
 				if (req.authenticated) {
-					req.user = res.user;
+					req.user = Auth_res.user;
+					req.auth_err = Auth_res.err;
 					req.session.id = this.CreateSession(req.user);
 				}
 
@@ -78,9 +119,9 @@ class OAuth {
 
 			if (req.session.id) {
 				this.IsAuthorized(req.session.id)
-				.then(res => {
+				.then(Auth_res => {
 
-					req.autorized = res;
+					req.autorized = Auth_res;
 
 					next();
 
@@ -105,17 +146,23 @@ class OAuth {
 
 	CreateSession (user) {
 
-		new_session_id = this.RandomId(12);
-		while (this.sessions[new_session_id]) new_session_id = this.RandomId(12);
-
-		this.sessions.push(new Session(new_session_id, user.id, user));
+		let new_session_id = this.RandomId(32);
+		while (this.sessions[new_session_id]) new_session_id = this.RandomId(32);
+	
+		let session = new Session(
+			new_session_id,
+			user.id,
+			user,
+			Date.now() + 60 * 60 * 1000
+		);
+		this.sessions.push(session);
 		return new_session_id;
 
 	}
 
 	RandomId (num_len) {
 
-		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 		let id = ''
 		for (let i = 0; i < num_len; i++) 

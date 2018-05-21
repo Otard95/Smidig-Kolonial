@@ -1,5 +1,6 @@
 const firebase = require("firebase");
 const config = require("../configs/tokens.json");
+const DBResponse = require('../models/database-response');
 
 class Database {
 
@@ -19,14 +20,25 @@ class Database {
 
 		// make sure query is string
 		if (typeof str_query !== 'string') 
-			throw 'Database::GetDocument() --- Parameter type missmatch.';
+			throw new DBResponse(
+				DBResponse.status_codes.PARAMETER_ERROR,
+				{ "input_param": str_query },
+				'Database::GetDocument() --- Parameter type missmatch.'
+			);
 
 		// Split path into its components
 		let path = str_query.split('/');
 
 		// Any path to a document has to have a multiple of two componets
 		if (path.length % 2 != 0)
-			throw 'Database::GetDocument() --- Parameter format invalid.';
+			throw new DBResponse(
+				DBResponse.status_codes.PARAMETER_ERROR,
+				{
+					input_param: str_query,
+					query_component_count: path.length
+				},
+				'Database::GetDocument() --- Parameter format invalid.'
+			);
 
 		// temporary store for the document to be returned
 		let doc;
@@ -51,9 +63,24 @@ class Database {
 			// get the snappshot and make sure it contains exactlu one item
 			let query_snappshot = await collection_query.get();
 			if (query_snappshot.empty)
-				throw `Could not find a document matching '${JSON.stringify(filter)}' in '${collection_name}'`;
+				return new DBResponse(
+					DBResponse.status_codes.DOCUMENT_NOT_FOUND,
+					{
+						query: str_query,
+						results: 0
+					},
+					`Could not find a document matching '${JSON.stringify(filter)}' in '${collection_name}'`
+				);
+
 			if (query_snappshot.size > 1)
-				throw 'Database::GetDocument() --- Multiple matches found.';
+				return new DBResponse(
+					DBResponse.status_codes.MULTI_MATCH_ERROR,
+					{
+						query: str_query,
+						results: query_snappshot.size
+					},
+					'Database::GetDocument() --- Multiple matches found.'
+				);
 			
 			// get the single item
 			doc = query_snappshot.docs[0];
@@ -62,24 +89,39 @@ class Database {
 		}
 
 		// Return the document
-		return doc;
+		return new DBResponse(
+			DBResponse.status_codes.OK,
+			doc,
+			'Document found.'
+		);
 
 	}
 
-	async CreateDocument(str_collection_path/** example: customers/{"username": "User1"}/sub-collection/ */,
+	async CreateDocument(str_collection_path/** example: customers/{"username": "User1"}/sub-collection */,
 											 data/** Any object */)
 	{
 		
 		// make sure query is string
 		if (typeof str_collection_path !== 'string')
-			throw 'Database::GetDocument() --- Parameter type missmatch.';
+			throw new DBResponse(
+				DBResponse.status_codes.PARAMETER_ERROR,
+				{ "input_param": str_collection_path },
+				'Database::GetDocument() --- Parameter type missmatch.'
+			);
 
 		// Split path into its components
 		let path = str_collection_path.split('/');
 
-		// Any path to a collection must have a odd number of components
+		// Any path to a collection has to have a odd number of componets
 		if (path.length % 2 == 0)
-			throw 'Database::GetDocument() --- Parameter format invalid.';
+			throw new DBResponse(
+				DBResponse.status_codes.PARAMETER_ERROR,
+				{
+					input_param: str_collection_path,
+					query_component_count: path.length
+				},
+				'Database::GetDocument() --- Parameter format invalid.'
+			);
 
 		// temporary store for the collection to be returned
 		let collection = this.firestore.collection(path.shift());
@@ -101,9 +143,24 @@ class Database {
 			// get the snappshot and make sure it contains exactly one item
 			let query_snappshot = await collection_query.get();
 			if (query_snappshot.empty)
-				throw `Could not find a document matching '${JSON.stringify(filter)}' in '${collection_name}'`;
+				return new DBResponse(
+					DBResponse.status_codes.DOCUMENT_NOT_FOUND,
+					{
+						query: str_query,
+						results: 0
+					},
+					`Could not find a document matching '${JSON.stringify(filter)}' in '${collection_name}'`
+				);
+
 			if (query_snappshot.size > 1)
-				throw 'Database::GetDocument() --- Multiple matches found.';
+				return new DBResponse(
+					DBResponse.status_codes.MULTI_MATCH_ERROR,
+					{
+						query: str_query,
+						results: query_snappshot.size
+					},
+					'Database::GetDocument() --- Multiple matches found.'
+				);
 
 			// get the sub collection from the single document
 			collection = query_snappshot.docs[0].ref.collection(collection_name);
@@ -112,7 +169,13 @@ class Database {
 		}
 
 		// Return the document
-		return await collection.add(data);
+		let new_doc = await collection.add(data);
+
+		return new DBResponse (
+			DBResponse.status_codes.OK,
+			new_doc,
+			'Document added.'
+		);
 
 	}
 

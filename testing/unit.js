@@ -1,19 +1,36 @@
+const color = require('colors');
+
+function WaitForSeconds(num_sec) {
+
+	return () => {
+		console.log('\t        |');
+		console.log(`\t Waiting ${num_sec} seconds`);
+		console.log('\t        |');
+
+		return new Promise(resolve => setTimeout(resolve, num_sec * 1000));
+	}
+
+}
 
 async function RunTest(_test) {
 
-	console.log(`${RunTest.indent || ''}${_test.name} -- ${_test.description || 'Missing description'}`);
+	console.log(
+		`${_test.pre_line ? '\n' : ''}${RunTest.indent || ''}${_test.name} -- ${_test.description || 'Missing description'}`
+	);
 
 	try {
 
 		await _test();
 
-		console.log(`${RunTest.indent || ''}${_test.name} -- Passed`.green);
+		console.log(
+			`${RunTest.indent || ''}${_test.name} -- Passed${_test.post_line ? '\n' : ''}`.green
+		);
 		return true;
 
 	} catch (err) {
 
-		console.log(`${RunTest.indent || ''}${_test.name} -- Error: \n${RunTest.indent || ''}${err}`.yellow);
-		console.log(`${RunTest.indent || ''}${_test.name} -- Failed`.red);
+		console.log(`${RunTest.indent || ''}${_test.name} -- Error: \n${RunTest.indent || ''}${JSON.stringify(err)}\n${err.stack}`.yellow);
+		console.log(`${RunTest.indent || ''}${_test.name} -- Failed${_test.post_line ? '\n' : ''}`.red);
 		return false;
 
 	}
@@ -30,7 +47,7 @@ function test () {
 			
 			if (typeof args[i] != 'function') continue;
 
-			RunTest(args[i]);
+			await RunTest(args[i]);
 
 		}
 
@@ -44,7 +61,11 @@ function series () {
 
 	let args = arguments;
 
-	let series = async () => {
+	let SERIES = async () => {
+
+		// Formating outout
+		console.log(' ');
+		RunTest.indent ? RunTest.indent += '\t' : RunTest.indent = '\t';
 
 		for (let i = 0; i < args.length; i++) {
 
@@ -55,10 +76,16 @@ function series () {
 
 		}
 
-	};
-	series.description = `${args.length} test to run in series`;
+		// Formating outout
+		console.log(' ');
+		RunTest.indent = RunTest.indent.substring(1);	
 
-	return series;
+	};
+	SERIES.description = `${args.length} test to run in series`;
+	SERIES.pre_line = true;
+	SERIES.post_line = true;
+
+	return SERIES;
 
 }
 
@@ -66,8 +93,12 @@ function parallel() {
 
 	let args = arguments;
 
-	let parallel = async () => {
-
+	let PARALLEL = async () => {
+		
+		// Formating outout
+		console.log(' ');
+		RunTest.indent ? RunTest.indent += '\t' : RunTest.indent = '\t';
+		
 		let tests = [];
 
 		for (let i = 0; i < args.length; i++) {
@@ -80,11 +111,17 @@ function parallel() {
 
 		await Promise.all(tests);
 
-	};
-	parallel.description = `${args.length} test to run in parallel`;
+		// Formating outout
+		console.log(' ');
+		RunTest.indent = RunTest.indent.substring(1);
 
-	return parallel;
+	};
+	PARALLEL.description = `${args.length} test to run in parallel`;
+	PARALLEL.pre_line = true;
+	PARALLEL.post_line = true;
+
+	return PARALLEL;
 
 }
 
-module.exports = { test, series, parallel };
+module.exports = { test, series, parallel, WaitForSeconds };
