@@ -15,13 +15,25 @@
     "web",
     "store"
   ],
-  "author": { "name": "Otard95" },
+  "author": {
+    "name": "Otard95"
+  },
   "contributors": [
-    { "name": "WesterOne" },
-    { "name": "LindaHBN" },
-    { "name": "rikke59" },
-    { "name": "synend16" },
-    { "name": "sunnivagjervik" }
+    {
+      "name": "WesterOne"
+    },
+    {
+      "name": "LindaHBN"
+    },
+    {
+      "name": "rikke59"
+    },
+    {
+      "name": "synend16"
+    },
+    {
+      "name": "sunnivagjervik"
+    }
   ],
   "license": "MIT",
   "bugs": {
@@ -37,6 +49,7 @@
     "express-session": "^1.15.6",
     "firebase": "^5.0.2",
     "helmet": "^3.12.0",
+    "kolonial_api_wrapper": "github:Otard95/Kolonial-API-Wrapper",
     "morgan": "^1.9.0",
     "request": "^2.83.0",
     "serve-favicon": "^2.4.5"
