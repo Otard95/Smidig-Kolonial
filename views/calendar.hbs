@@ -43,7 +43,7 @@
       <div class="date-containar">
         <div class="pointer" id="previous-pointer">&#10094;</div>
         <div class="date-head">
-          <p>JUNI 2018</p><!--Sett in dato her-->
+          <p>{{#month_name month}}{{this}}{{/month_name}} 2018</p><!--Sett in dato her-->
         </div>
         <div class="pointer" id="next-pointer">&#10095;</div>
         </div>
@@ -53,7 +53,7 @@
           <div class="week-label">Uke</div>
 
           <div class = "weeks">
-            {{#weeks 2018 5}}
+            {{#weeks 2018 month}}
              <div>{{this}}</div>
              {{/weeks}}
           </div>
@@ -71,7 +71,7 @@
 
           <div class = "date">
             {{!-- Takes in year and month --}}
-            {{#calendar 2018 5}}
+            {{#calendar 2018 month}}
               <div class="active">{{this}}</div>
             {{/calendar}}
           </div>

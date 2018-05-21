@@ -17,6 +17,47 @@ function times(n, block) {
   return out;
 }
 
+function month_name(number, hbs_block) {
+  switch (number) {
+    case 1:
+      return hbs_block.fn('Januar');
+      break;
+    case 2:
+      return hbs_block.fn('Februar');
+      break;
+    case 3:
+      return hbs_block.fn('Mars');
+      break;
+    case 4:
+      return hbs_block.fn('April');
+      break;
+    case 5:
+      return hbs_block.fn('Mai');
+      break;
+    case 6:
+      return hbs_block.fn('Juni');
+      break;
+    case 7:
+      return hbs_block.fn('Juli');
+      break;
+    case 8:
+      return hbs_block.fn('August');
+      break;
+    case 9:
+      return hbs_block.fn('September');
+      break;
+    case 10:
+      return hbs_block.fn('Oktober');
+      break;
+    case 11:
+      return hbs_block.fn('November');
+      break;
+    case 12:
+      return hbs_block.fn('December');
+      break;
+  }
+}
+
 // Prinits out weeks for a month (5 weeks)
 // {{#weeks 2018 5}}
 function weeks(year, month, hbs_block) {
@@ -132,5 +173,6 @@ module.exports = {
   weeks,
   section,
   progress,
-  selector_group
+  selector_group,
+  month_name
 };
