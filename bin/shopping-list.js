@@ -22,7 +22,7 @@ class ShoppingList {
     async createShoppingList(userId, name, date, users){
         let listObj = new ShoppingListDocument(name, date);
 
-        const docRef = db.CreateDocument("shoppingLists", listObj);
+        const docRef = await db.CreateDocument("shoppingLists", listObj);
 
         let userObj = {
             shoppingListId : docRef,
@@ -32,11 +32,13 @@ class ShoppingList {
         if (users.length() > 0) {
             userObj.sharedWith = users;
             users.forEach( (user) => {
-                db.CreateDocument(`customers/${user}/sharedShoppingLists`,
+                await db.CreateDocument(`customers/${user}/sharedShoppingLists`,
                     {shoppingListID : docRef, owner : userId});
             })
         }
 
-        db.CreateDocument(`customers/${docRef}/shoppingLists`, userObj);
+        await db.CreateDocument(`customers/${docRef}/shoppingLists`, userObj);
     }
 }
+
+module.exports = new ShoppingList();
