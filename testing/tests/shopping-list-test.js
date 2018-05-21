@@ -8,12 +8,12 @@ const DBRes        = require('../../models/database-response');
  * ## Test data
 */
 
-const user_id = 's0m3Tes7U5er';
+const user_id = 'cEx6uZdHs5K7KfUfz6cT';
 const list_name = 'Some shopping list';
 const date = Date.now();
 
 /**
- * ## Unit Tests
+ * ## Tests
 */
 
 // -------------
@@ -26,9 +26,15 @@ async function TestCreateShoppingListNotShared () {
 
 	assert(DBRes.OK(res));
 
-	res = await db.GetDocument(`customers/${user_id}`);
-
+	res = await db.GetDocument(`customers/${user_id}/shoppingLists/{"shoppingListId": "${res.data.id}"}`);
+	
 	assert(DBRes.OK(res));
 
 }
 TestCreateShoppingListNotShared.description = 'Test ShoppingList::CreateShoppingList(); The list is not shared.';
+
+/**
+ * ## Unit Test
+*/
+
+module.exports = unit.test(TestCreateShoppingListNotShared)
