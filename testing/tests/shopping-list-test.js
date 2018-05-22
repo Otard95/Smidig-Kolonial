@@ -22,11 +22,12 @@ async function TestCreateShoppingListNotShared () {
 
 	await shoping_list.createShoppingList(user_id, list_name, date);
 
-	let res = await db.GetDocument(`shoppingLists/{"name": "${list_name}"}`);
+	let res = await db.Get(`shoppingLists/{"name": "${list_name}"}`);
 
 	assert(DBRes.OK(res));
+	assert(res.data.length == 1, 'Multiple matches.');
 
-	res = await db.GetDocument(`customers/${user_id}/shoppingLists/{"shoppingListId": "${res.data.id}"}`);
+	res = await db.Get(`customers/${user_id}/shoppingLists/{"shoppingListId": "${res.data[0].id}"}`);
 	
 	assert(DBRes.OK(res));
 

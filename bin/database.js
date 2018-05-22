@@ -16,14 +16,14 @@ class Database {
 		return Database._instance;
 	}
 
-	async GetDocument(str_query/** example: customers/{"username": "User1"}/sub-collection/{"some": "filter"} */) {
+	async Get(str_query/** example: customers/{"username": "User1"}/sub-collection/{"some": "filter"} */) {
 
 		// make sure query is string
 		if (typeof str_query !== 'string') 
 			throw new DBResponse(
 				DBResponse.status_codes.PARAMETER_ERROR,
 				{ "input_param": str_query },
-				'Database::GetDocument() --- Parameter type missmatch.'
+				'Database::Get() --- Parameter type missmatch.'
 			);
 
 		// Split path into its components
@@ -37,14 +37,15 @@ class Database {
 					input_param: str_query,
 					query_component_count: path.length
 				},
-				'Database::GetDocument() --- Parameter format invalid.'
+				'Database::Get() --- Parameter format invalid.'
 			);
 
 		// temporary store for the document to be returned
-		let doc;
+		let docs;
 
 		// As long as there is more of the path to traverse
 		while (path.length > 0) {
+
 			// isolate and remove the (sub-)collection and document filter form the path componets
 			let collection_name = path.shift();
 			let filter = path.shift();
@@ -57,9 +58,9 @@ class Database {
 
 			if (typeof filter == 'string') {
 
-				doc = doc ? await doc.ref.collection(collection_name).doc(filter).get() : await this.firestore.collection(collection_name).doc(filter).get();
+				docs = docs ? await docs.ref.collection(collection_name).doc(filter).get() : await this.firestore.collection(collection_name).doc(filter).get();
 
-				if (!doc.exists) {
+				if (!docs.exists) {
 					return new DBResponse(
 						DBResponse.status_codes.DOCUMENT_NOT_FOUND,
 						{
@@ -74,7 +75,7 @@ class Database {
 
 				// if no document was previously found get the collection from firebase
 				// if a document is pressent get the sub-collection
-				let collection_query = doc ? doc.ref.collection(collection_name) : this.firestore.collection(collection_name);
+				let collection_query = docs ? docs.ref.collection(collection_name) : this.firestore.collection(collection_name);
 
 				// filter the out documents in the collection that does not have the key-value pair of the porvided filter
 				for (var key in filter) {
@@ -95,34 +96,45 @@ class Database {
 						`Could not find a document matching '${JSON.stringify(filter)}' in '${collection_name}'`
 					);
 
-				if (query_snappshot.size > 1)
+				// get the single item
+				docs = query_snappshot.docs;
+
+			}
+
+			if (Array.isArray(docs) && path.length > 0) {
+				if (docs.length > 1) {
 					return new DBResponse(
 						DBResponse.status_codes.MULTI_MATCH_ERROR,
 						{
 							query: str_query,
-							results: query_snappshot.size
+							in_collection: collection_name,
+							doc_filter: filter,
+							remaining_path: path
 						},
-						'Database::GetDocument() --- Multiple matches found.'
-					);
-
-				// get the single item
-				doc = query_snappshot.docs[0];
-
+						'The path to the document branches off.'
+					)
+				}
+						
+				docs = docs[0];
 			}
 
 			// repeat til path is traversed
 		}
 
+		if (!Array.isArray(docs)) {
+			docs = [docs];
+		}
+
 		// Return the document
 		return new DBResponse(
 			DBResponse.status_codes.OK,
-			doc,
+			docs,
 			'Document found.'
 		);
 
 	}
 
-	async CreateDocument(str_collection_path/** example: customers/{"username": "User1"}/sub-collection */,
+	async Create(str_collection_path/** example: customers/{"username": "User1"}/sub-collection */,
 											 data/** Any object */)
 	{
 		
@@ -131,7 +143,7 @@ class Database {
 			throw new DBResponse(
 				DBResponse.status_codes.PARAMETER_ERROR,
 				{ "input_param": str_collection_path },
-				'Database::GetDocument() --- Parameter type missmatch.'
+				'Database::Get() --- Parameter type missmatch.'
 			);
 
 		// Split path into its components
@@ -145,7 +157,7 @@ class Database {
 					input_param: str_collection_path,
 					query_component_count: path.length
 				},
-				'Database::GetDocument() --- Parameter format invalid.'
+				'Database::Get() --- Parameter format invalid.'
 			);
 
 		// temporary store for the collection to be returned
@@ -195,7 +207,7 @@ class Database {
 							query: str_query,
 							results: query_snappshot.size
 						},
-						'Database::GetDocument() --- Multiple matches found.'
+						'Database::Get() --- Multiple matches found.'
 					);
 
 				// get the sub collection from the single document
@@ -217,10 +229,20 @@ class Database {
 
 	}
 
-
-	//TODO lage en metode for å hente en hel collection
-
 	//TODO metode for å oppdatere et eksisterende dokuemnt
+	async Update (str_path /* path to document */, update_doc) {
+
+		let res = await this.Get(str_path);
+
+		if (!DBResponse.OK(res)) {
+			return res;
+		}
+
+		await res.data[0].ref.set(update_doc, { merge: true });
+		// TODO: The set methud woth resolve if it can't connect to firebase.
+		// 			 Handle the edgae case where that happens.
+
+	}
 
 }
 

@@ -22,7 +22,7 @@ class OAuth {
 		try {
 
 			// get the user filtered by username
-			let res = await db.GetDocument(`customers/{"email": "${username}"}`);
+			let res = await db.Get(`customers/{"email": "${username}"}`);
 
 			if (!DBResponse.OK(res)) {
 				if (res.status == DBResponse.status_codes.MULTI_MATCH_ERROR) {
@@ -45,9 +45,15 @@ class OAuth {
 						'Unexprected response.'
 					);
 				}
+			} else if (res.data.length > 1) {
+				throw new OAuthResponse(
+					OAuthResponse.status_codes.UNEXPECTED_ERROR_NON_UNIQUE_USERNAME,
+					res,
+					'The username is not unique.'
+				);
 			}
 
-			user = res.data;
+			user = res.data[0];
 
 			if (user.data().password == password) {
 

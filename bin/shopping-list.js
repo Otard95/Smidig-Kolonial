@@ -27,25 +27,27 @@ class ShoppingList {
             date: listObj.date
         }
 
-        let DBres = await db.CreateDocument("shoppingLists", listObj);
+        let DBres = await db.Create("shoppingLists", listObj);
+
+        if (!DBResponse.OK(DBres)) {
+            // error
+        }
 
         //TODO kaste feilmedling om det ikke går
-        if (DBResponse.OK(DBres)) {
-            let userObj = {
-                shoppingListId: DBres.data.id,
-                sharedWith: []
-            };
+        let userObj = {
+            shoppingListId: DBres.data.id,
+            sharedWith: []
+        };
 
-            if (users && users.length() > 0) {
-                userObj.sharedWith = users;
-                users.forEach((user) => {
-                    db.CreateDocument(`customers/${user}/sharedShoppingLists`,
-                        { shoppingListID: DBres.data.id, owner: userId });
-                })
-            }
-
-            await db.CreateDocument(`customers/${userId}/shoppingLists`, userObj);
+        if (users && users.length() > 0) {
+            userObj.sharedWith = users;
+            users.forEach((user) => {
+                db.Create(`customers/${user}/sharedShoppingLists`,
+                    { shoppingListID: DBres.data.id, owner: userId });
+            })
         }
+
+        await db.Create(`customers/${userId}/shoppingLists`, userObj);
 
     }
 
@@ -53,7 +55,7 @@ class ShoppingList {
         //product : kolonialId, amount, groupId
         //TODO returnere respons dersom liste ikke finnes
         if (listId && product) {
-            return await db.CreateDocument(`shoppingLists/${listId}/products`, product);
+            return await db.Create(`shoppingLists/${listId}/products`, product);
         }
     }
 

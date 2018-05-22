@@ -142,8 +142,7 @@ TestAuthenticateMiddleware.description = 'Test the OAuth::Authenticate() functio
 let test_authenticate = unit.series(
 	TestAuthenticateFunction,
 	TestAuthenticateFunctionPassErr,
-	TestAuthenticateFunctionUsernameErr,
-	TestAuthenticateMiddleware
+	TestAuthenticateFunctionUsernameErr
 );
 
 let main = unit.series(TestAuthResponse, test_authenticate);
