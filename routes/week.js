@@ -12,6 +12,7 @@ router.get('/:mon-:day', function (req, res, next) {
 
   // Required  to pass month down to render
   let month = new Date(2018, mon, day).getMonth()
+  let months = ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember']
 
   function getWeekNumber(month, day) {
     date = new Date(Date.UTC(2018, month, day));
@@ -27,7 +28,7 @@ router.get('/:mon-:day', function (req, res, next) {
     while (arr.length < 7) {
       let date = new Date(year, month, daynum)
       // Difference checks if first days in week is negative (in to last month)
-      let differance = day + (day == 0 ? -6 : arr.length + 1)
+      let differance = date.getDate() - day + (day == 0 ? -6 : arr.length + 1)
       // If diff is < 1, starts from month before
       if (differance < 1) {
         arr.push(new Date(year, month - 1, differance).getDate())
@@ -45,7 +46,7 @@ router.get('/:mon-:day', function (req, res, next) {
   let daysnum = getNumbersInWeek(2018, mon, day)
 
   res.render('week', {
-    title: 'Uke',
+    title: `Calendar: ${day} ${months[month]}`,
     month,
     uke,
     daysstring: ['Man', 'Tis', 'Ons', 'Tor', 'Fre', 'Lor', 'Son'],
