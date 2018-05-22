@@ -95,35 +95,35 @@
             transform: translateY(-16.5px) rotate(-45deg); }
 
 hr {
-  width: 70%; }
+  width: 100%; }
 
 .calendar-title {
   text-align: center;
-  font-size: 2.2em;
-  color: #ffc000;
+  font-size: 2.7em;
+  color: black;
   margin-top: 7%;
-  font-weight: 600; }
+  font-weight: 100;
+  margin-bottom: -2%; }
 
 .calendar-text {
   width: 100%;
   text-align: center;
-  font-size: 2vh;
-  margin-top: 17%;
-  font-weight: bold; }
+  font-size: 2.8vh;
+  margin-top: 11%; }
 
-.month {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  text-align: center;
-  margin: 40px 0; }
+#text2 {
+  margin-top: -5%; }
 
-.navigator {
-  margin: 10px 0;
+.calendar-container {
+  margin: 5%;
+  width: 90%;
+  height: 52%;
+  background-color: #f0f0f0;
+  position: absolute;
+  border-radius: 20px; }
+
+.date-containar {
+  margin: 5% 0;
   width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -136,16 +136,37 @@ hr {
           justify-content: center; }
 
 .pointer {
-  color: #ffc000;
-  font-size: 3.5em;
-  margin: 0 1em; }
+  margin: 0 auto;
+  font-size: 2.9vh; }
+
+#previous-pointer {
+  margin-left: 10%; }
+
+#next-pointer {
+  margin-right: 10%; }
+
+.date-head {
+  margin: 0 auto;
+  width: 100%;
+  text-align: center;
+  font-size: 2.5vh; }
+
+.weekdays {
+  grid-area: weekdays;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  color: grey;
+  font-size: 2.3vh; }
 
 #this-year, #this-month {
-  font-size: 2.2em;
+  font-size: 2.7vh;
   color: #d7d7d2; }
 
 #this-date {
-  font-size: 5.5em;
+  font-size: 2.7vh;
   color: #2d2832;
   padding: 1.5%; }
 
@@ -154,40 +175,31 @@ hr {
   grid-template-areas: "corner weekdays" "weeks  month";
   grid-template-rows: 1fr 7fr;
   grid-template-columns: 1fr 5fr;
-  margin: 100px auto;
+  margin: -30px auto;
   width: 90%;
-  height: 80%;
-  font-size: 3em;
+  height: 67%;
+  font-size: 2.3vh;
   text-align: center; }
   .cal .week-label {
     grid-area: corner;
-    color: #ffa51e;
-    font-size: 2.5rem; }
+    color: grey;
+    font-size: 2.3vh; }
   .cal .weeks {
     grid-area: weeks;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-    -ms-flex-pack: distribute;
-        justify-content: space-around;
-    color: #ffa51e;
-    font-size: 2.5rem; }
-  .cal .weekdays {
-    grid-area: weekdays;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-pack: distribute;
-        justify-content: space-around;
-    color: #2d2832;
-    font-size: 2.5rem; }
+    display: grid;
+    grid: repeat(5, 1fr)/1fr;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    color: grey;
+    font-size: 2.3vh; }
   .cal .date {
     grid-area: month;
+    width: 100%;
     display: grid;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: repeat(5, 1fr);
     color: #2d2832; }

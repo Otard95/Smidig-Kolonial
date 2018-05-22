@@ -1,82 +1,82 @@
+
 {{#section 'head'}}
   <link rel="stylesheet" href="/css/calendar.css">
-  <script src="js/calendar.js"></script>
+  <script src="/js/calendar.js"></script>
 {{/section}}
 
 {{#> layout }}
 
-<div class="shadow"></div>
-<div class="side-overlay">
-  <div class="shoppinglist-box">
-    <div class="list-info">
-      <div class="list-date">22.12.17</div>
-      <div class="list-name">Julie 5 år!</div>
-      <div class="list-cost">240kr</div>
-    </div>
-    <div class="image-container">
-      <img src="imgs/kid.jpg" alt="Søt unge">
-    </div>
-  </div>
-</div>
-
-<div class="burger">
-  <div></div>
-  <div></div>
-  <div></div>
-</div>
-
-<div class="container">
-  <div class="calendar-title">
-    <p id="title">Planleggeren</p>
-  </div>
-
-  <div class="calendar-text">
-    <p id="text">Velg en dag eller uke å planlegge handelen på</p>
-    <div id="grey-divne"></div>
-  </div>
-
-  <hr>
-
-  <div class = "month">
-    <div id="this-year">2017</div>
-    <div class="navigator">
-      <div class = "pointer" id="previous-pointer">&#10094;</div>
-      <div id="this-date">20</div>
-      <div class = "pointer" id="next-pointer">&#10095;</div>
-    </div>
-    <div id="this-month">DESEMBER</div>
-  </div>
-
-  <div class = "cal">
-
-    <div class="week-label">Uke</div>
-
-    <div class = "weeks">
-      <div>48</div>
-      <div>49</div>
-      <div>50</div>
-      <div>51</div>
-      <div>52</div>
-    </div>
-
-    <div class = "weekdays">
-      <div>Man</div>
-      <div>Tir</div>
-      <div>Ons</div>
-      <div>Tor</div>
-      <div>Fre</div>
-      <div>Lør</div>
-      <div>Søn</div>
-    </div>
-
-    <div class = "date">
-      {{#_for 27 31 1}}
-        <div class="inactive">{{this}}</div>
-      {{/_for}}
-      {{#_for 1 32 1}}
-        <div class="active">{{this}}</div>
-      {{/_for}}
+  <div class="shadow"></div>
+  <div class="side-overlay">
+    <div class="shoppinglist-box">
+      <div class="list-info">
+        <div class="list-date">22.12.17</div>
+        <div class="list-name">Julie 5 år!</div>
+        <div class="list-cost">240kr</div>
+      </div>
+      <div class="image-container">
+        <img src="/imgs/kid.jpg" alt="Søt unge">
+      </div>
     </div>
   </div>
-</div>
-{{/layout}}
+
+  <div class="burger">
+    <!--legg inn ikon-->
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <div class="container">
+    <div class="calendar-title">
+      <p id="title">Planleggeren</p>
+    </div>
+
+    <hr>
+
+
+    <div class="calendar-text">
+      <p class="text" id="text1">Velg en dag å planlegge</p>
+      <p class="text" id="text2">handelen på!</p>
+    </div>
+
+    <div class="calendar-container">
+      <div class="date-containar">
+        <div class="pointer" id="previous-pointer" data-month={{month}}>&#10094;</div>
+        <div class="date-head">
+          <p>{{#month_name month}}{{this}}{{/month_name}} 2018</p><!--Sett in dato her-->
+        </div>
+        <div class="pointer" id="next-pointer" data-month={{month}}>&#10095;</div>
+        </div>
+
+        <div class = "cal">
+
+          <div class="week-label">Uke</div>
+
+          <div class = "weeks">
+            {{#weeks 2018 month}}
+             <div>{{this}}</div>
+             {{/weeks}}
+          </div>
+
+
+          <div class = "weekdays">
+            <div>Man</div>
+            <div>Tir</div>
+            <div>Ons</div>
+            <div>Tor</div>
+            <div>Fre</div>
+            <div>Lør</div>
+            <div>Søn</div>
+          </div>
+
+          <div class = "date">
+            {{!-- Takes in year and month --}}
+            {{#calendar 2018 month}}
+              <div data-month={{../month}} data-day="{{this}}" class="active calendar-btn">{{this}}</div>
+            {{/calendar}}
+          </div>
+        </div>
+    </div>
+
+    {{/layout}}

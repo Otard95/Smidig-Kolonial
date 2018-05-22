@@ -17,9 +17,9 @@ const helmet       = require('helmet');
 // import routes
 const index = require('./routes/index');
 const user = require('./routes/user');
-const week = require('./routes/week.js');
 const calender = require('./routes/calender.js');
 const checkout = require('./routes/checkout.js');
+const oppskrifter = require('./routes/oppskrifter.js')
 
 // HBS helpers
 const helpers = require('./helpers/helpers');
@@ -60,9 +60,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 // set routes
 app.use('/', index);
 app.use('/user', user);
-app.use('/uke', week);
 app.use('/kalender', calender);
 app.use('/betaling', checkout);
+app.use('/oppskrifter', oppskrifter);
 
 /*
  *  ## Error handling
