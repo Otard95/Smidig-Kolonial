@@ -1,13 +1,14 @@
-const db = require('./database');
+const db            = require('./database');
 const OAuthResponse = require("../models/OAuth-response");
-const Session = require('../models/session')
+const DBResponse    = require('../models/database-response');
+const Session       = require('../models/session')
 
 class OAuth {
 
 	constructor () {
 		if (!OAuth._instance) {
 
-			this.sessions = [];
+			this.sessions = {};
 
 		}
 
@@ -16,23 +17,75 @@ class OAuth {
 	}
 
 	async AuthenticateUser (username, password) {
+
+		if ((!username || !password) &&
+				(typeof username !== 'string' || typeof password !== 'string'))
+		{
+			throw new OAuthResponse(
+				OAuthResponse.status_codes.INVALID_PARAMETER,
+				{ username_param: username, pass_param: password },
+				'The parameter(s) passed are/is invalid.'
+			)
+		}
 		
 		let user;
 		try {
 
 			// get the user filtered by username
-			user = await db.GetDocument(`customers/{"email": "${username}"`);
+			let res = await db.Get(`customers/{"email": "${username}"}`);
 
-			if (user.password == password)
-				return new OAuthResponse(OAuthResponse.status_codes.OK, user);
-			else
-				return new OAuthResponse(OAuthResponse.status_codes.INVALID_PASSWORD,
-																 null,
-																 'Provided password did not match with the one saved to theprofile');
+			if (!DBResponse.OK(res)) {
+				if (res.status == DBResponse.status_codes.MULTI_MATCH_ERROR) {
+					throw new OAuthResponse (
+						OAuthResponse.status_codes.UNEXPECTED_ERROR_NON_UNIQUE_USERNAME,
+						res,
+						'The username is not unique.'
+					);
+				}
+				else if (res.status == DBResponse.status_codes.DOCUMENT_NOT_FOUND) {
+					return new OAuthResponse (
+						OAuthResponse.status_codes.USER_NOT_FOUND,
+						res,
+						'Could not ind any user with that username/email.'
+					);
+				} else {
+					throw new OAuthResponse (
+						OAuthResponse.status_codes.DATABASE_ERROR,
+						res,
+						'Unexprected response.'
+					);
+				}
+			} else if (res.data.length > 1) {
+				throw new OAuthResponse(
+					OAuthResponse.status_codes.UNEXPECTED_ERROR_NON_UNIQUE_USERNAME,
+					res,
+					'The username is not unique.'
+				);
+			}
+
+			user = res.data[0];
+
+			if (user.data().password == password) {
+
+				return new OAuthResponse (OAuthResponse.status_codes.OK, user,'');
+
+			} else {
+
+				return new OAuthResponse (
+					OAuthResponse.status_codes.INVALID_PASSWORD,
+					null,
+					'Provided password did not match with the one saved to the profile'
+				);
+
+			}
 
 		} catch (err) {
 
-			throw new OAuthResponse(OAuthResponse.status_codes.DATABASE_ERROR, err, 'Failed to retrieve the document');
+			throw new OAuthResponse (
+				OAuthResponse.status_codes.DATABASE_ERROR,
+				err,
+				'The database encountered and error'
+			);
 
 		}
 
@@ -41,14 +94,19 @@ class OAuth {
 	Authenticate (username_paramerter_name, password_parameter_name) {
 
 		return (req, res, next) => {
-			this.AuthenticateUser(req.params[username_paramerter_name], req.params[password_parameter_name])
-			.then(res => {
+			this.AuthenticateUser(
+				req.body[username_paramerter_name || 'username'],
+				req.body[password_parameter_name || 'password']
+			)
+			.then(Auth_res => {
 
-				req.authenticated = OAuthResponse.OK(res);
+				req.authenticated = OAuthResponse.OK(Auth_res);
+
+				req.user = Auth_res.user;
+				req.auth_err = Auth_res.err;
 
 				if (req.authenticated) {
-					req.user = res.user;
-					req.session.id = this.CreateSession(req.user);
+					this.CreateSession(req.session.id, req.user);
 				}
 
 				next();
@@ -56,7 +114,8 @@ class OAuth {
 			})
 			.catch(err => {
 
-				next(err);
+				res.status(500);
+				next({status: 500, OAuthErr: err});
 
 			});
 		}
@@ -72,16 +131,21 @@ class OAuth {
 
 	}
 
-	Authorized () {
+	Authorized (unauthorized_redirect = undefined) {
 
 		return (req, res, next) => {
 
 			if (req.session.id) {
 				this.IsAuthorized(req.session.id)
-				.then(res => {
+				.then(Auth_res => {
 
-					req.autorized = res;
-
+					req.autorized = Auth_res;
+					if (Auth_res &&
+							unauthorized_redirect &&
+							typeof unauthorized_redirect === 'string')
+					{
+						res.redirect(unauthorized_redirect);
+					}
 					next();
 
 				})
@@ -95,6 +159,8 @@ class OAuth {
 			} else {
 
 				req.autorized = false;
+				if (unauthorized_redirect && typeof unauthorized_redirect === 'string')
+					res.redirect(unauthorized_redirect);
 				next();
 
 			}
@@ -103,25 +169,15 @@ class OAuth {
 
 	}
 
-	CreateSession (user) {
+	CreateSession (session_id, user) {
 
-		new_session_id = this.RandomId(12);
-		while (this.sessions[new_session_id]) new_session_id = this.RandomId(12);
-
-		this.sessions.push(new Session(new_session_id, user.id, user));
-		return new_session_id;
-
-	}
-
-	RandomId (num_len) {
-
-		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-		let id = ''
-		for (let i = 0; i < num_len; i++) 
-			id += possible.charAt(Math.floor(Math.random() * possible.length));
-
-		return id;
+		let session = new Session(
+			session_id,
+			user.id,
+			user,
+			Date.now() + 60 * 60 * 1000
+		);
+		this.sessions[session_id] = session;
 
 	}
 

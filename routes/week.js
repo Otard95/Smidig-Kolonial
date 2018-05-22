@@ -1,11 +1,8 @@
-/*jshint esversion: 6 */
-/*jshint node: true */
 
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 
 /* GET home page. */
-router.get('/:mon-:day', function (req, res, next) {
+router.get('/:mon-:day', (req, res, next) => {
 
   let mon = req.params.mon
   let day = req.params.day

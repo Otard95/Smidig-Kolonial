@@ -1,9 +1,6 @@
-/*jshint esversion: 6 */
-/*jshint node: true */
 
-const express = require('express');
+const router = require('express').Router();
 const week = require('./week.js');
-const router = express.Router();
 
 /* GET home page. */
 router

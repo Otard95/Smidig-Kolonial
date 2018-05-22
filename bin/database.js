@@ -1,5 +1,6 @@
 const firebase = require("firebase");
 const config = require("../configs/tokens.json");
+const DBResponse = require('../models/database-response');
 
 class Database {
 
@@ -15,71 +16,149 @@ class Database {
 		return Database._instance;
 	}
 
-	async GetDocument(str_query/** example: customers/{"username": "User1"}/sub-collection/{"some": "filter"} */) {
+	async Get(str_query/** example: customers/{"username": "User1"}/sub-collection/{"some": "filter"} */) {
 
 		// make sure query is string
 		if (typeof str_query !== 'string') 
-			throw 'Database::GetDocument() --- Parameter type missmatch.';
+			throw new DBResponse(
+				DBResponse.status_codes.PARAMETER_ERROR,
+				{ "input_param": str_query },
+				'Database::Get() --- Parameter type missmatch.'
+			);
 
 		// Split path into its components
 		let path = str_query.split('/');
 
 		// Any path to a document has to have a multiple of two componets
 		if (path.length % 2 != 0)
-			throw 'Database::GetDocument() --- Parameter format invalid.';
+			throw new DBResponse(
+				DBResponse.status_codes.PARAMETER_ERROR,
+				{
+					input_param: str_query,
+					query_component_count: path.length
+				},
+				'Database::Get() --- Parameter format invalid.'
+			);
 
 		// temporary store for the document to be returned
-		let doc;
+		let docs;
 
 		// As long as there is more of the path to traverse
 		while (path.length > 0) {
+
 			// isolate and remove the (sub-)collection and document filter form the path componets
 			let collection_name = path.shift();
-			let filter = JSON.parse(path.shift());
+			let filter = path.shift();
+			try {
+				let temp = JSON.parse(filter);
+				filter = temp;
+			} catch (err) {
 
-			// if no document was previously found get the collection from firebase
-			// if a document is pressent get the sub-collection
-			let collection_query = doc ? doc.ref.collection(collection_name) : this.firestore.collection(collection_name);
-
-			// filter the out documents in the collection that does not have the key-value pair of the porvided filter
-			for (var key in filter) {
-				if (filter.hasOwnProperty(key)) {
-					collection_query = collection_query.where(key, '==', filter[key]);
-				}
 			}
 
-			// get the snappshot and make sure it contains exactlu one item
-			let query_snappshot = await collection_query.get();
-			if (query_snappshot.empty)
-				throw `Could not find a document matching '${JSON.stringify(filter)}' in '${collection_name}'`;
-			if (query_snappshot.size > 1)
-				throw 'Database::GetDocument() --- Multiple matches found.';
-			
-			// get the single item
-			doc = query_snappshot.docs[0];
+			if (typeof filter == 'string') {
+
+				docs = docs ? await docs.ref.collection(collection_name).doc(filter).get() : await this.firestore.collection(collection_name).doc(filter).get();
+
+				if (!docs.exists) {
+					return new DBResponse(
+						DBResponse.status_codes.DOCUMENT_NOT_FOUND,
+						{
+							query: str_query,
+							results: 0
+						},
+						`Could not find a document matching '${JSON.stringify(filter)}' in '${collection_name}'`
+					);
+				}
+
+			} else {
+
+				// if no document was previously found get the collection from firebase
+				// if a document is pressent get the sub-collection
+				let collection_query = docs ? docs.ref.collection(collection_name) : this.firestore.collection(collection_name);
+
+				// filter the out documents in the collection that does not have the key-value pair of the porvided filter
+				for (var key in filter) {
+					if (filter.hasOwnProperty(key)) {
+						collection_query = collection_query.where(key, '==', filter[key]);
+					}
+				}
+
+				// get the snappshot and make sure it contains exactlu one item
+				let query_snappshot = await collection_query.get();
+				if (query_snappshot.empty)
+					return new DBResponse(
+						DBResponse.status_codes.DOCUMENT_NOT_FOUND,
+						{
+							query: str_query,
+							results: 0
+						},
+						`Could not find a document matching '${JSON.stringify(filter)}' in '${collection_name}'`
+					);
+
+				// get the single item
+				docs = query_snappshot.docs;
+
+			}
+
+			if (Array.isArray(docs) && path.length > 0) {
+				if (docs.length > 1) {
+					return new DBResponse(
+						DBResponse.status_codes.MULTI_MATCH_ERROR,
+						{
+							query: str_query,
+							in_collection: collection_name,
+							doc_filter: filter,
+							remaining_path: path
+						},
+						'The path to the document branches off.'
+					)
+				}
+						
+				docs = docs[0];
+			}
 
 			// repeat til path is traversed
 		}
 
+		if (!Array.isArray(docs)) {
+			docs = [docs];
+		}
+
 		// Return the document
-		return doc;
+		return new DBResponse(
+			DBResponse.status_codes.OK,
+			docs,
+			'Document found.'
+		);
 
 	}
 
-	async CreateDocument(str_collection_path/** example: customers/{"username": "User1"}/sub-collection/ */,
+	async Create(str_collection_path/** example: customers/{"username": "User1"}/sub-collection */,
 											 data/** Any object */)
 	{
 		
 		// make sure query is string
 		if (typeof str_collection_path !== 'string')
-			throw 'Database::GetDocument() --- Parameter type missmatch.';
+			throw new DBResponse(
+				DBResponse.status_codes.PARAMETER_ERROR,
+				{ "input_param": str_collection_path },
+				'Database::Get() --- Parameter type missmatch.'
+			);
 
 		// Split path into its components
 		let path = str_collection_path.split('/');
 
-		// Any path to a collection must have a odd number of components
+		// Any path to a collection has to have a odd number of componets
 		if (path.length % 2 == 0)
-			throw 'Database::GetDocument() --- Parameter format invalid.';
+			throw new DBResponse(
+				DBResponse.status_codes.PARAMETER_ERROR,
+				{
+					input_param: str_collection_path,
+					query_component_count: path.length
+				},
+				'Database::Get() --- Parameter format invalid.'
+			);
 
 		// temporary store for the collection to be returned
 		let collection = this.firestore.collection(path.shift());
@@ -87,32 +166,81 @@ class Database {
 		// As long as there is more of the path to traverse
 		while (path.length > 0) {
 			// isolate and remove the (sub-)collection and document filter form the path componets
-			let filter = JSON.parse(path.shift());
+			let filter = path.shift();
+			try {
+				let temp = JSON.parse(filter);
+				filter = temp;
+			} catch (err) {}
+			
 			let collection_name = path.shift();
 
-			// filter the out documents in the collection that does not have the key-value pair of the porvided filter
-			let collection_query = collection;
-			for (var key in filter) {
-				if (filter.hasOwnProperty(key)) {
-					collection_query = collection_query.where(key, '==', filter[key]);
-				}
-			}
+			if (typeof filter == 'string') {
+				
+				collection = collection.doc(filter).collection(collection_name);
 			
-			// get the snappshot and make sure it contains exactly one item
-			let query_snappshot = await collection_query.get();
-			if (query_snappshot.empty)
-				throw `Could not find a document matching '${JSON.stringify(filter)}' in '${collection_name}'`;
-			if (query_snappshot.size > 1)
-				throw 'Database::GetDocument() --- Multiple matches found.';
+			} else {
 
-			// get the sub collection from the single document
-			collection = query_snappshot.docs[0].ref.collection(collection_name);
+				// filter the out documents in the collection that does not have the key-value pair of the porvided filter
+				let collection_query = collection;
+				for (var key in filter) {
+					if (filter.hasOwnProperty(key)) {
+						collection_query = collection_query.where(key, '==', filter[key]);
+					}
+				}
+
+				// get the snappshot and make sure it contains exactly one item
+				let query_snappshot = await collection_query.get();
+				if (query_snappshot.empty)
+					return new DBResponse(
+						DBResponse.status_codes.DOCUMENT_NOT_FOUND,
+						{
+							query: str_query,
+							results: 0
+						},
+						`Could not find a document matching '${JSON.stringify(filter)}' in '${collection_name}'`
+					);
+
+				if (query_snappshot.size > 1)
+					return new DBResponse(
+						DBResponse.status_codes.MULTI_MATCH_ERROR,
+						{
+							query: str_query,
+							results: query_snappshot.size
+						},
+						'Database::Get() --- Multiple matches found.'
+					);
+
+				// get the sub collection from the single document
+				collection = query_snappshot.docs[0].ref.collection(collection_name);
+
+			}
 
 			// repeat til path is traversed
 		}
 
 		// Return the document
-		return await collection.add(data);
+		let new_doc = await collection.add(data);
+
+		return new DBResponse (
+			DBResponse.status_codes.OK,
+			new_doc,
+			'Document added.'
+		);
+
+	}
+
+	//TODO metode for å oppdatere et eksisterende dokuemnt
+	async Update (str_path /* path to document */, update_doc) {
+
+		let res = await this.Get(str_path);
+
+		if (!DBResponse.OK(res)) {
+			return res;
+		}
+
+		await res.data[0].ref.set(update_doc, { merge: true });
+		// TODO: The set methud woth resolve if it can't connect to firebase.
+		// 			 Handle the edgae case where that happens.
 
 	}
 

@@ -1,6 +1,8 @@
 configs/tokens.json
 .vscode
 
+.idea
+
 # == NODE ==
 
 node_modules/*
