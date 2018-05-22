@@ -1,8 +1,5 @@
-/*jshint esversion: 6 */
-/*jshint node: true */
 
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
