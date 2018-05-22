@@ -5,7 +5,7 @@ const express = require('express');
 const router = express.Router();
 
 /* GET home page. */
-router.get('/month/:mon/day/:day', function (req, res, next) {
+router.get('/:mon-:day', function (req, res, next) {
 
   let mon = req.params.mon
   let day = req.params.day
@@ -24,9 +24,7 @@ router.get('/month/:mon/day/:day', function (req, res, next) {
     let arr = []
     let day = new Date(year, month, daynum).getDay()
     // date = new Date(year, month - 1, daynum);
-
     while (arr.length < 7) {
-
       let date = new Date(year, month, daynum)
       // Difference checks if first days in week is negative (in to last month)
       let differance = day + (day == 0 ? -6 : arr.length + 1)

@@ -4,9 +4,9 @@
 // Helper functions
 
 // Helper functions always needs to take something in
-function yell(msg) {
+function increment(num) {
   // And need to return the same value that comes in (and changed if needed)
-  return (msg.toUpperCase()) + '!!!';
+  return parseInt(num) + 1;
 }
 
 function times(n, block) {
@@ -130,7 +130,7 @@ function selector_group(str_type, str_name, json_choices, str_id) {
 }
 
 module.exports = {
-  yell,
+  increment,
   times,
   calendar,
   weeks,
