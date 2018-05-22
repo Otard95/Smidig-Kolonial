@@ -30,14 +30,14 @@ router.get('/month/:mon/day/:day', function (req, res, next) {
       let date = new Date(year, month, daynum)
       // Difference checks if first days in week is negative (in to last month)
       let differance = day + (day == 0 ? -6 : arr.length + 1)
-
       // If diff is < 1, starts from month before
       if (differance < 1) {
         arr.push(new Date(year, month - 1, differance).getDate())
       } else {
         let monthlength = new Date(year, month, 0).getDate() + 1
         let thisdate = date.getDate() - day + (day == 0 ? -6 : arr.length + 1)
-        thisdate > monthlength ? arr.push(thisdate - monthlength) : arr.push(date.getDate() - day + (day == 0 ? -6 : arr.length + 1))
+        // checks if date is over the month length
+        thisdate > monthlength ? arr.push(thisdate - monthlength) : arr.push(thisdate)
       }
     }
     return arr
