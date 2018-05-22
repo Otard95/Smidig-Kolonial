@@ -16,6 +16,7 @@ const helmet       = require('helmet');
 
 // import routes
 const index = require('./routes/index');
+const user = require('./routes/user');
 const week = require('./routes/week.js');
 const calender = require('./routes/calender.js');
 const checkout = require('./routes/checkout.js');
@@ -58,6 +59,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // set routes
 app.use('/', index);
+app.use('/user', user);
 app.use('/uke', week);
 app.use('/kalender', calender);
 app.use('/betaling', checkout);
@@ -81,7 +83,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error', err);
+  res.render('error', {status: err.status, stack: JSON.stringify(err)});
 });
 
 module.exports = app;

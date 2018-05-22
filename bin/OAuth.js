@@ -8,7 +8,7 @@ class OAuth {
 	constructor () {
 		if (!OAuth._instance) {
 
-			this.sessions = [];
+			this.sessions = {};
 
 		}
 
@@ -17,6 +17,16 @@ class OAuth {
 	}
 
 	async AuthenticateUser (username, password) {
+
+		if ((!username || !password) &&
+				(typeof username !== 'string' || typeof password !== 'string'))
+		{
+			throw new OAuthResponse(
+				OAuthResponse.status_codes.INVALID_PARAMETER,
+				{ username_param: username, pass_param: password },
+				'The parameter(s) passed are/is invalid.'
+			)
+		}
 		
 		let user;
 		try {
@@ -57,7 +67,7 @@ class OAuth {
 
 			if (user.data().password == password) {
 
-				return new OAuthResponse (OAuthResponse.status_codes.OK, user);
+				return new OAuthResponse (OAuthResponse.status_codes.OK, user,'');
 
 			} else {
 
@@ -85,17 +95,18 @@ class OAuth {
 
 		return (req, res, next) => {
 			this.AuthenticateUser(
-				req.params[username_paramerter_name],
-				req.params[password_parameter_name]
+				req.body[username_paramerter_name || 'username'],
+				req.body[password_parameter_name || 'password']
 			)
 			.then(Auth_res => {
 
 				req.authenticated = OAuthResponse.OK(Auth_res);
 
+				req.user = Auth_res.user;
+				req.auth_err = Auth_res.err;
+
 				if (req.authenticated) {
-					req.user = Auth_res.user;
-					req.auth_err = Auth_res.err;
-					req.session.id = this.CreateSession(req.user);
+					this.CreateSession(req.session.id, req.user);
 				}
 
 				next();
@@ -103,7 +114,8 @@ class OAuth {
 			})
 			.catch(err => {
 
-				next(err);
+				res.status(500);
+				next({status: 500, OAuthErr: err});
 
 			});
 		}
@@ -119,7 +131,7 @@ class OAuth {
 
 	}
 
-	Authorized () {
+	Authorized (unauthorized_redirect = undefined) {
 
 		return (req, res, next) => {
 
@@ -128,7 +140,12 @@ class OAuth {
 				.then(Auth_res => {
 
 					req.autorized = Auth_res;
-
+					if (Auth_res &&
+							unauthorized_redirect &&
+							typeof unauthorized_redirect === 'string')
+					{
+						res.redirect(unauthorized_redirect);
+					}
 					next();
 
 				})
@@ -142,6 +159,8 @@ class OAuth {
 			} else {
 
 				req.autorized = false;
+				if (unauthorized_redirect && typeof unauthorized_redirect === 'string')
+					res.redirect(unauthorized_redirect);
 				next();
 
 			}
@@ -150,31 +169,15 @@ class OAuth {
 
 	}
 
-	CreateSession (user) {
+	CreateSession (session_id, user) {
 
-		let new_session_id = this.RandomId(32);
-		while (this.sessions[new_session_id]) new_session_id = this.RandomId(32);
-	
 		let session = new Session(
-			new_session_id,
+			session_id,
 			user.id,
 			user,
 			Date.now() + 60 * 60 * 1000
 		);
-		this.sessions.push(session);
-		return new_session_id;
-
-	}
-
-	RandomId (num_len) {
-
-		let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-		let id = ''
-		for (let i = 0; i < num_len; i++) 
-			id += possible.charAt(Math.floor(Math.random() * possible.length));
-
-		return id;
+		this.sessions[session_id] = session;
 
 	}
 
