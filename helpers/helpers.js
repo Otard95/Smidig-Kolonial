@@ -18,44 +18,8 @@ function times(n, block) {
 }
 
 function month_name(number, hbs_block) {
-  switch (number) {
-    case 0:
-      return hbs_block.fn('JANUAR');
-      break;
-    case 1:
-      return hbs_block.fn('FEBRUAR');
-      break;
-    case 2:
-      return hbs_block.fn('MARS');
-      break;
-    case 3:
-      return hbs_block.fn('APRIL');
-      break;
-    case 4:
-      return hbs_block.fn('MAI');
-      break;
-    case 5:
-      return hbs_block.fn('JUNI');
-      break;
-    case 6:
-      return hbs_block.fn('JULI');
-      break;
-    case 7:
-      return hbs_block.fn('AUGUST');
-      break;
-    case 8:
-      return hbs_block.fn('SEPTEMBER');
-      break;
-    case 9:
-      return hbs_block.fn('OKTOBER');
-      break;
-    case 10:
-      return hbs_block.fn('NOVEMBER');
-      break;
-    case 11:
-      return hbs_block.fn('DESEMBER');
-      break;
-  }
+  let months = ['JANUAR', 'FEBRUAR', 'MARS', 'APRIL', 'MAI', 'JUNI', 'JULI', 'AUGUST', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER']
+  return hbs_block.fn(months[number])
 }
 
 // Prinits out weeks for a month (5 weeks)
