@@ -11,6 +11,7 @@ router.get('/:mon-:day', function (req, res, next) {
   let day = req.params.day
 
   // Required  to pass month down to render
+  let chosen_day = day
   let month = new Date(2018, mon, day).getMonth()
   let months = ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember']
 
@@ -42,15 +43,16 @@ router.get('/:mon-:day', function (req, res, next) {
     return arr
   }
 
-  let uke = getWeekNumber(mon, day)
-  let daysnum = getNumbersInWeek(2018, mon, day)
+  let uke_num = getWeekNumber(mon, day)
+  let days_arr = getNumbersInWeek(2018, mon, day)
 
   res.render('week', {
     title: `Calendar: ${day} ${months[month]}`,
     month,
-    uke,
+    uke_num,
     daysstring: ['Man', 'Tis', 'Ons', 'Tor', 'Fre', 'Lor', 'Son'],
-    daysnum,
+    days_arr,
+    chosen_day
   });
 });
 

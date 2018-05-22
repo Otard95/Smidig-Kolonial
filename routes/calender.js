@@ -2,21 +2,17 @@
 /*jshint node: true */
 
 const express = require('express');
-const router = express.Router();
 const week = require('./week.js');
+const router = express.Router();
 
 /* GET home page. */
 router
-  .get('/:mon-:day', week)
-  .get('/:mon?', async function (req, res, next) {
-    let month = req.params.mon ? req.params.mon : new Date().getMonth();
-  
+  .get('/:mon-:day', week) // Gets week 
+  .get('/:mon?', function (req, res, next) {
     res.render('calendar', {
       title: 'Kalender',
-      month
+      month: req.params.mon ? req.params.mon : new Date().getMonth()
     });
   })
-
-router.get
 
 module.exports = router;
