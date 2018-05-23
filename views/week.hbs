@@ -7,11 +7,41 @@
 
   {{> headerplanner}}
 
+  <div class="content">
+    <div class="week-container">
+      <div class="week-header">
+        <div class="week-datename">Juni 2018, Lørdag</div>
+        <div class="week-days">
+          <ul>
+            <h3 class="this-week">Uke</h3>
+            {{#each daysstring}}
+              <li>{{this}}</li>
+            {{/each}}
+            <h3 class="this-week">{{uke}}</h3>
+            {{#each daysnum}}
+              <li>{{this}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+      <div class="week-list">
+        <div class="list-item">
+          {{#each daysstring}}
+            <li id="vare">{{this}}</li>
+          {{/each}}
+        </div>
+        <div class="item-button">
+          <img id="button" src="/imgs/icon/Varer.png" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+<!--
     <div class="week-view-container">
       <div class="week-view-header">
         <div class="week-view-month">
-          December 2017, Sondag
-        </div>
+          December 2017, Sondag --> <!--DATO HER-->
+    <!--    </div>
         <div class="week-view-days">
           <ul>
             <h3 class="font-yellow">Uke</h3>
@@ -24,15 +54,14 @@
             {{/each}}
           </ul>
         </div>
-      </div>
+      </div>-->
       <!-- Fixar när vi vet height på fotter -->
-      <div class="week-view-list">
+    <!--  <div class="week-view-list"> -->
       <!-- List content -->
-      </div>
-      <div class="week-add-button">
-        <h3>Legg til varer</h3>
+    <!--
       </div>
     </div>
   </div>
+-->
 
 {{/layout}}

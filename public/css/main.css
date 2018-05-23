@@ -20,6 +20,7 @@ body, html {
   font-family: 'GT Walsheim Medium';
   margin: 0;
   padding: 0;
+  height: 88%;
   background: white; }
 
 footer {
@@ -29,7 +30,7 @@ footer {
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 9%; }
+  height: 12%; }
   footer.overlay {
     -webkit-filter: blur(3px);
             filter: blur(3px); }
@@ -44,24 +45,26 @@ footer {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-            justify-content: space-between;
-    padding: 0;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
     margin: 0;
     height: 70%;
-    -webkit-box-shadow: 0 15px 75px rgba(0, 0, 0, 0.2);
-            box-shadow: 0 15px 75px rgba(0, 0, 0, 0.2);
     position: relative;
     bottom: 0; }
     footer .nav-menu a {
       display: block;
       background: #413746;
       text-align: center;
-      font-size: 1.5em;
-      line-height: 300%;
+      -ms-flex-line-pack: center;
+          align-content: center;
+      -webkit-box-pack: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+      font-size: 2.0vh;
+      line-height: 400%;
       height: 100%;
-      width: 19.5%; }
+      width: 20%; }
       footer .nav-menu a:hover {
         background: #d7d7d2;
         color: #413746; }
@@ -72,17 +75,24 @@ footer {
     background: #d7d7d2;
     width: 100%;
     top: 0;
-    height: 30%;
-    line-height: 200%; }
+    height: 40%;
+    line-height: 220%; }
+    footer .handlekurv-menu #handlekurv-icon {
+      position: absolute;
+      width: 1.2em;
+      height: 1.2em;
+      top: 20%;
+      left: 0;
+      margin-left: 5%; }
     footer .handlekurv-menu .handlekurv-name {
       position: absolute;
-      left: 0; }
+      left: -10%; }
     footer .handlekurv-menu .handlekurv-price {
       position: absolute;
       text-align: right;
       padding: 0 10px;
       width: 20%;
-      right: 0; }
+      right: 3%; }
     footer .handlekurv-menu p {
       display: inline-block;
       width: 80%;
@@ -103,12 +113,30 @@ footer {
     grid-column: span 1; }
 
 .planner-grid {
+  position: relative;
+  margin-top: 3.5%;
   display: grid;
-  font-size: 2vh;
+  font-size: 1.5vh;
   text-align: center; }
   .planner-grid .planner-header {
     display: inline-grid;
     grid-row: 1;
-    grid-template-columns: 1fr 3fr 1fr; }
+    grid-template-columns: 1fr 1fr 14fr 2fr 2fr;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    border-bottom: 1px solid #d7d7d2;
+    padding-bottom: 2%; }
+    .planner-grid .planner-header .img {
+      width: 50%;
+      height: 50%; }
+    .planner-grid .planner-header .header-text {
+      font-size: 2.7vh;
+      margin-left: 10%; }
+    .planner-grid .planner-header #pil-icon {
+      height: 45%; }
     .planner-grid .planner-header h1 {
       margin: .5em 0 .25em; }

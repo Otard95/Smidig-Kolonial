@@ -40,3 +40,4 @@ node_modules/serve-favicon/*
 !node_modules/cookie-parser/LICENSE
 !node_modules/debug/LICENSE
 !node_modules/serve-favicon/LICENSE
+*.json

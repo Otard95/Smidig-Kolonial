@@ -2,10 +2,13 @@
 /*jshint node: true */
 
 const express = require('express');
-const router = express.Router();
+const router = express.Router()
+const sok = require('./sok.js')
 
 /* GET home page. */
-router.get('/', async function (req, res, next) {
+router
+  .get('/sok', sok)
+  .get('/', async function (req, res, next) {
 
   let month = new Date().getMonth()+1;
 
@@ -13,6 +16,6 @@ router.get('/', async function (req, res, next) {
     title: 'Kalender',
     month
   });
-});
+})
 
 module.exports = router;
