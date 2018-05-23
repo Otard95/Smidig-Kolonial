@@ -5,6 +5,13 @@ class ShoppingListDocument {
         this.name = name;
     }
 
+    getData(){
+        return {
+            date : this.date,
+            name : this.name
+        }
+    }
+
 }
 
 module.exports = ShoppingListDocument;

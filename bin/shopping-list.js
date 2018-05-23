@@ -1,7 +1,8 @@
 const db = require('./database');
 const DBResponse = require('../models/database-response');
 const ShoppingListDocument = require('../models/shopping-list-document');
-const moment = require('moment');
+const ShoppingListResponse = require('../models/shopping-list-response');
+const ProductDocument = require('../models/product-document');
 
 
 class ShoppingList {
@@ -19,18 +20,19 @@ class ShoppingList {
 
     }
 
+    async createShoppingList (userId, name, date, users) {
 
-    async createShoppingList(userId, name, date, users){
         let listObj = new ShoppingListDocument(name, date);
-        listObj = {
-            name: listObj.name,
-            date: listObj.date
-        }
 
-        let DBres = await db.Create("shoppingLists", listObj);
+        let DBres = await db.Create("shoppingLists", listObj.getData());
 
         if (!DBResponse.OK(DBres)) {
             // error
+            throw new ShoppingListResponse(
+                ShoppingListResponse.status_codes.UNKNOWN_ERROR,
+                DBres,
+                "Error while creating shopping list"
+            );
         }
 
         //TODO kaste feilmedling om det ikke går
@@ -47,20 +49,40 @@ class ShoppingList {
             })
         }
 
-        await db.Create(`customers/${userId}/shoppingLists`, userObj);
-
-    }
-
-    async addProductToList(listId, product) {
-        //product : kolonialId, amount, groupId
-        //TODO returnere respons dersom liste ikke finnes
-        if (listId && product) {
-            return await db.Create(`shoppingLists/${listId}/products`, product);
+        DBres = await db.Create(`customers/${userId}/shoppingLists`, userObj);
+        if (!DBResponse.OK(DBres)) {
+            // error
+            throw new ShoppingListResponse(
+                ShoppingListResponse.status_codes.UNKNOWN_ERROR,
+                DBres,
+                "Error while creating shopping list"
+            );
         }
     }
 
+    async addProductToList(listId, product) {
+        if (listId && product instanceof ProductDocument) {
+            return await db.Create(`shoppingLists/${listId}/products`, product);
+        }
+        throw new ShoppingListResponse(
+            ShoppingListResponse.status_codes.INVALID_PARAMETER,
+            {
+                listId,
+                product,
+                product_param_type: typeof product,
+                expected_type: 'ProductDocument'
+            },
+            "Parameter error, check parameter type!"
+        )
+    }
 
-    //TODO lage en metode for å hente en hel collection
+    async getProductList (listId){
+
+        let list = await db.Get(`shoppingList/${listId}/products/{}`);
+
+
+
+    }
 
     //TODO metode for å oppdatere et eksisterende dokuemnt
 }
