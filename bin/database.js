@@ -121,6 +121,8 @@ class Database {
 			// repeat til path is traversed
 		}
 
+		
+
 		if (!Array.isArray(docs)) {
 			docs = [docs];
 		}
