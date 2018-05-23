@@ -102,48 +102,48 @@ class OAuth {
 
 		return async (req, res, next) => {
 
+			let Auth_res;
 			try {
-				let Auth_res = await this.AuthenticateUser(req.body[username_paramerter_name || 'username'],
+				Auth_res = await this.AuthenticateUser(req.body[username_paramerter_name || 'username'],
 																									 req.body[password_parameter_name  || 'password']);
-
-				req.authenticated = OAuthResponse.OK(Auth_res);
-
-				if (req.authenticated) {
-
-					jwt.sign({
-						user_name: Auth_res.user.data().name,
-						user_email: Auth_res.user.data().email,
-						user_id: Auth_res.user.id
-					},
-					this.secret, {
-						expiresIn: 24 * 60 * 60
-					}, (err, token) => {
-
-						if (err) {
-
-							res.status(500);
-							next({ status: 500, OAuthErr: err });
-
-						} else {
-
-							req.session.token = token;
-							next();
-
-						}
-
-					});
-					
-				} else {
-					req.auth_err = Auth_res.err;
-					next();
-				}
 
 			} catch (err) {
 
 				res.status(500);
 				next({status: 500, OAuthErr: err});
+				return;
 
 			}
+
+			req.authenticated = OAuthResponse.OK(Auth_res);
+
+			if (!req.authenticated) {
+				req.auth_err = Auth_res.err;
+				next();
+				return;
+			}
+
+			jwt.sign({
+				user_name: Auth_res.user.data().name,
+				user_email: Auth_res.user.data().email,
+				user_id: Auth_res.user.id
+			}, this.secret, {
+				expiresIn: 24 * 60 * 60
+			}, (err, token) => {
+
+				if (err) {
+
+					res.status(500);
+					next({ status: 500, OAuthErr: err });
+
+				} else {
+
+					req.session.token = token;
+					next();
+
+				}
+
+			});
 
 		}
 
@@ -180,10 +180,15 @@ class OAuth {
 			if (!req.session.token) {
 
 				req.autorized = false;
-				if (unauthorized_redirect && typeof unauthorized_redirect === 'string')
-					res.redirect(unauthorized_redirect);
-				else
-					next();
+
+				req.session.destroy(err=>{
+
+					if (unauthorized_redirect && typeof unauthorized_redirect === 'string')
+						res.redirect(unauthorized_redirect);
+					else
+						next();
+
+				});
 
 				return;
 
@@ -249,7 +254,7 @@ class OAuth {
 
 			// db response OK
 			// add user referance to request object
-			req.user_ref = db_res.data.ref;
+			req.user_ref = db_res.data[0].ref;
 			next();
 
 		}
