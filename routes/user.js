@@ -34,4 +34,6 @@ router.post('/login/auth', OAuth.Authenticate('email', 'password'), (req, res) =
 
 });
 
+router.get('/logout', OAuth.Logout());
+
 module.exports = router;

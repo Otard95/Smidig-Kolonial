@@ -123,11 +123,13 @@ class OAuth {
 				return;
 			}
 
-			jwt.sign({
-				user_name: Auth_res.user.data().name,
-				user_email: Auth_res.user.data().email,
-				user_id: Auth_res.user.id
-			}, this.secret, {
+			let sess = new Session(
+				Auth_res.user.id,
+				Auth_res.user.data().name,
+				Auth_res.user.data().email
+			)
+
+			jwt.sign(sess.getData(), this.secret, {
 				expiresIn: 24 * 60 * 60
 			}, (err, token) => {
 
@@ -156,7 +158,7 @@ class OAuth {
 
 			return new OAuthResponse(
 				OAuthResponse.status_codes.OK,
-				decoded,
+				new Session(decoded),
 				'Token Veified.'
 			);
 
@@ -226,8 +228,8 @@ class OAuth {
 
 			// token valid extract some data
 			req.user_id = Auth_res.user.user_id;
-			req.user_email = Auth_res.user.user_email;
 			req.user_name = Auth_res.user.user_name;
+			req.user_email = Auth_res.user.user_email;
 
 			// Get a user referance from the databse
 			let db_res;
@@ -261,33 +263,21 @@ class OAuth {
 
 	}
 
-	CreateSession (user) {
+	Logout (redirect_path = '/') {
 
-		// let token = this.CreateToken(128);
-		// while (this.sessions[token]) token = this.CreateToken(128);
+		return (req, res, next) => {
 
-		let session = new Session(
-			token,
-			user.id,
-			user,
-			Date.now() + 60 * 60 * 1000
-		);
-		this.sessions[token] = session;
+			req.session.destroy(err => {
 
-		return token;
+				if (typeof redirect_path !== 'string')
+					res.redirect('/');
+				else
+					res.redirect(redirect_path);
 
-	}
+			});
 
-	CreateToken (num_len) {
+		}
 
-		let pool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_!#%&+?-_!#%&+?-_!#%&+?"
-
-		let token = '';
-		for (let i = 0; i < num_len; i++) 
-			token += pool.charAt(Math.floor(Math.random() * pool.length));
-		
-		return token;
-		
 	}
 
 }
