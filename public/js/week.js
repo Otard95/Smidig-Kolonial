@@ -21,7 +21,7 @@ $(document).ready(() => {
     window.location.href = `/kalender/${month}-${day}`
   })
 
-  $('#back-arrow').on('click', function() {
+  $('#pil-icon').on('click', function() {
     let month = $(this).data('month')
     window.location.href = `/kalender/${month}`
   })

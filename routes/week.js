@@ -1,14 +1,13 @@
-const router = require('express').Router();
-
+const router = require('express').Router()
 /* GET home page. */
 router.get('/:mon-:day', (req, res, next) => {
 
-  let mon = --req.params.mon
-  let day = req.params.day
+  let mon = parseInt(req.params.mon)
+  let day = parseInt(req.params.day)
 
   // Required  to pass month down to render
   let chosen_day = day
-  let month = new Date(2018, mon + 1, day).getMonth()
+  let month = new Date(2018, mon +1, day).getMonth()
   let months = ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember']
 
   function getWeekNumber(month, day) {
