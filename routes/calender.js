@@ -32,7 +32,7 @@ router
 
     // Required  to pass month and day down to render successfully
     let chosen_day = day
-    let month = new Date(2018, mon + 1, day).getMonth()
+    let month = new Date(2018, mon + 1, day).getMonth()-1
     let months = ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember']
 
     function getWeekNumber(month, day) {
