@@ -15,11 +15,11 @@ const session      = require('express-session');
 const helmet       = require('helmet');
 
 // import routes
-const index = require('./routes/index');
-const user = require('./routes/user');
+const index    = require('./routes/index');
+const user     = require('./routes/user');
 const calender = require('./routes/calender');
 const checkout = require('./routes/checkout');
-const api = require('./routes/api')
+const api      = require('./routes/api')
 
 // HBS helpers
 const helpers = require('./helpers/helpers');
