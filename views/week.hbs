@@ -9,6 +9,8 @@
 
   {{> headerplanner}}
 
+  {{categories}}
+
     <div class="week-view-container">
       <div class="week-view-header">
         <div class="week-view-month">
@@ -26,7 +28,7 @@
                 <li class="font-yellow">{{this}}</li>
               {{/condition}}
               {{#condition this '!=' ../chosen_day}}
-                <li class="font-aubergine">{{this}}</li>
+                <li class="font-aubergine btn-week-day" data-month="{{../month}}">{{this}}</li>
               {{/condition}}
             {{/each}}
           </ul>

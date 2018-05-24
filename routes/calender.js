@@ -6,9 +6,12 @@ const week = require('./week.js');
 router
   .get('/:mon-:day', week) // Gets week 
   .get('/:mon?', function (req, res, next) {
+
+    let mon = req.params.mon
+
     res.render('calendar', {
       title: 'Kalender',
-      month: req.params.mon ? req.params.mon : new Date().getMonth()
+      month: mon ? mon : new Date().getMonth()+1
     });
   })
 

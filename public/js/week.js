@@ -1,4 +1,4 @@
-function start() {
+$(document).ready(() => {
   let boolean = true;
 
   $(".week-add-button").click(function() {
@@ -14,6 +14,15 @@ function start() {
       boolean = true;
     }
   });
-}
 
-$(document).ready(start);
+  $('.btn-week-day').on('click', function() {
+    let month = $(this).data('month')
+    let day = $(this).html()
+    window.location.href = `/kalender/${month}-${day}`
+  })
+
+  $('#back-arrow').on('click', function() {
+    let month = $(this).data('month')
+    window.location.href = `/kalender/${month}`
+  })
+});
