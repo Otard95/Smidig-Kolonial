@@ -1,9 +1,11 @@
 
-const router = require('express').Router();
+const express = require('express');
+const router = express.Router()
+const sok = require('./sok.js')
 const week = require('./week.js');
-
 /* GET home page. */
 router
+  .get('/sok', sok)
   .get('/:mon-:day', week) // Gets week 
   .get('/:mon?', function (req, res, next) {
 
@@ -14,5 +16,6 @@ router
       month: mon ? mon : new Date().getMonth()+1
     });
   })
+
 
 module.exports = router;
