@@ -17,9 +17,9 @@ const helmet       = require('helmet');
 // import routes
 const index = require('./routes/index');
 const user = require('./routes/user');
-const calender = require('./routes/calender.js');
-const checkout = require('./routes/checkout.js');
-const oppskrifter = require('./routes/oppskrifter.js')
+const calender = require('./routes/calender');
+const checkout = require('./routes/checkout');
+const api = require('./routes/api')
 
 // HBS helpers
 const helpers = require('./helpers/helpers');
@@ -62,7 +62,7 @@ app.use('/', index);
 app.use('/user', user);
 app.use('/kalender', calender);
 app.use('/betaling', checkout);
-app.use('/oppskrifter', oppskrifter);
+app.use('/api', api);
 
 /*
  *  ## Error handling
