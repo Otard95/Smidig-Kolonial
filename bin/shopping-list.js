@@ -78,13 +78,49 @@ class ShoppingList {
 
     async getProductList (listId){
 
-        let list = await db.Get(`shoppingList/${listId}/products/{}`);
+        if (listId) {
+            return await db.Get(`shoppingList/${listId}/products/{}`);
+        }
 
-
-
+        throw new ShoppingListResponse(
+            ShoppingListResponse.status_codes.NOT_FOUND,
+            listId,
+            `Parameter error, could not find list with id: ${listId}`
+        );
     }
 
-    //TODO metode for å oppdatere et eksisterende dokuemnt
+
+    async upDateShoppingList (listId,listObj) {
+
+        if (listObj) {
+
+            let res;
+
+            try {
+                res = db.Update(`shoppingList/${listId}`, listObj)
+            }catch (e) {
+                throw new ShoppingListResponse(
+                    ShoppingListResponse.status_codes.NOT_FOUND,
+                    listId,
+                    `Parameter error, could not find list with id: ${listId}`
+                );
+            }
+
+            if (res !== undefined) {
+                throw new ShoppingListResponse(
+                    ShoppingListResponse.status_codes.UNKNOWN_ERROR,
+                    {
+                        listId,
+                        listObj,
+                        LIST_OBJ_TYPE: typeof listObj,
+                        EXPECTED_OBJ_TYPE: "ShoppingListDocument"
+
+                    },
+                    `Error while updating list with id: ${listId}`
+                )
+            }
+        }
+    }
 }
 
 

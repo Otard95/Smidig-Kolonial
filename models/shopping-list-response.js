@@ -24,7 +24,8 @@ ShoppingListResponse.status_codes = {
     CONFLICT: 201,
     INVALID_PARAMETER: 202,
     DATABASE_CONNECTION_ERROR: 203,
-    UNKNOWN_ERROR: 204
+    UNKNOWN_ERROR: 204,
+    NOT_FOUND: 205
 };
 
 module.exports = ShoppingListResponse;
