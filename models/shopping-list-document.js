@@ -1,14 +1,18 @@
 class ShoppingListDocument {
 
-    constructor (name, date) {
+    constructor (name, date, products = [], groups = []) {
         this.date = date;
         this.name = name;
+        this.products = products;
+        this.groups = groups;
     }
 
     getData(){
         return {
             date : this.date,
-            name : this.name
+            name : this.name,
+            products : this.products,
+            groups : this.groups
         }
     }
 

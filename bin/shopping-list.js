@@ -3,7 +3,7 @@ const DBResponse = require('../models/database-response');
 const ShoppingListDocument = require('../models/shopping-list-document');
 const ShoppingListResponse = require('../models/shopping-list-response');
 const ProductDocument = require('../models/product-document');
-
+const GroupDocument = require('../models/group-document')
 
 class ShoppingList {
 
@@ -62,7 +62,7 @@ class ShoppingList {
 
     async addProductToList(listId, product) {
         if (listId && product instanceof ProductDocument) {
-            return await db.Create(`shoppingLists/${listId}/products`, product);
+            return await db.Create(`shoppingLists/${listId}/products`, product.getData());
         }
         throw new ShoppingListResponse(
             ShoppingListResponse.status_codes.INVALID_PARAMETER,
@@ -76,10 +76,37 @@ class ShoppingList {
         )
     }
 
-    async getProductList (listId){
+    async getShoppingList(listId){
+        if (listId){
+            return await db.Get(`shoppingLists/${listId}`)
+        }
+        throw new ShoppingListResponse(
+            ShoppingListResponse.status_codes.NOT_FOUND,
+            listId,
+            `Parameter error, could not find list with id: ${listId}`
+        );
+    }
+
+    async getShoppingListContent (listId){
 
         if (listId) {
-            return await db.Get(`shoppingList/${listId}/products/{}`);
+
+            let meta = await this.getShoppingList(listId);
+            let products = await db.Get(`shoppingLists/${listId}/products/{}`);
+            let groups = await db.Get(`shoppingLists/${listId}/groups/{}`);
+
+            let res = new ShoppingListDocument(
+                meta.data[0].data().name, 
+                meta.data[0].data().date,
+                products.data.map( (e) => new ProductDocument(e.data().kolonialId, e.data().amount, e.data().groupId)), 
+                groups.data.map( (e) => new GroupDocument(e.data().color, e.data().name))
+            )
+            
+            return new ShoppingListResponse(
+                ShoppingListResponse.status_codes.OK,
+                res,
+                "Document found"
+            )
         }
 
         throw new ShoppingListResponse(
@@ -92,12 +119,12 @@ class ShoppingList {
 
     async upDateShoppingList (listId,listObj) {
 
-        if (listObj) {
+        if (listObj && listObj instanceof ProductDocument) {
 
             let res;
 
             try {
-                res = db.Update(`shoppingList/${listId}`, listObj)
+                res = db.Update(`shoppingList/${listId}`, listObj.getData())
             }catch (e) {
                 throw new ShoppingListResponse(
                     ShoppingListResponse.status_codes.NOT_FOUND,
