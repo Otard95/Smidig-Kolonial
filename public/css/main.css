@@ -140,3 +140,30 @@ footer {
       height: 45%; }
     .planner-grid .planner-header h1 {
       margin: .5em 0 .25em; }
+  .planner-grid .category-container {
+    position: fixed;
+    margin: auto;
+    height: 80vh;
+    width: 92%;
+    background-color: red; }
+  .planner-grid .information-view {
+    position: relative;
+    background-color: white;
+    height: 60vh;
+    margin: 0 auto;
+    width: 99.2%;
+    top: 2vh;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px; }
+  .planner-grid .search-title {
+    position: relative;
+    z-index: 2;
+    font-size: 2.6vh; }
+  .planner-grid .search-container {
+    position: relative;
+    margin: 0 auto;
+    height: 5vh;
+    width: 90%;
+    background-color: #f0f0ec;
+    border-radius: 40px;
+    font-size: 2.3vh; }

@@ -1,0 +1,21 @@
+
+<div class="category-container">
+<!--  <div class="icon-b">
+    <img id="button-white" src="/imgs/icon/Varer 2.png" alt="">
+  </div> -->
+  <div class="information-view">
+    <h3 class="search-title">Varer</h3>
+    <div class="search-container">
+      <!--Legg inn forstørrelsesglass-->
+      <p class="search-t">Søk i tusenvis av varer</p>
+    </div>
+    <div class="categories">
+      <li>Inspirasjon</li>
+      <li>Dine Varer</li>
+      {{#each categories}}
+        <li data-categoryId = {{this.id}}>{{this.name}}</li>
+      {{/each}}
+    </div>
+  </div>
+  </div>
+</div>
