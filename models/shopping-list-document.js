@@ -10,9 +10,7 @@ class ShoppingListDocument {
     getData(){
         return {
             date : this.date,
-            name : this.name,
-            products : this.products,
-            groups : this.groups
+            name : this.name
         }
     }
 

@@ -117,7 +117,7 @@ class ShoppingList {
     }
 
 
-    async upDateShoppingList (listId, data, opt) {    
+    async updateShoppingList (listId, data, opt) {    
 	    let sub_id;
 
         if (opt) {
@@ -130,9 +130,9 @@ class ShoppingList {
         }
 
         if (data instanceof ShoppingListDocument) {
-            _updateShoppingListMetaData(listId, data)
+            await this.updateShoppingListMetaData(listId, data)
         } else if (data instanceof ProductDocument || data instanceof GroupDocument) {
-
+            await this.updateShoppingListContent(listId, sub_id, data)
         } else {
             throw new ShoppingListResponse(
                 ShoppingListResponse.status_codes.INVALID_PARAMETER,
@@ -143,13 +143,13 @@ class ShoppingList {
     }
 
 
-    async _updateShoppingListMetaData(listId, listObj){
+    async updateShoppingListMetaData(listId, listObj){
         if (listId, listObj && listObj instanceof ShoppingListDocument) {
 
             let res;
 
             try {
-                res = db.Update(`shoppingLists/${listId}`, listObj.getData())
+                res =  await db.Update(`shoppingLists/${listId}`, listObj.getData())
             }catch (e) {
                 throw new ShoppingListResponse(
                     ShoppingListResponse.status_codes.NOT_FOUND,
@@ -174,15 +174,15 @@ class ShoppingList {
         }
     }
 
-    async _updateShoppingListContent(listId, docId, data){
+    async updateShoppingListContent(listId, docId, data){
         if (listId && docId && data){
 
             let res;
 
             if (data instanceof ProductDocument){
-                res = db.Update(`shoppingLists/${listId}/products/${docId}`, listObj.getData())
+                res = await db.Update(`shoppingLists/${listId}/products/${docId}`, data.getData())
             } else if(data instanceof GroupDocument){
-                res = db.Update(`shoppingLists/${listId}/groups/${docId}`, listObj.getData())
+                res = await db.Update(`shoppingLists/${listId}/groups/${docId}`, data.getData())
             } else {
                 throw new ShoppingListResponse(
                     ShoppingListResponse.status_codes.INVALID_PARAMETER,
@@ -210,17 +210,17 @@ class ShoppingList {
                     `Error while updating list with id: ${listId}`
                 )
             }
+        } else {
+            throw new ShoppingListResponse(
+                ShoppingListResponse.status_codes.PARAMETER_DATA_TYPE,
+                {
+                    listId,
+                    docId,
+                    data
+                },
+                `One or more paramters was undefined`
+            )
         }
-
-        throw new ShoppingListResponse(
-            ShoppingListResponse.status_codes.PARAMETER_DATA_TYPE,
-            {
-                listId,
-                docId,
-                data
-            },
-            `One or more paramters was undefined`
-        )
     }
 
 }

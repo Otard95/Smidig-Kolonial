@@ -88,7 +88,63 @@ async function TestGetContentFromShoppingList(){
 }
 TestGetContentFromShoppingList.description = 'Test ShoppingList::GetShoppingListContent(); using already created list with content';
 
+/**
+ * ## Unit Test
+ */
+async function TestUpdateShoppingListMeta(){
 
+    let res = await shoping_list.getShoppingListContent(list_id);
 
-let addToList = unit.series(TestCreateShoppingListNotShared, TestAddItemToShoppingList, TestGetShoppingListFromService, TestGetContentFromShoppingList);
+    console.log(res.data.name)
+    console.log(`origional date: ${res.data.date}`);
+
+    let timeNow = Date.now();
+
+    let updatedResDoc = new ShoppingListDoc(
+        res.data.name,
+        timeNow,
+        res.data.products,
+        res.data.groups
+    )
+
+    await shoping_list.updateShoppingList(list_id, updatedResDoc);
+
+    let updatedRes = await shoping_list.getShoppingListContent(list_id);
+
+    console.log(`updated date: ${updatedRes.data.date}`);
+}
+TestUpdateShoppingListMeta.description = 'Test ShoppingList::UpdateShoppingList(); with meta data'
+
+/**
+ * ## Unit Test
+ */
+async function TestUpdateProductInList () {
+    let res = await shoping_list.getShoppingListContent(list_id);
+
+    console.log(`original amount: ${res.data.products[0].amount}`)
+
+    let updatedDoc = new ProductDoc(
+        res.data.products[0].kolonialId,
+        res.data.products[0].amount + 1,
+        res.data.products[0].groupId
+    )
+
+    await shoping_list.updateShoppingList(list_id, product_id, updatedDoc);
+
+    let updatedRes = await shoping_list.getShoppingListContent(list_id);
+
+    console.log(`modified amount: ${updatedRes.data.products[0].amount}`)
+
+    assert(updatedRes.data.products[0].amount > res.data.products[0].amount)
+}
+TestUpdateProductInList.description = 'Test ShoppingList::UpdateShoppingContent(); with meta data'
+
+let addToList = unit.series(
+    TestCreateShoppingListNotShared, 
+    TestAddItemToShoppingList, 
+    TestGetShoppingListFromService, 
+    TestGetContentFromShoppingList,
+    TestUpdateShoppingListMeta,
+    TestUpdateProductInList);
+    
 module.exports = unit.test(addToList);
