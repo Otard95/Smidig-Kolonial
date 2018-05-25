@@ -244,6 +244,34 @@ class Database {
 
 	}
 
+	async Delete (str_path /* path to document */) {
+
+		let res = await this.Get(str_path);
+
+		if (!DBResponse.OK(res)) {
+			return res;
+		}
+
+		try {
+
+			await res.data.ref.delete();
+
+		} catch (e) {
+			throw new DBResponse (
+				DBResponse.status_codes.DOCUMENT_DELETION_FAILED,
+				{ firebase_error: e },
+				'Failed to delete the document.'
+			)
+		}
+
+		return new DBResponse (
+			DBResponse.status_codes.OK,
+			{ deleted_document: res.data.id },
+			'Document was deleted.'
+		);
+
+	}
+
 }
 
 const inst = new Database();

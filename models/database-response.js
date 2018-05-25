@@ -23,7 +23,8 @@ DatabaseResponse.status_codes = {
 	OK: 0,
 	DOCUMENT_NOT_FOUND: 101,
 	MULTI_MATCH_ERROR: 102,
-	PARAMETER_ERROR: 201
+	PARAMETER_ERROR: 201,
+	DOCUMENT_DELETION_FAILED: 202
 }
 
 module.exports = DatabaseResponse;
