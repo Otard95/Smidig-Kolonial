@@ -117,14 +117,39 @@ class ShoppingList {
     }
 
 
-    async upDateShoppingList (listId,listObj) {
+    async upDateShoppingList (listId, data, opt) {    
+	    let sub_id;
 
-        if (listObj && listObj instanceof ProductDocument) {
+        if (opt) {
+            if (typeof data === 'string') {
+                sub_id = data;
+                data = opt;
+            } else {
+                // parameter error
+            }
+        }
+
+        if (data instanceof ShoppingListDocument) {
+            _updateShoppingListMetaData(listId, data)
+        } else if (data instanceof ProductDocument || data instanceof GroupDocument) {
+
+        } else {
+            throw new ShoppingListResponse(
+                ShoppingListResponse.status_codes.INVALID_PARAMETER,
+                listObj,
+                ""
+            )
+        }
+    }
+
+
+    async _updateShoppingListMetaData(listId, listObj){
+        if (listId, listObj && listObj instanceof ShoppingListDocument) {
 
             let res;
 
             try {
-                res = db.Update(`shoppingList/${listId}`, listObj.getData())
+                res = db.Update(`shoppingLists/${listId}`, listObj.getData())
             }catch (e) {
                 throw new ShoppingListResponse(
                     ShoppingListResponse.status_codes.NOT_FOUND,
@@ -148,7 +173,55 @@ class ShoppingList {
             }
         }
     }
+
+    async _updateShoppingListContent(listId, docId, data){
+        if (listId && docId && data){
+
+            let res;
+
+            if (data instanceof ProductDocument){
+                res = db.Update(`shoppingLists/${listId}/products/${docId}`, listObj.getData())
+            } else if(data instanceof GroupDocument){
+                res = db.Update(`shoppingLists/${listId}/groups/${docId}`, listObj.getData())
+            } else {
+                throw new ShoppingListResponse(
+                    ShoppingListResponse.status_codes.INVALID_PARAMETER,
+                    {
+                        data,
+                        PARAMETER_DATA_TYPE: typeof data,
+                        EXPECTED_DATA_TYPE : "ProductDocument || GroupDocument"
+                    },
+                    "Parameter error, not supported type"
+
+                )
+            }
+
+            if (res !== undefined){
+                throw new ShoppingListResponse(
+                    ShoppingListResponse.status_codes.UNKNOWN_ERROR,
+                    {
+                        listId,
+                        docId,
+                        data,
+                        LIST_OBJ_TYPE: typeof data,
+                        EXPECTED_OBJ_TYPE: "ProductDocument || GroupDocument"
+
+                    },
+                    `Error while updating list with id: ${listId}`
+                )
+            }
+        }
+
+        throw new ShoppingListResponse(
+            ShoppingListResponse.status_codes.PARAMETER_DATA_TYPE,
+            {
+                listId,
+                docId,
+                data
+            },
+            `One or more paramters was undefined`
+        )
+    }
+
 }
-
-
 module.exports = new ShoppingList();
