@@ -254,7 +254,7 @@ class Database {
 
 		try {
 
-			await res.data.ref.delete();
+			await res.data[0].ref.delete();
 
 		} catch (e) {
 			throw new DBResponse (
