@@ -121,6 +121,8 @@ class Database {
 			// repeat til path is traversed
 		}
 
+		
+
 		if (!Array.isArray(docs)) {
 			docs = [docs];
 		}
@@ -238,7 +240,7 @@ class Database {
 			return res;
 		}
 
-		await res.data[0].ref.set(update_doc, { merge: true });
+		await res.data[0].ref.update(update_doc);
 		// TODO: The set methud woth resolve if it can't connect to firebase.
 		// 			 Handle the edgae case where that happens.
 

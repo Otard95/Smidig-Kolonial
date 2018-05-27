@@ -45,16 +45,14 @@ app.set('view engine', 'hbs');
 
 app.use(helmet());
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(cookieParser());
 app.use(session({
   secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
+  cookie: { maxAge: 24 * 60 * 60 * 1000 }
 }));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // set routes

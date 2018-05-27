@@ -1,7 +1,9 @@
 const db            = require('./database');
-const OAuthResponse = require("../models/OAuth-response");
 const DBResponse    = require('../models/database-response');
-const Session       = require('../models/session')
+const OAuthResponse = require("../models/OAuth-response");
+const Session       = require('../models/session');
+const jwt           = require('jsonwebtoken');
+const crypto        = require('crypto');
 
 class OAuth {
 
@@ -9,6 +11,11 @@ class OAuth {
 		if (!OAuth._instance) {
 
 			this.sessions = {};
+
+			const DH = crypto.createDiffieHellman(2048);
+			DH.generateKeys();
+
+			this.secret = DH.getPrivateKey();
 
 		}
 
@@ -67,7 +74,7 @@ class OAuth {
 
 			if (user.data().password == password) {
 
-				return new OAuthResponse (OAuthResponse.status_codes.OK, user,'');
+				return new OAuthResponse (OAuthResponse.status_codes.OK, user, 'User Authenticated.');
 
 			} else {
 
@@ -93,75 +100,48 @@ class OAuth {
 
 	Authenticate (username_paramerter_name, password_parameter_name) {
 
-		return (req, res, next) => {
-			this.AuthenticateUser(
-				req.body[username_paramerter_name || 'username'],
-				req.body[password_parameter_name || 'password']
-			)
-			.then(Auth_res => {
+		return async (req, res, next) => {
+
+			try {
+				let Auth_res = await this.AuthenticateUser(req.body[username_paramerter_name || 'username'],
+																									 req.body[password_parameter_name  || 'password']);
 
 				req.authenticated = OAuthResponse.OK(Auth_res);
 
-				req.user = Auth_res.user;
-				req.auth_err = Auth_res.err;
-
 				if (req.authenticated) {
-					this.CreateSession(req.session.id, req.user);
+
+					jwt.sign({
+						user_name: Auth_res.user.data().name,
+						user_email: Auth_res.user.data().email,
+						user_id: Auth_res.user.id
+					},
+					this.secret, {
+						expiresIn: 24 * 60 * 60
+					}, (err, token) => {
+
+						if (err) {
+
+							res.status(500);
+							next({ status: 500, OAuthErr: err });
+
+						} else {
+
+							req.session.token = token;
+							next();
+
+						}
+
+					});
+					
+				} else {
+					req.auth_err = Auth_res.err;
+					next();
 				}
 
-				next();
-
-			})
-			.catch(err => {
+			} catch (err) {
 
 				res.status(500);
 				next({status: 500, OAuthErr: err});
-
-			});
-		}
-
-	}
-
-	async IsAuthorized (session_id) {
-
-		if (this.sessions[session_id])
-			return true;
-		
-		return false;
-
-	}
-
-	Authorized (unauthorized_redirect = undefined) {
-
-		return (req, res, next) => {
-
-			if (req.session.id) {
-				this.IsAuthorized(req.session.id)
-				.then(Auth_res => {
-
-					req.autorized = Auth_res;
-					if (Auth_res &&
-							unauthorized_redirect &&
-							typeof unauthorized_redirect === 'string')
-					{
-						res.redirect(unauthorized_redirect);
-					}
-					next();
-
-				})
-				.catch(err => {
-
-					req.autorized = false;
-					next(err);
-
-				});
-
-			} else {
-
-				req.autorized = false;
-				if (unauthorized_redirect && typeof unauthorized_redirect === 'string')
-					res.redirect(unauthorized_redirect);
-				next();
 
 			}
 
@@ -169,16 +149,140 @@ class OAuth {
 
 	}
 
-	CreateSession (session_id, user) {
+	async IsAuthorized (token) {
+
+		try {
+			var decoded = jwt.verify(token, this.secret);
+
+			return new OAuthResponse(
+				OAuthResponse.status_codes.OK,
+				decoded,
+				'Token Veified.'
+			);
+
+		} catch (err) {
+
+			return new OAuthResponse(
+				OAuthResponse.status_codes.INVALID_SESSION_TOKEN,
+				err,
+				'The token was invalid.'
+			);
+
+		}
+
+	}
+
+	Authorized (unauthorized_redirect = undefined) {
+
+		return async (req, res, next) => {
+
+			// Is there a sesstion token
+			if (!req.session.token) {
+
+				req.autorized = false;
+				if (unauthorized_redirect && typeof unauthorized_redirect === 'string')
+					res.redirect(unauthorized_redirect);
+				else
+					next();
+
+				return;
+
+			}
+		
+			// Validate token
+			let Auth_res;
+			try {
+
+				Auth_res = await this.IsAuthorized(req.session.token);
+				
+			} catch (err) {
+
+				req.status(500);
+				next({ status: 500, OAuthErr: err });
+				return;
+
+			}
+
+			// Check vaidations response
+			req.autorized = OAuthResponse.OK(Auth_res);
+			if (!req.autorized) {
+				// token invalid or expired destroy session
+				req.session.destroy(err => {
+					// redirect or continue
+					if (unauthorized_redirect && typeof unauthorized_redirect === 'string')
+						res.redirect(unauthorized_redirect);
+					else
+						next();
+
+				});
+
+				return;
+			}
+
+			// token valid extract some data
+			req.user_id = Auth_res.user.user_id;
+			req.user_email = Auth_res.user.user_email;
+			req.user_name = Auth_res.user.user_name;
+
+			// Get a user referance from the databse
+			let db_res;
+			try {
+
+				db_res = await db.Get(`customers/${Auth_res.user.user_id}`);
+
+			} catch (err) {
+				// handle errors
+				req.status(500);
+				next({ status: 500, DBErr: err });
+				return;
+
+			}
+
+			// check database response
+			if (!DBResponse.OK(db_res)) {
+				// database query failed
+				req.status(500);
+				next({ status: 500, DBErr: err });
+				return;
+
+			} 
+
+			// db response OK
+			// add user referance to request object
+			req.user_ref = db_res.data.ref;
+			next();
+
+		}
+
+	}
+
+	CreateSession (user) {
+
+		// let token = this.CreateToken(128);
+		// while (this.sessions[token]) token = this.CreateToken(128);
 
 		let session = new Session(
-			session_id,
+			token,
 			user.id,
 			user,
 			Date.now() + 60 * 60 * 1000
 		);
-		this.sessions[session_id] = session;
+		this.sessions[token] = session;
 
+		return token;
+
+	}
+
+	CreateToken (num_len) {
+
+		let pool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_!#%&+?-_!#%&+?-_!#%&+?"
+
+		let token = '';
+		for (let i = 0; i < num_len; i++) 
+			token += pool.charAt(Math.floor(Math.random() * pool.length));
+		
+		return token;
+		
 	}
 
 }
