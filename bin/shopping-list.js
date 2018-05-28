@@ -100,7 +100,7 @@ class ShoppingList {
                 meta.data[0].data().date,
                 products.data.map( (e) => new ProductDocument(e.data().kolonialId, e.data().amount, e.data().groupId)), 
                 groups.data.map( (e) => new GroupDocument(e.data().color, e.data().name))
-            )
+            );
             
             return new ShoppingListResponse(
                 ShoppingListResponse.status_codes.OK,
@@ -144,7 +144,7 @@ class ShoppingList {
 
 
     async updateShoppingListMetaData(listId, listObj){
-        if (listId, listObj && listObj instanceof ShoppingListDocument) {
+        if (listId && listObj && listObj instanceof ShoppingListDocument) {
 
             let res;
 
@@ -219,6 +219,35 @@ class ShoppingList {
                     data
                 },
                 `One or more paramters was undefined`
+            )
+        }
+    }
+
+
+    async deleteListOrItem(listId, itemId){
+
+        let res;
+
+        if (listId && itemId){
+            res = await db.Delete(`shoppingLists/${listId}/products/${itemId}`);
+        }else if (listId && itemId === undefined) {
+            res = await db.Delete(`shoppingLists/${listId}`);
+        }else {
+            throw new ShoppingListResponse(
+                ShoppingListResponse.status_codes.INVALID_PARAMETER,
+                {
+                    listId,
+                    itemId
+                },
+                "Invalid parameters"
+            )
+        }
+
+        if (!DBResponse.OK(res)) {
+            throw new ShoppingListResponse(
+                ShoppingListResponse.status_codes.UNKNOWN_ERROR,
+                res,
+                `Error while deleting element with id: ${listId}`
             )
         }
     }
