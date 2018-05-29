@@ -2,7 +2,7 @@
   "name": "smidig-kolonial",
   "version": "0.0.1",
   "description": "Smidig prosjekt - kolonial",
-  "main": "index.js",
+  "main": "./bin/www",
   "scripts": {
     "start": "node ./bin/www",
     "test": "node ./testing/test.js"
@@ -49,19 +49,20 @@
     "express-session": "^1.15.6",
     "firebase": "^5.0.2",
     "helmet": "^3.12.0",
+    "jsonwebtoken": "^8.2.1",
     "kolonial_api_wrapper": "github:Otard95/Kolonial-API-Wrapper",
     "moment": "^2.22.1",
     "morgan": "^1.9.0",
-    "request": "^2.83.0",
+    "request": "^2.87.0",
     "serve-favicon": "^2.4.5"
   },
   "devDependencies": {
     "colors": "^1.2.5",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "gulp-autoprefixer": "^4.0.0",
     "gulp-livereload": "^3.8.1",
     "gulp-nodemon": "^2.2.1",
     "gulp-pug2": "0.0.2",
-    "gulp-sass": "^3.1.0"
+    "gulp-sass": "^4.0.1"
   }
 }

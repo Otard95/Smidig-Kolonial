@@ -6,6 +6,18 @@ const key = require('./../configs/tokens.json');
 const interface = require('kolonial_api_wrapper');
 const api = new interface(key.kolonial.user_agent, key.kolonial.token);
 
+const router = require('express').Router();
+const url = require('url');
+const OAuth = require('../bin/OAuth');
+const week = require('./week.js');
+
+router.use('/', OAuth.Authorized(url.format({ // /user/login?redirect=<redirect-uri>&m=<message>
+  pathname: '/user/login',
+  query: {
+    redirect: '/kalender',
+    m: 'Du må være logget inn for å bruke den siden.' 
+  }
+})));
 
 router
 

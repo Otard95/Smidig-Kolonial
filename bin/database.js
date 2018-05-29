@@ -121,6 +121,8 @@ class Database {
 			// repeat til path is traversed
 		}
 
+		
+
 		if (!Array.isArray(docs)) {
 			docs = [docs];
 		}
@@ -238,9 +240,37 @@ class Database {
 			return res;
 		}
 
-		await res.data[0].ref.set(update_doc, { merge: true });
+		await res.data[0].ref.update(update_doc);
 		// TODO: The set methud woth resolve if it can't connect to firebase.
 		// 			 Handle the edgae case where that happens.
+
+	}
+
+	async Delete (str_path /* path to document */) {
+
+		let res = await this.Get(str_path);
+
+		if (!DBResponse.OK(res)) {
+			return res;
+		}
+
+		try {
+
+			await res.data[0].ref.delete();
+
+		} catch (e) {
+			throw new DBResponse (
+				DBResponse.status_codes.DOCUMENT_DELETION_FAILED,
+				{ firebase_error: e },
+				'Failed to delete the document.'
+			)
+		}
+
+		return new DBResponse (
+			DBResponse.status_codes.OK,
+			{ deleted_document: res.data.id },
+			'Document was deleted.'
+		);
 
 	}
 
