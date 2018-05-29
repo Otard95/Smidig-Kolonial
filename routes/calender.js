@@ -53,7 +53,7 @@ router
         if (differance < 1) {
           arr.push(new Date(year, month - 1, differance).getDate())
         } else {
-          let monthlength = new Date(year, month, 0).getDate() + 1
+          let monthlength = new Date(year, month - 1, 0).getDate() + 1
           let thisdate = date.getDate() - day + (day == 0 ? -6 : arr.length + 1)
           // checks if date is over the month length
           if (thisdate > monthlength) {
