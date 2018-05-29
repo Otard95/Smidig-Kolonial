@@ -2,45 +2,57 @@
 /*jshint node: true */
 
 let DOM_burger_button, DOM_side_overlay, DOM_content, DOM_footer, DOM_shadow;
+document.addEventListener("DOMContentLoaded", () => {
+  DOM_burger_button = document.querySelectorAll('.burger')[0]
+  DOM_content = document.querySelectorAll('.container')[0]
+  DOM_side_overlay = document.querySelectorAll('.side-overlay')[0]
+  DOM_footer = document.querySelectorAll('footer')[0]
+  DOM_shadow = document.querySelectorAll('.shadow')[0]
 
-$(document).ready(() => {
+  console.log(DOM_burger_button, DOM_content, DOM_side_overlay, DOM_footer, DOM_shadow)
 
-  // ## Click events for side panel
-  DOM_burger_button = $('.burger');
-  DOM_content       = $('.container');
-  DOM_side_overlay  = $('.side-overlay');
-  DOM_footer        = $('footer');
-  DOM_shadow        = $('.shadow');
 
-  DOM_burger_button.click(() => {
-    DOM_burger_button.toggleClass('close');
-    DOM_content.toggleClass('overlay');
-    DOM_side_overlay.toggleClass('show');
-    DOM_footer.toggleClass('overlay');
-    DOM_shadow.toggleClass('show');
-  });
-
-  // fit images in shoppinglist info
-  $('.shoppinglist-box').each(function (i) {
-    let img_container = $(this).find('.image-container');
-    let img = img_container.find('img');
-    let r = img.height() / img.width();
-    (r < 0) ? img.css('width', '100%') : img.css('height', '100%')
-  });
-
-  
-  $('.calendar-btn').on('click', function() {
-    let day = $(this).data('day'), month = $(this).data('month')
-    window.location.href = `/kalender/${month}-${day}`
+  DOM_burger_button.addEventListener('click', () => {
+    DOM_burger_button.classList.toggle('close');
+    DOM_content.classList.toggle('overlay');
+    DOM_side_overlay.classList.toggle('show');
+    DOM_footer.classList.toggle('overlay');
+    DOM_shadow.classList.toggle('show');
   })
 
-  $('#previous-pointer').on('click', function() {
-    let month = $(this).data('month')
+  // fit images in shoppinglist info
+  document.querySelectorAll('.shoppinglist-box').forEach(() => {
+    // let img_container = el.find('.image-container')
+    let img = document.querySelectorAll('.image-container img')[0]
+    let h = img.style.height,
+      w = img.style.width
+    let r = h / w
+    if (r < 0) {
+      img.style.width = '100%'
+    } else {
+      img.style.height = '100%'
+    }
+  });
+
+  let nextpoiner = document.querySelectorAll('#next-pointer')[0],
+    previouspoiner = document.querySelectorAll('#previous-pointer')[0],
+    calendarbtn = document.querySelectorAll('.calendar-btn')
+
+  calendarbtn.forEach(element => {
+    element.addEventListener('click', () => {
+      let day = element.innerHTML
+      month = element.dataset.month
+      window.location.href = `/kalender/${month}-${day}`
+    })
+  })
+
+  previouspoiner.addEventListener('click', () => {
+    let month = previouspoiner.dataset.month
     window.location.href = `/kalender/${--month}`
   })
 
-  $('#next-pointer').on('click', function() {
-    let month = $(this).data('month')
+  nextpoiner.addEventListener('click', () => {
+    let month = nextpoiner.dataset.month
     window.location.href = `/kalender/${++month}`
   })
-});
+})

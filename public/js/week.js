@@ -1,12 +1,19 @@
-$(document).ready(() => {
-  $('.btn-week-day').on('click', function() {
-    let month = $(this).data('month')
-    let day = $(this).html()
-    window.location.href = `/kalender/${month}-${day}`
+document.addEventListener("DOMContentLoaded", () => {
+  let backarrow = document.querySelectorAll('#pil-icon')[0]
+  let weekday = document.querySelectorAll('.btn-week-day')
+
+  // Eventlistener for presented weekdays
+  weekday.forEach(element => {
+    element.addEventListener('click', el => {
+      let month = element.dataset.month
+      let day = element.innerHTML
+      window.location.href = `/kalender/${month}-${day}`
+    })
   })
 
-  $('#pil-icon').on('click', function() {
-    let month = $(this).data('month')
+  // Eventlistener to get back to calendar
+  backarrow.addEventListener('click', el => {
+    let month = backarrow.dataset.month
     window.location.href = `/kalender/${month}`
   })
-});
+})
