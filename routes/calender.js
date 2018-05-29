@@ -13,24 +13,18 @@ router
   // SOK
   // ############
 
-  .get('/sok', async (req, res, next) => {
-    let categories = await api.GetAllCategories()
 
-    res.render('sok', {
-      title: 'Sok',
-      categories
-    })
-  })
 
   // ############
   // WEEK VIEW
   // ############
 
-  .get('/:mon-:day', (req, res, next) => {
+  .get('/:mon-:day', async(req, res, next) => {
     let mon = parseInt(req.params.mon)
     let day = parseInt(req.params.day)
 
     // Required  to pass month and day down to render successfully
+    let categories = await api.GetAllCategories()
     let chosen_day = day
     let month = new Date(2018, mon + 1, day).getMonth()-1
     let months = ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember']
@@ -74,7 +68,8 @@ router
       uke_num,
       daysstring: ['Man', 'Tis', 'Ons', 'Tor', 'Fre', 'Lor', 'Son'],
       days_arr,
-      chosen_day
+      chosen_day,
+      categories
     })
   })
 

@@ -20,13 +20,13 @@
               <li>{{this}}</li>
             {{/each}}
             <h3 class="this-week">{{uke_num}}</h3>
-            {{#each days_arr}} 
-              {{#condition this '==' ../chosen_day}} 
-                <li class="font-yellow" style="color: red" >{{this}}</li> 
-              {{/condition}} 
-              {{#condition this '!=' ../chosen_day}} 
-                <li class="font-aubergine btn-week-day" data-month="{{../month}}">{{this}}</li> 
-              {{/condition}} 
+            {{#each days_arr}}
+              {{#condition this '==' ../chosen_day}}
+                <li class="font-yellow" style="color: red" >{{this}}</li>
+              {{/condition}}
+              {{#condition this '!=' ../chosen_day}}
+                <li class="font-aubergine btn-week-day" data-month="{{../month}}">{{this}}</li>
+              {{/condition}}
             {{/each}}
           </ul>
         </div>
@@ -43,5 +43,6 @@
       </div>
     </div>
   </div>
+  {{> categories}}
 
 {{/layout}}
