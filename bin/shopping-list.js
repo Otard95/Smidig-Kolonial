@@ -228,11 +228,14 @@ class ShoppingList {
 
         let res;
 
-        if (listId && itemId){
+        if (typeof listId === 'string' && typeof itemId === 'string'){
             res = await db.Delete(`shoppingLists/${listId}/products/${itemId}`);
-        }else if (listId && itemId === undefined) {
+        } else if (typeof listId === 'string' && itemId === undefined) {
+
+            // delete from users
+
             res = await db.Delete(`shoppingLists/${listId}`);
-        }else {
+        } else {
             throw new ShoppingListResponse(
                 ShoppingListResponse.status_codes.INVALID_PARAMETER,
                 {
@@ -240,7 +243,7 @@ class ShoppingList {
                     itemId
                 },
                 "Invalid parameters"
-            )
+            );
         }
 
         if (!DBResponse.OK(res)) {
@@ -248,8 +251,14 @@ class ShoppingList {
                 ShoppingListResponse.status_codes.UNKNOWN_ERROR,
                 res,
                 `Error while deleting element with id: ${listId}`
-            )
+            );
         }
+
+        return new ShoppingListResponse(
+            ShoppingListResponse.status_codes.OK,
+            { params: { listId, itemId } },
+            'Shopping list deleted'
+        );
     }
 
 }
