@@ -5,6 +5,7 @@ const shoping_list = require('../../bin/shopping-list');
 const DBRes        = require('../../models/database-response');
 const ShoppingListDoc = require('../../models/shopping-list-document');
 const ProductDoc = require('../../models/product-document');
+const ShoppingListResponse = require('../../models/shopping-list-response')
 
 /**
  * ## Test data
@@ -12,13 +13,13 @@ const ProductDoc = require('../../models/product-document');
 
 const user_id = 'cEx6uZdHs5K7KfUfz6cT';
 const list_name = 'Some shopping list';
-const list_id = '7vaXLgq3hDZ3luAnYXPv';
-const product_id = 'sVwseIGDd7uNTwjpiQ42';
+let list_id;
+let product_id;
 const date = Date.now();
 const productName = "juice";
-const kolonialId = '3rwr3wbw3krb3wkrb3jbrjw3r';
+const kolonialId = '469';
 const amount = 3;
-const groupId = '4t4ete4te4gfe4t4';
+const groupId = 'someGroupId';
 const color = '#someHex';
 
 /**
@@ -33,12 +34,14 @@ async function TestCreateShoppingListNotShared () {
 
 	let res = await db.Get(`shoppingLists/{"name": "${list_name}"}`);
 
-	assert(DBRes.OK(res));
-	assert(res.data.length == 1, 'Multiple matches.');
+	assert(DBRes.OK(res), res);
+    assert.strictEqual(res.data.length, 1, 'Multiple matches.');
+    
+    list_id = res.data[0].id;
 
 	res = await db.Get(`customers/${user_id}/shoppingLists/{"shoppingListId": "${res.data[0].id}"}`);
 	
-	assert(DBRes.OK(res));
+	assert(DBRes.OK(res), res);
 
 }
 TestCreateShoppingListNotShared.description = 'Test ShoppingList::CreateShoppingList(); The list is not shared.';
@@ -49,16 +52,14 @@ TestCreateShoppingListNotShared.description = 'Test ShoppingList::CreateShopping
 
 async function TestAddItemToShoppingList(){
 
-    let res = await db.Get(`shoppingLists/{"name": "${list_name}"}`);
-
-    assert(DBRes.OK(res));
-    assert(res.data.length == 1, 'Multiple matches.');
-
     let product = new ProductDoc(kolonialId, amount, groupId);
 
-    let productRes = await shoping_list.addProductToList(res.data[0].id, product);
+    let productRes = await shoping_list.addProductToList(list_id, product);
 
-    assert(DBRes.OK(productRes));
+    assert(ShoppingListResponse.OK(productRes));
+
+    product_id = productRes.data.id;
+
 }
 TestAddItemToShoppingList.description = 'Test ShoppingList::AddProductTOList(); using already created list to add item'
 
@@ -69,9 +70,8 @@ TestAddItemToShoppingList.description = 'Test ShoppingList::AddProductTOList(); 
 async function TestGetShoppingListFromService() {
 
 	let res = await shoping_list.getShoppingList(list_id);
-    assert(DBRes.OK(res));
+    assert(ShoppingListResponse.OK(res));
 
-	assert.strictEqual(list_id, res.data[0].id, `Id not equal`)
 }
 TestGetShoppingListFromService.description = 'Test ShoppingList::GetShoppingList(); using already created list and getting it'
 
@@ -83,8 +83,8 @@ async function TestGetContentFromShoppingList(){
 
     let res = await shoping_list.getShoppingListContent(list_id);
 
-    assert.strictEqual(kolonialId, res.data.products[0].kolonialId, `kolonial id not equal`)
-    assert.strictEqual(color, res.data.groups[0].color, `color not equal`)
+    assert.strictEqual(kolonialId, res.data.products[0].kolonialId, `kolonial id not equal`);
+    
 }
 TestGetContentFromShoppingList.description = 'Test ShoppingList::GetShoppingListContent(); using already created list with content';
 
@@ -94,9 +94,6 @@ TestGetContentFromShoppingList.description = 'Test ShoppingList::GetShoppingList
 async function TestUpdateShoppingListMeta(){
 
     let res = await shoping_list.getShoppingListContent(list_id);
-
-    console.log(res.data.name)
-    console.log(`origional date: ${res.data.date}`);
 
     let timeNow = Date.now();
 
@@ -110,8 +107,9 @@ async function TestUpdateShoppingListMeta(){
     await shoping_list.updateShoppingList(list_id, updatedResDoc);
 
     let updatedRes = await shoping_list.getShoppingListContent(list_id);
+    
+    assert.strictEqual(timeNow, updatedRes.data.date, 'Date was not updated');
 
-    console.log(`updated date: ${updatedRes.data.date}`);
 }
 TestUpdateShoppingListMeta.description = 'Test ShoppingList::UpdateShoppingList(); with meta data'
 
@@ -119,9 +117,10 @@ TestUpdateShoppingListMeta.description = 'Test ShoppingList::UpdateShoppingList(
  * ## Unit Test
  */
 async function TestUpdateProductInList () {
+
     let res = await shoping_list.getShoppingListContent(list_id);
 
-    console.log(`original amount: ${res.data.products[0].amount}`)
+    let amount = res.data.products[0].amount;
 
     let updatedDoc = new ProductDoc(
         res.data.products[0].kolonialId,
@@ -133,9 +132,7 @@ async function TestUpdateProductInList () {
 
     let updatedRes = await shoping_list.getShoppingListContent(list_id);
 
-    console.log(`modified amount: ${updatedRes.data.products[0].amount}`)
-
-    assert(updatedRes.data.products[0].amount > res.data.products[0].amount)
+    assert.strictEqual(amount + 1, updatedRes.data.products[0].amount);
 }
 TestUpdateProductInList.description = 'Test ShoppingList::UpdateShoppingContent(); with meta data'
 

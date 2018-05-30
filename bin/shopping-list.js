@@ -62,7 +62,22 @@ class ShoppingList {
 
     async addProductToList(listId, product) {
         if (listId && product instanceof ProductDocument) {
-            return await db.Create(`shoppingLists/${listId}/products`, product.getData());
+            let res = await db.Create(`shoppingLists/${listId}/products`, product.getData());
+
+            if (!DBResponse.OK(res)) {
+                throw new ShoppingListResponse(
+                    ShoppingListResponse.status_codes.UNKNOWN_ERROR,
+                    res,
+                    `Error while deleting element with id: ${listId}`
+                );
+            }
+
+            return new ShoppingListResponse(
+                ShoppingListResponse.status_codes.OK,
+                res.data,
+                'Successful response'
+            )
+            
         }
         throw new ShoppingListResponse(
             ShoppingListResponse.status_codes.INVALID_PARAMETER,
@@ -78,7 +93,21 @@ class ShoppingList {
 
     async getShoppingList(listId){
         if (listId){
-            return await db.Get(`shoppingLists/${listId}`)
+            let res = await db.Get(`shoppingLists/${listId}`)
+
+            if (!DBResponse.OK(res)) {
+                throw new ShoppingListResponse(
+                    ShoppingListResponse.status_codes.UNKNOWN_ERROR,
+                    res,
+                    `Error while deleting element with id: ${listId}`
+                );
+            }
+
+            return new ShoppingListResponse(
+                ShoppingListResponse.status_codes.OK,
+                res.data[0],
+                'Successful response'
+            )
         }
         throw new ShoppingListResponse(
             ShoppingListResponse.status_codes.NOT_FOUND,
@@ -95,11 +124,14 @@ class ShoppingList {
             let products = await db.Get(`shoppingLists/${listId}/products/{}`);
             let groups = await db.Get(`shoppingLists/${listId}/groups/{}`);
 
+            products = (DBResponse.OK(products) ? products.data.map( (e) => new ProductDocument(e.data().kolonialId, e.data().amount, e.data().groupId)): undefined);
+            groups = (DBResponse.OK(groups) ? groups.data.map( (e) => new GroupDocument(e.data().color, e.data().name)): undefined);
+
             let res = new ShoppingListDocument(
-                meta.data[0].data().name, 
-                meta.data[0].data().date,
-                products.data.map( (e) => new ProductDocument(e.data().kolonialId, e.data().amount, e.data().groupId)), 
-                groups.data.map( (e) => new GroupDocument(e.data().color, e.data().name))
+                meta.data.data().name, 
+                meta.data.data().date,
+                products, 
+                groups
             );
             
             return new ShoppingListResponse(
@@ -125,14 +157,18 @@ class ShoppingList {
                 sub_id = data;
                 data = opt;
             } else {
-                // parameter error
+                throw new ShoppingListResponse(
+                    ShoppingListResponse.status_codes.INVALID_PARAMETER,
+                    {},
+                    'Invalid parameters'
+                )
             }
         }
 
         if (data instanceof ShoppingListDocument) {
-            await this.updateShoppingListMetaData(listId, data)
+            return await this.updateShoppingListMetaData(listId, data)
         } else if (data instanceof ProductDocument || data instanceof GroupDocument) {
-            await this.updateShoppingListContent(listId, sub_id, data)
+            return await this.updateShoppingListContent(listId, sub_id, data)
         } else {
             throw new ShoppingListResponse(
                 ShoppingListResponse.status_codes.INVALID_PARAMETER,
@@ -158,7 +194,7 @@ class ShoppingList {
                 );
             }
 
-            if (res !== undefined) {
+            if (!DBResponse.OK(res)) {
                 throw new ShoppingListResponse(
                     ShoppingListResponse.status_codes.UNKNOWN_ERROR,
                     {
@@ -171,6 +207,12 @@ class ShoppingList {
                     `Error while updating list with id: ${listId}`
                 )
             }
+
+            return new ShoppingListResponse(
+                ShoppingListResponse.status_codes.OK,
+                {},
+                'Successfuly updated list'
+            )
         }
     }
 
@@ -196,20 +238,26 @@ class ShoppingList {
                 )
             }
 
-            if (res !== undefined){
+           if (!DBResponse.OK(res)) {
                 throw new ShoppingListResponse(
                     ShoppingListResponse.status_codes.UNKNOWN_ERROR,
                     {
                         listId,
-                        docId,
-                        data,
-                        LIST_OBJ_TYPE: typeof data,
-                        EXPECTED_OBJ_TYPE: "ProductDocument || GroupDocument"
+                        listObj,
+                        LIST_OBJ_TYPE: typeof listObj,
+                        EXPECTED_OBJ_TYPE: "ShoppingListDocument"
 
                     },
-                    `Error while updating list with id: ${listId}`
+                    `Error while updating list with id: ${listId} and product with id: ${docId}`
                 )
             }
+            
+            return new ShoppingListResponse(
+                ShoppingListResponse.status_codes.OK,
+                {},
+                'Successfuly updated list item'
+            )
+
         } else {
             throw new ShoppingListResponse(
                 ShoppingListResponse.status_codes.PARAMETER_DATA_TYPE,
@@ -224,17 +272,12 @@ class ShoppingList {
     }
 
 
-    async deleteListOrItem(listId, itemId){
+    async removeItemFromList(listId, itemId){
 
         let res;
 
         if (typeof listId === 'string' && typeof itemId === 'string'){
             res = await db.Delete(`shoppingLists/${listId}/products/${itemId}`);
-        } else if (typeof listId === 'string' && itemId === undefined) {
-
-            // delete from users
-
-            res = await db.Delete(`shoppingLists/${listId}`);
         } else {
             throw new ShoppingListResponse(
                 ShoppingListResponse.status_codes.INVALID_PARAMETER,
@@ -258,6 +301,82 @@ class ShoppingList {
             ShoppingListResponse.status_codes.OK,
             { params: { listId, itemId } },
             'Shopping list deleted'
+        );
+    }
+
+
+    async deleteShoppingList(costumerId, listId){
+
+        if (typeof costumerId !== 'string' || typeof listId !== 'string') {
+
+            throw new ShoppingListResponse(
+                ShoppingListResponse.status_codes.INVALID_PARAMETER,
+                {
+                    costumerId: `exprected 'string' but was '${typeof customerId}'`,
+                    listId: `expected 'string' but was '${typeof listId}'`
+                },
+                'Parameter error'
+            )
+        };
+
+        // delete from users
+        let customerListDocument = await db.Get(`customers/${costumerId}/shoppingLists/{"shoppingListId": "${listId}"}`);
+
+        if (!DBResponse.OK(customerListDocument)) {
+            throw new ShoppingListResponse(
+                ShoppingListResponse.status_codes.UNKNOWN_ERROR,
+                customerListDocument,
+                `Error while getting document with customer id: ${customerId} and list with key: ${listId}`
+            );
+        }
+
+        if (customerListDocument.data.length !== 1) {
+            throw new ShoppingListResponse(
+                ShoppingListResponse.status_codes.UNKNOWN_ERROR,
+                customerListDocument,
+                `Response with multi match expected 1`
+            );
+        }
+
+        let doc = customerListDocument.data[0].data();
+        
+        while (doc.sharedWith.length > 0) {
+            let user = doc.sharedWith.shift();
+            let res = await db.Delete(`customers/${user}/sharedLists/{"shoppingListId": "${listId}"}`);
+
+            if (!DBResponse.OK(res)) {
+                throw new ShoppingListResponse(
+                    ShoppingListResponse.status_codes.UNKNOWN_ERROR,
+                    res,
+                    `Error while deleting shared list document with id: ${listId} from customer with id: ${user}`
+                );
+            }
+        }
+
+        let res = await db.Delete(`customers/${costumerId}/shoppingLists/{"shoppingListId": "${listId}"}`);
+        
+        if (!DBResponse.OK(res)) {
+            throw new ShoppingListResponse(
+                ShoppingListResponse.status_codes.UNKNOWN_ERROR,
+                res,
+                `Error while deleting list document with id: ${listId} from customer with id: ${customerId}`
+            );
+        }
+
+        res = await db.Delete(`shoppingLists/${listId}`);
+
+        if (!DBResponse.OK(res)) {
+            throw new ShoppingListResponse(
+                ShoppingListResponse.status_codes.UNKNOWN_ERROR,
+                res,
+                `Error while deleting list document with id: ${listId}`
+            );
+        }
+
+        return new ShoppingListResponse(
+            ShoppingListResponse.status_codes.OK,
+            {},
+            `Successfuly deleted shopping list`
         );
     }
 
