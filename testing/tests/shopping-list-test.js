@@ -84,7 +84,7 @@ async function TestGetContentFromShoppingList(){
     let res = await shoping_list.getShoppingListContent(list_id);
 
     assert.strictEqual(kolonialId, res.data.products[0].kolonialId, `kolonial id not equal`);
-    
+
 }
 TestGetContentFromShoppingList.description = 'Test ShoppingList::GetShoppingListContent(); using already created list with content';
 
@@ -136,12 +136,43 @@ async function TestUpdateProductInList () {
 }
 TestUpdateProductInList.description = 'Test ShoppingList::UpdateShoppingContent(); with meta data'
 
+async function TestDeleteProductsFromList (){
+
+    let res = await shoping_list.removeItemFromList(list_id, product_id);
+
+    assert(ShoppingListResponse.OK(res), res);
+
+    let failRes = await shoping_list.getShoppingListContent(list_id);
+
+    assert.strictEqual(0, failRes.data.products.length, 'expected empty list but was not');
+
+}
+TestDeleteProductsFromList.description = 'Test ShoppingList::removeItemFromList(); deleting 1 document'
+
+
+async function TestDeleteList () {
+
+    let res = await shoping_list.deleteShoppingList(user_id, list_id);
+
+    assert(ShoppingListResponse.OK(res), res);
+
+    try {
+        let failRes = await shoping_list.getShoppingList(list_id);
+        assert.fail('Found document, but expected not to');
+    } catch (e) {
+        assert.strictEqual(ShoppingListResponse.status_codes.UNKNOWN_ERROR, e.status, 'Document still exists')
+    }
+
+}
+
 let addToList = unit.series(
     TestCreateShoppingListNotShared, 
     TestAddItemToShoppingList, 
     TestGetShoppingListFromService, 
     TestGetContentFromShoppingList,
     TestUpdateShoppingListMeta,
-    TestUpdateProductInList);
+    TestUpdateProductInList,
+    TestDeleteProductsFromList,
+    TestDeleteList);
     
 module.exports = unit.test(addToList);
