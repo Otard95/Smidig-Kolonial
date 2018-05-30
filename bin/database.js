@@ -241,8 +241,12 @@ class Database {
 		}
 
 		await res.data[0].ref.update(update_doc);
-		// TODO: The set methud woth resolve if it can't connect to firebase.
-		// 			 Handle the edgae case where that happens.
+		
+		return new DBResponse(
+			DBResponse.status_codes.OK,
+			{},
+			'Update done.'
+		)
 
 	}
 
