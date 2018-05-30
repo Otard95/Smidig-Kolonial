@@ -165,14 +165,22 @@ async function TestDeleteList () {
 
 }
 
-let addToList = unit.series(
-    TestCreateShoppingListNotShared, 
+let step1 = unit.parallel(
     TestAddItemToShoppingList, 
-    TestGetShoppingListFromService, 
+    TestGetShoppingListFromService
+);
+
+let step2 = unit.parallel(
     TestGetContentFromShoppingList,
-    TestUpdateShoppingListMeta,
+    TestUpdateShoppingListMeta
+);
+
+let main = unit.series(
+    TestCreateShoppingListNotShared,
+    step1,
+    step2,
     TestUpdateProductInList,
     TestDeleteProductsFromList,
     TestDeleteList);
     
-module.exports = unit.test(addToList);
+module.exports = unit.test(main);
