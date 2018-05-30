@@ -232,7 +232,7 @@ class Database {
 	}
 
 	//TODO metode for å oppdatere et eksisterende dokuemnt
-	async Update (str_path /* path to document */, update_doc) {
+	async Update (str_path /* path to document */, update_doc, merge = true) {
 
 		let res = await this.Get(str_path);
 
@@ -240,7 +240,7 @@ class Database {
 			return res;
 		}
 
-		await res.data[0].ref.update(update_doc);
+		await res.data[0].ref.set(update_doc, { merge });
 		
 		return new DBResponse(
 			DBResponse.status_codes.OK,
