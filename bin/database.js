@@ -240,7 +240,12 @@ class Database {
 			return res;
 		}
 
-		await res.data[0].ref.set(update_doc, { merge });
+		let prom = [];
+		res.data.forEach( doc => {
+			doc.ref.set(update_doc, { merge });
+		});
+		
+		await Promise.all(prom);
 		
 		return new DBResponse(
 			DBResponse.status_codes.OK,
