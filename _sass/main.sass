@@ -1,4 +1,6 @@
 @import "./imports/colors.sass"
+@import "./footer.sass"
+@import "./header.sass"
 
 @font-face
   font-family: 'GT Walsheim Regular'
@@ -25,89 +27,6 @@ body, html
   height: 88%
   background: $white
 
-
-footer
-  background: #555
-  color: $Varmgra
-  font-size: 1.5em
-  position: fixed
-  bottom: 0
-  width: 100%
-  height: 12%
-
-  &.overlay
-    filter: blur(3px)
-
-  a
-    cursor: pointer
-    color: $Varmgra
-    text-decoration: none
-
-    &:visited
-      color: $Varmgra
-      text-decoration: none
-
-  .nav-menu
-    display: flex
-    justify-content: center
-    margin: 0
-    height: 70%
-    position: relative
-    bottom: 0
-
-    a
-      display: block
-      background: $Mork-aubergine
-      text-align: center
-      align-content: center
-      justify-content: center
-      font-size: 2.0vh
-      line-height: 400%
-      height: 100%
-      width: 20%
-
-      &:hover
-        background: $Varmgra
-        color: $Mork-aubergine
-
-  .handlekurv-menu *, .handlekurv-menu
-
-  .handlekurv-menu
-    position: relative
-    box-shadow: 0 15px 75px rgba(0,0,0,0.2)
-    background: $Varmgra
-    width: 100%
-    top: 0
-    height: 40%
-    line-height: 220%
-
-    #handlekurv-icon
-      position: absolute
-      width: 1.2em
-      height: 1.2em
-      top: 20%
-      left: 0
-      margin-left: 5%
-
-    .handlekurv-name
-      position: absolute
-      left: -10%
-
-
-    .handlekurv-price
-      position: absolute
-      text-align: right
-      padding: 0 10px
-      width: 20%
-      right: 3%
-
-    p
-      display: inline-block
-      width: 80%
-      padding: 0 10px
-      margin: 0
-      color: $sort-aubergine
-
 .grid-large
   width: 100%
   display: grid
@@ -121,33 +40,3 @@ footer
   .half-width
     position: relative
     grid-column: span 1
-
-.planner-grid
-  position: relative
-  margin-top: 3.5%
-  display: grid
-  font-size: 1.5vh
-  text-align: center
-
-  .planner-header
-    display: inline-grid
-    grid-row: 1
-    grid-template-columns: 1fr 1fr 14fr 2fr 2fr
-    align-items: center
-    justify-content: center
-    border-bottom: 1px solid $Varmgra
-    padding-bottom: 2%
-
-    .img
-      width: 50%
-      height: 50%
-
-    .header-text
-      font-size: 2.7vh
-      margin-left: 10%
-
-    #pil-icon
-      height: 45%
-
-    h1
-      margin: .5em 0 .25em
