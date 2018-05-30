@@ -5,7 +5,8 @@ const shoping_list = require('../../bin/shopping-list');
 const DBRes        = require('../../models/database-response');
 const ShoppingListDoc = require('../../models/shopping-list-document');
 const ProductDoc = require('../../models/product-document');
-const ShoppingListResponse = require('../../models/shopping-list-response')
+const ShoppingListResponse = require('../../models/shopping-list-response');
+const GroupDoc = require('../../models/group-document');
 
 /**
  * ## Test data
@@ -19,7 +20,7 @@ const date = Date.now();
 const productName = "juice";
 const kolonialId = '469';
 const amount = 3;
-const groupId = 'someGroupId';
+let groupId;
 const color = '#someHex';
 
 /**
@@ -54,14 +55,39 @@ async function TestAddItemToShoppingList(){
 
     let product = new ProductDoc(kolonialId, amount, groupId);
 
-    let productRes = await shoping_list.addProductToList(list_id, product);
+    let productRes = await shoping_list.addDocumentToList(list_id, product);
 
     assert(ShoppingListResponse.OK(productRes));
 
     product_id = productRes.data.id;
 
 }
-TestAddItemToShoppingList.description = 'Test ShoppingList::AddProductTOList(); using already created list to add item'
+TestAddItemToShoppingList.description = 'Test ShoppingList::AddDocumentToList(); adding product'
+
+/**
+ * ## Unit Test
+*/
+
+async function TestAddGroupToShoppingList(){
+
+    let group = new GroupDoc(color, 'Food');
+
+    let groupRes = await shoping_list.addDocumentToList(list_id, group);
+
+    assert(ShoppingListResponse.OK(groupRes));
+
+    groupId = groupRes.data.id;
+
+    let dbResData = await db.Get(`shoppingLists/${list_id}/groups/${groupId}`);
+
+    assert(DBRes.OK(dbResData), dbResData);
+
+    assert.strictEqual(groupId, dbResData.data[0].id, 'Document with id not equal');
+
+    assert.strictEqual(color, dbResData.data[0].data().color, 'Color not the same');
+
+}
+TestAddGroupToShoppingList.description = 'Test ShoppingList::AddDocumentList(); adding group/category'
 
 /**
  * ## Unit Test
@@ -166,7 +192,8 @@ async function TestDeleteList () {
 }
 
 let step1 = unit.parallel(
-    TestAddItemToShoppingList, 
+    TestAddItemToShoppingList,
+    TestAddGroupToShoppingList, 
     TestGetShoppingListFromService
 );
 

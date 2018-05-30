@@ -60,36 +60,66 @@ class ShoppingList {
         }
     }
 
-    async addProductToList(listId, product) {
-        if (listId && product instanceof ProductDocument) {
-            let res = await db.Create(`shoppingLists/${listId}/products`, product.getData());
+    async addDocumentToList(listId, doc) {
+        
+        let res;
 
-            if (!DBResponse.OK(res)) {
-                throw new ShoppingListResponse(
-                    ShoppingListResponse.status_codes.UNKNOWN_ERROR,
-                    res,
-                    `Error while deleting element with id: ${listId}`
-                );
-            }
-
-            return new ShoppingListResponse(
-                ShoppingListResponse.status_codes.OK,
-                res.data,
-                'Successful response'
-            )
+        if (listId && doc instanceof ProductDocument) {
+           
+            res = await db.Create(`shoppingLists/${listId}/products`, doc.getData());
+        
+        } else if (listId && doc instanceof GroupDocument) {
             
+            res = await db.Create(`shoppingLists/${listId}/groups`, doc.getData());
+
         }
-        throw new ShoppingListResponse(
-            ShoppingListResponse.status_codes.INVALID_PARAMETER,
-            {
-                listId,
-                product,
-                product_param_type: typeof product,
-                expected_type: 'ProductDocument'
-            },
-            "Parameter error, check parameter type!"
+
+        if (!DBResponse.OK(res)) {
+            throw new ShoppingListResponse(
+                ShoppingListResponse.status_codes.UNKNOWN_ERROR,
+                res,
+                `Error while deleting element with id: ${listId}`
+            );
+        }
+
+        return new ShoppingListResponse(
+            ShoppingListResponse.status_codes.OK,
+            res.data,
+            'Successful response'
         )
     }
+
+
+    async addGroupToProduct (listId, productId, group) {
+
+        if (!listId || !productId || !groupId instanceof GroupDocument) {
+
+            throw new ShoppingListResponse(
+                ShoppingListResponse.status_codes.INVALID_PARAMETER,
+                {},
+                'Missing parameters'
+            );
+        }
+
+        let res = db.Update(`shoppingLists/${listId}/products/${productId}`, group.getData());
+
+        if (!DBResponse.OK(res)) {
+        
+            throw new ShoppingListResponse(
+                ShoppingListResponse.status_codes.UNKNOWN_ERROR,
+                {},
+                'Failed to update product group'
+            );
+        }
+
+        return new ShoppingListResponse(
+            ShoppingListResponse.status_codes.OK,
+            res.data,
+            'Successfuly updated the products group affiliation'
+        );
+
+    }
+
 
     async getShoppingList(listId){
         if (listId){
@@ -304,6 +334,21 @@ class ShoppingList {
         );
     }
 
+    async deleteGroup(listId, groupId) {
+
+        let res = await db.Get(`shoppingLists/${listId}/products/{ "groupId":"${groupId}" }`);
+
+        let prom = [];
+        res.data.forEach( doc => {
+            let new_doc = doc.data();
+            delete new_doc.groupId;
+            prom.push(db.Update(`shoppingLists/${listId}/products/${doc.id}`, new_doc, false));
+        });
+        await Promise.all(prom);
+
+        await db.Delete(`shoppingLists/${listId}/groups/${groupId}`);
+    }
+
 
     async deleteShoppingList(costumerId, listId){
 
@@ -362,6 +407,18 @@ class ShoppingList {
                 `Error while deleting list document with id: ${listId} from customer with id: ${customerId}`
             );
         }
+
+        let products = await db.Get(`shoppingLists/${listId}/products/{}`);
+        let groups = await db.Get(`shoppingLists/${listId}/groups/{}`);
+
+        products = (DBResponse.OK(products) ? products.data.map( (e) => e.id): undefined);
+        groups = (DBResponse.OK(groups) ? groups.data.map( (e) => e.id): undefined);
+
+        let prom = [];
+        if (products) products.forEach((e) => prom.push(this.removeItemFromList(listId, e)));
+        if (groups) groups.forEach((e) => prom.push(this.deleteGroup(listId, e)));
+
+        await Promise.all(prom);
 
         res = await db.Delete(`shoppingLists/${listId}`);
 
