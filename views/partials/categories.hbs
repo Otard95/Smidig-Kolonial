@@ -13,11 +13,13 @@
       <p class="search-t">Søk i tusenvis av varer</p>
     </div>
     <div class="categories">
+      <!--
       <li>Inspirasjon</li>
       <li>Dine Varer</li>
       {{#each categories}}
         <li data-categoryId = {{this.id}}>{{this.name}}</li>
-      {{/each}}
+      {{/each}} -->
+        {{> product-item}}
     </div>
   </div>
   </div>
