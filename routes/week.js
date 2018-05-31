@@ -5,6 +5,7 @@ const key = require('./../configs/tokens.json');
 const interface = require('kolonial_api_wrapper');
 const api = new interface(key.kolonial.user_agent, key.kolonial.token);
 const shopping_list_service = require('../bin/shopping-list');
+const ShoppingListResponse = require('../models/shopping-list-response');
 
 async function GetListOnDate (num_date, arr_list_ids) {
 
@@ -16,7 +17,9 @@ async function GetListOnDate (num_date, arr_list_ids) {
   });
   let res = await Promise.all(prom);
 
-  res.filter( ListDoc => ListDoc.date === num_date );
+  res = res.filter( SLRes => ShoppingListResponse.OK(SLRes) );
+  res = res.map( SLRes => SLRes.data );
+  res = res.filter( ListDoc => ListDoc.date === num_date );
 
   return res;
 
@@ -35,7 +38,7 @@ router.get('/:mon-:day', async (req, res, next) => {
     return;
   }
 
-  let test = await GetListOnDate(123, req.user.lists);
+  let test = await GetListOnDate(20180531, req.user.lists);
   console.log(test);
 
   // Required  to pass month and day down to render successfully
