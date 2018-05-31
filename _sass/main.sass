@@ -1,4 +1,6 @@
 @import "./imports/colors.sass"
+@import "./footer.sass"
+@import "./header.sass"
 
 @font-face
   font-family: 'GT Walsheim Regular'
@@ -22,80 +24,8 @@ body, html
   font-family: 'GT Walsheim Medium'
   margin: 0
   padding: 0
+  height: 88%
   background: $white
-
-footer
-  background: #555
-  color: $Varmgra
-  font-size: 1.5em
-  position: fixed
-  bottom: 0
-  width: 100%
-  height: 9%
-
-  &.overlay
-    filter: blur(3px)
-
-  a
-    cursor: pointer
-    color: $Varmgra
-    text-decoration: none
-
-    &:visited
-      color: $Varmgra
-      text-decoration: none
-
-  .nav-menu
-    display: flex
-    justify-content: space-between
-    padding: 0
-    margin: 0
-    height: 70%
-    box-shadow: 0 15px 75px rgba(0,0,0,0.2)
-    position: relative
-    bottom: 0
-
-    a
-      display: block
-      background: $Mork-aubergine
-      text-align: center
-      font-size: 1.5em
-      line-height: 300%
-      height: 100%
-      width: 19.5%
-
-      &:hover
-        background: $Varmgra
-        color: $Mork-aubergine
-
-  .handlekurv-menu *, .handlekurv-menu
-
-  .handlekurv-menu
-    position: relative
-    box-shadow: 0 15px 75px rgba(0,0,0,0.2)
-    background: $Varmgra
-    width: 100%
-    top: 0
-    height: 30%
-    line-height: 200%
-
-    .handlekurv-name
-      position: absolute
-      left: 0
-
-    .handlekurv-price
-      position: absolute
-      text-align: right
-      padding: 0 10px
-      width: 20%
-      right: 0
-
-    p
-      display: inline-block
-      width: 80%
-      padding: 0 10px
-      margin: 0
-      color: $sort-aubergine
 
 .grid-large
   width: 100%
@@ -110,16 +40,3 @@ footer
   .half-width
     position: relative
     grid-column: span 1
-
-.planner-grid
-  display: grid
-  font-size: 2vh
-  text-align: center
-
-  .planner-header
-    display: inline-grid
-    grid-row: 1
-    grid-template-columns: 1fr 3fr 1fr
-
-    h1
-      margin: .5em 0 .25em

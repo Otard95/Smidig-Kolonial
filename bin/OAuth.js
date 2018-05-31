@@ -12,7 +12,7 @@ class OAuth {
 
 			this.sessions = {};
 
-			const DH = crypto.createDiffieHellman(2048);
+			const DH = crypto.createDiffieHellman(128);
 			DH.generateKeys();
 
 			this.secret = DH.getPrivateKey();
