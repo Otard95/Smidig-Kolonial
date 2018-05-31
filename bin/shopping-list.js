@@ -20,9 +20,7 @@ class ShoppingList {
 
     }
 
-    async createShoppingList (userId, name, date, users) {
-
-        let listObj = new ShoppingListDocument(name, date);
+    async createShoppingList (userId, listObj) {
 
         let DBres = await db.Create("shoppingLists", listObj.getData());
 
@@ -35,21 +33,15 @@ class ShoppingList {
             );
         }
 
-        //TODO kaste feilmedling om det ikke går
-        let userObj = {
-            shoppingListId: DBres.data.id,
-            sharedWith: []
-        };
-
-        if (users && users.length() > 0) {
-            userObj.sharedWith = users;
+        if (listObj.users && listObj.users.length() > 0) {
             users.forEach((user) => {
                 db.Create(`customers/${user}/sharedShoppingLists`,
                     { shoppingListID: DBres.data.id, owner: userId });
             })
         }
 
-        DBres = await db.Create(`customers/${userId}/shoppingLists`, userObj);
+        DBres = await db.Create(`customers/${userId}/shoppingLists`, { shoppingListId : DBres.data.id });
+
         if (!DBResponse.OK(DBres)) {
             // error
             throw new ShoppingListResponse(
@@ -58,6 +50,12 @@ class ShoppingList {
                 "Error while creating shopping list"
             );
         }
+
+        return new ShoppingListResponse(
+            ShoppingListResponse.status_codes.OK,
+            {},
+            'Successfuly created shopping list'
+        );
     }
 
     async addDocumentToList(listId, doc) {
@@ -182,7 +180,13 @@ class ShoppingList {
 
             return new ShoppingListResponse(
                 ShoppingListResponse.status_codes.OK,
-                res.data[0],
+                new ShoppingListDocument(
+                    res.data[0].data().name,
+                    res.data[0].data().date,
+                    [],
+                    [],
+                    res.data[0].data().sharedWith
+                ),
                 'Successful response'
             )
         }
@@ -205,10 +209,11 @@ class ShoppingList {
             groups = (DBResponse.OK(groups) ? groups.data.map( (e) => new GroupDocument(e.data().color, e.data().name, e.id)): undefined);
 
             let res = new ShoppingListDocument(
-                meta.data.data().name, 
-                meta.data.data().date,
+                meta.data.name, 
+                meta.data.date,
                 products, 
-                groups
+                groups,
+                meta.data.sharedWith
             );
             
             return new ShoppingListResponse(
@@ -423,7 +428,7 @@ class ShoppingList {
         };
 
         // delete from users
-        let customerListDocument = await db.Get(`customers/${costumerId}/shoppingLists/{"shoppingListId": "${listId}"}`);
+        let customerListDocument = await db.Get(`shoppingLists/${listId}`);
 
         if (!DBResponse.OK(customerListDocument)) {
             throw new ShoppingListResponse(
