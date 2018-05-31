@@ -227,18 +227,15 @@ class OAuth {
 			}
 
 			// token valid extract some data
-			req.user = {};
-			req.user.id = Auth_res.user.user_id;
-			req.user.name = Auth_res.user.user_name;
-			req.user.email = Auth_res.user.user_email;
+			req.user_id = Auth_res.user.user_id;
+			req.user_name = Auth_res.user.user_name;
+			req.user_email = Auth_res.user.user_email;
 
 			// Get a user referance from the databse
-			let db_res_user;
-			let db_res_lists;
+			let db_res;
 			try {
 
-				db_res_user = await db.Get(`customers/${Auth_res.user.user_id}`);
-				db_res_lists = await db.Get(`customers/${Auth_res.user.user_id}/shoppingLists/{}`);
+				db_res = await db.Get(`customers/${Auth_res.user.user_id}`);
 
 			} catch (err) {
 				// handle errors
@@ -249,21 +246,17 @@ class OAuth {
 			}
 
 			// check database response
-			if (!DBResponse.OK(db_res_user) && !DBResponse.OK(db_res_lists)) {
+			if (!DBResponse.OK(db_res)) {
 				// database query failed
 				req.status(500);
-				next({ status: 500, DBResponseErr: {db_res_user, db_res_lists} });
+				next({ status: 500, DBErr: err });
 				return;
 
 			} 
 
 			// db response OK
 			// add user referance to request object
-			req.user.ref = db_res.data[0].ref;
-			req.user.lists = db_res_lists.data.map( p => {
-				return { id: p.id, data: p.data() };
-			});
-
+			req.user_ref = db_res.data[0].ref;
 			next();
 
 		}
