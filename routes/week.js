@@ -35,6 +35,9 @@ router.get('/:mon-:day', async (req, res, next) => {
     return;
   }
 
+  let test = await GetListOnDate(123, req.user.lists);
+  console.log(test);
+
   // Required  to pass month and day down to render successfully
   let categories = await api.GetAllCategories()
   let product = await api.GetItemById(520)
