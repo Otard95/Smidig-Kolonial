@@ -1,12 +1,15 @@
 @import "./imports/colors.sass"
 
 .category-container
-  position: fixed
-  top: 22.1vh
+  position: absolute
+  top: 100vh
   //vises ved 22.1
-  margin-left: 4%
   height: 80vh
-  width: 92%
+  width: 100%
+  transition: all 700ms ease-in-out
+
+  .show
+    top: 22.1vh
 
 .information-view
   position: relative
@@ -21,6 +24,7 @@
 
 .search-title
   position: relative
+  text-align: center
   top: 2.5vh
   z-index: 2
   font-size: 2.3vh
@@ -63,15 +67,32 @@
   border-bottom: 1px solid $Varmgra
 
 .icon-button
+  position: absolute
+  left: 50%
+  transform: translateX(-50%)
+  top: -39vh
   width: 10vh
   height: 10vh
-  margin: 0 auto
-  background-color: $white
+  background-color: $eggeplomme
   border-radius: 50%
+  z-index: 2
+
+  .show
+    background-color: $white
+    top: -10vh
+
 
 #button-white
-  position: relative
-  margin-top: 1.8vh
-  width: 6vh
-  height: 4.3vh
-  z-index: 2
+  position: absolute
+  left: 2vh
+  top: 1vh
+  width: 50%
+  height: 40%
+
+
+#add-product-button
+  position: absolute
+  left: 1vh
+  top: 1.5vh
+  height: 60%
+  width: 70%
