@@ -20,9 +20,7 @@ class ShoppingList {
 
     }
 
-    async createShoppingList (userId, name, date, users) {
-
-        let listObj = new ShoppingListDocument(name, date);
+    async createShoppingList (userId, listObj) {
 
         let DBres = await db.Create("shoppingLists", listObj.getData());
 
@@ -35,21 +33,15 @@ class ShoppingList {
             );
         }
 
-        //TODO kaste feilmedling om det ikke går
-        let userObj = {
-            shoppingListId: DBres.data.id,
-            sharedWith: []
-        };
-
         if (users && users.length() > 0) {
-            userObj.sharedWith = users;
             users.forEach((user) => {
                 db.Create(`customers/${user}/sharedShoppingLists`,
                     { shoppingListID: DBres.data.id, owner: userId });
             })
         }
 
-        DBres = await db.Create(`customers/${userId}/shoppingLists`, userObj);
+        DBres = await db.Create(`customers/${userId}/shoppingLists`, { shoppingListId : DBres.data.id });
+
         if (!DBResponse.OK(DBres)) {
             // error
             throw new ShoppingListResponse(
@@ -58,6 +50,12 @@ class ShoppingList {
                 "Error while creating shopping list"
             );
         }
+
+        return new ShoppingListResponse(
+            ShoppingListResponse.status_codes.OK,
+            {},
+            'Successfuly created shopping list'
+        );
     }
 
     async addDocumentToList(listId, doc) {
