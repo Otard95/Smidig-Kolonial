@@ -4,7 +4,7 @@ class ProductDocument {
         this.kolonialId = kolonialId;
         this.amount = amount;
         this.groupId = groupId;
-        this.dodumentId = docId;
+        this.documentId = docId;
     }
 
     getData(){

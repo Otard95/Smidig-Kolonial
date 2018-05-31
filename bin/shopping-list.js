@@ -90,9 +90,9 @@ class ShoppingList {
     }
 
 
-    async addGroupToProduct (listId, productId, group) {
+    async addGroupToProduct (listId, productId, groupId) {
 
-        if (!listId || !productId || !groupId instanceof GroupDocument) {
+        if (!listId || !productId || !groupId ) {
 
             throw new ShoppingListResponse(
                 ShoppingListResponse.status_codes.INVALID_PARAMETER,
@@ -101,25 +101,72 @@ class ShoppingList {
             );
         }
 
-        let res = db.Update(`shoppingLists/${listId}/products/${productId}`, group.getData());
+        let product = await db.Get(`shoppingLists/${listId}/products/${productId}`);
+
+        if (!DBResponse.OK(product)) {
+        
+            throw new ShoppingListResponse(
+                ShoppingListResponse.status_codes.UNKNOWN_ERROR,
+                product,
+                'Failed to get product'
+            );
+        }
+
+        let new_doc = product.data[0].data();
+        new_doc.groupId = groupId;
+        let res = await db.Update(`shoppingLists/${listId}/products/${product.data[0].id}`, new_doc, false);
 
         if (!DBResponse.OK(res)) {
         
             throw new ShoppingListResponse(
                 ShoppingListResponse.status_codes.UNKNOWN_ERROR,
-                {},
-                'Failed to update product group'
+                res,
+                'Failed to get product'
             );
         }
 
         return new ShoppingListResponse(
             ShoppingListResponse.status_codes.OK,
-            res.data,
-            'Successfuly updated the products group affiliation'
+            res,
+            'Successfuly added group from product'
         );
 
     }
 
+    async removeGroupFromProduct(listId, productId) {
+
+        let product = await db.Get(`shoppingLists/${listId}/products/${productId}`);
+
+        if (!DBResponse.OK(product)) {
+        
+            throw new ShoppingListResponse(
+                ShoppingListResponse.status_codes.UNKNOWN_ERROR,
+                product,
+                'Failed to get product'
+            );
+        }
+
+
+        let new_doc = product.data[0].data();
+        delete new_doc.groupId;
+        let res = await db.Update(`shoppingLists/${listId}/products/${product.data[0].id}`, new_doc, false);
+
+        if (!DBResponse.OK(res)) {
+        
+            throw new ShoppingListResponse(
+                ShoppingListResponse.status_codes.UNKNOWN_ERROR,
+                res,
+                'Failed to get product'
+            );
+        }
+
+        return new ShoppingListResponse(
+            ShoppingListResponse.status_codes.OK,
+            res,
+            'Successfuly removed group from product'
+        );
+
+    }
 
     async getShoppingList(listId){
         if (listId){
@@ -338,15 +385,26 @@ class ShoppingList {
 
         let res = await db.Get(`shoppingLists/${listId}/products/{ "groupId":"${groupId}" }`);
 
-        let prom = [];
-        res.data.forEach( doc => {
-            let new_doc = doc.data();
-            delete new_doc.groupId;
-            prom.push(db.Update(`shoppingLists/${listId}/products/${doc.id}`, new_doc, false));
-        });
-        await Promise.all(prom);
+        if (DBResponse.OK(res)) {
+            
+            let prom = [];
+            res.data.forEach( doc => {
+                let new_doc = doc.data();
+                delete new_doc.groupId;
+                prom.push(db.Update(`shoppingLists/${listId}/products/${doc.id}`, new_doc, false));
+            });
+            await Promise.all(prom);
 
+        } else if (res.status !== DBResponse.status_codes.DOCUMENT_NOT_FOUND) {
+            throw new ShoppingListResponse(
+                ShoppingListResponse.status_codes.UNKNOWN_ERROR,
+                res,
+                `Error while getting document with id: ${listId}`
+            );
+        }
+        
         await db.Delete(`shoppingLists/${listId}/groups/${groupId}`);
+
     }
 
 

@@ -92,7 +92,38 @@ TestAddGroupToShoppingList.description = 'Test ShoppingList::AddDocumentList(); 
 /**
  * ## Unit Test
  */
+async function TestAddGroupToProduct () {
 
+    let res = await shoping_list.addGroupToProduct(list_id, product_id, groupId);
+
+    let updatedProduct = await db.Get(`shoppingLists/${list_id}/products/${product_id}`);
+
+    if (!DBRes.OK(updatedProduct)) assert.fail(updatedProduct);
+
+    assert.strictEqual(groupId, updatedProduct.data[0].data().groupId, 'Group id did not match');
+
+}
+TestAddGroupToProduct.description = 'Test ShoppingList::AddGroupToProduct(); adding group/category to product'
+
+/**
+ * ## Unit Test
+ */
+async function TestRemoveGroupFromProduct () {
+
+    let res = await shoping_list.removeGroupFromProduct(list_id, product_id);
+
+    let updatedProduct = await db.Get(`shoppingLists/${list_id}/products/${product_id}`);
+
+    if (!DBRes.OK(updatedProduct)) assert.fail(updatedProduct);
+
+    assert(!updatedProduct.data[0].data().groupId, 'Group id did not match');
+
+}
+TestRemoveGroupFromProduct.description = 'Test ShoppingList::AddGroupToProduct(); adding group/category to product'
+
+/**
+ * ## Unit Test
+ */
 async function TestGetShoppingListFromService() {
 
 	let res = await shoping_list.getShoppingList(list_id);
@@ -110,6 +141,8 @@ async function TestGetContentFromShoppingList(){
     let res = await shoping_list.getShoppingListContent(list_id);
 
     assert.strictEqual(kolonialId, res.data.products[0].kolonialId, `kolonial id not equal`);
+
+    assert(res.data.products[0].documentId);
 
 }
 TestGetContentFromShoppingList.description = 'Test ShoppingList::GetShoppingListContent(); using already created list with content';
@@ -162,6 +195,10 @@ async function TestUpdateProductInList () {
 }
 TestUpdateProductInList.description = 'Test ShoppingList::UpdateShoppingContent(); with meta data'
 
+
+/**
+ * ## Unit Test
+ */
 async function TestDeleteProductsFromList (){
 
     let res = await shoping_list.removeItemFromList(list_id, product_id);
@@ -198,6 +235,7 @@ let step1 = unit.parallel(
 );
 
 let step2 = unit.parallel(
+    TestAddGroupToProduct,
     TestGetContentFromShoppingList,
     TestUpdateShoppingListMeta
 );
@@ -206,6 +244,7 @@ let main = unit.series(
     TestCreateShoppingListNotShared,
     step1,
     step2,
+    TestRemoveGroupFromProduct,
     TestUpdateProductInList,
     TestDeleteProductsFromList,
     TestDeleteList);
