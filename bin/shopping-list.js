@@ -183,8 +183,8 @@ class ShoppingList {
                 new ShoppingListDocument(
                     res.data[0].name,
                     res.data[0].date,
-                    undefined,
-                    undefined,
+                    [],
+                    [],
                     res.data[0].sharedWith
                 ),
                 'Successful response'
@@ -212,7 +212,8 @@ class ShoppingList {
                 meta.data.data().name, 
                 meta.data.data().date,
                 products, 
-                groups
+                groups,
+                meta.data.data().sharedWith
             );
             
             return new ShoppingListResponse(
@@ -427,7 +428,7 @@ class ShoppingList {
         };
 
         // delete from users
-        let customerListDocument = await db.Get(`customers/${costumerId}/shoppingLists/{"shoppingListId": "${listId}"}`);
+        let customerListDocument = await db.Get(`shoppingLists/${listId}`);
 
         if (!DBResponse.OK(customerListDocument)) {
             throw new ShoppingListResponse(
