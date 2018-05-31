@@ -16,46 +16,57 @@ document.addEventListener("DOMContentLoaded", () => {
 
   })
 
+  async function getCategories(data) {
+    catlist.innerHTML = ""
+    data.children.forEach(async (num) => {
+      try {
+        let response = await fetch(`/API/category/${num}`)
+        let json = await response.json()
+        if (json.name !== undefined) catlist.innerHTML += `<li class="list-item" data-categoryid="${json.id}">${json.name}</li>`
+      } catch (e) {
+        console.log(e)
+      }
+    })
+  }
+
+  async function getProducts(data) {
+    catlist.innerHTML = ""
+    data.products.forEach(async (j) => {
+      try {
+        let response = await fetch(`/API/item/${j}`)
+        let json = await response.json()
+        catlist.innerHTML += `<div class="product-container">
+                  <img id="product-image" src=${json.images[0].thumbnail.url} alt="">
+                  <h1 id="product-name">${json.name.base}</h1>
+                  <h1 id="price-per-unit">kr ${json.price.gross}</h1>
+                  <img id="add-button" src="/imgs/icon/Velg vare.png" alt="">
+                  <h2 id="price-som">${json.price.unit_quantity_name}</h2>
+                  <h2 id="price-quantity">kr ${json.price.gross_unit}/${json.price.unit_quantity_abbreviation}</h2>
+                  </div>`
+      } catch (e) {
+        console.log(e)
+      }
+    })
+  }
+
   function setEventListener() {
     let listitem = document.querySelectorAll(".list-item")
-    listitem.forEach((i, index) => {
-      i.addEventListener("click", () => {
-        let cat = i.dataset.categoryid
-        fetch(`/API/category/${cat}`)
-          .then(data => data.json())
-          .then(y => {
+    listitem.forEach(item => {
+      item.addEventListener("click", async () => {
+        let category = item.dataset.categoryid
+        let data = await fetch(`/API/category/${category}`)
+        let json = await data.json()
 
-            if (y.children.length > 0) {
-              catlist.innerHTML = ""
-              y.children.forEach((j) => {
-                fetch(`/API/category/${j}`)
-                  .then(x => x.json())
-                  .then(k => {
-                    if (k.name !== undefined) catlist.innerHTML += `<li class="list-item" data-categoryid="${k.id}">${k.name}</li>`
-                  })
-              })
+        if (json.children.length > 0) {
+          getCategories(json)
+        } else {
+          console.log('Should log out data')
+          getProducts(json)
+        }
 
-            } else {
-              catlist.innerHTML = ""
-              y.products.forEach((j) => {
-                fetch(`/API/item/${j}`)
-                  .then(dat => dat.json())
-                  .then(k => {
-                    catlist.innerHTML += `<div class="product-container">
-                  <img id="product-image" src=${k.images[0].thumbnail.url} alt="">
-                  <h1 id="product-name">${k.name.base}</h1>
-                  <h1 id="price-per-unit">kr ${k.price.gross}</h1>
-                  <img id="add-button" src="/imgs/icon/Velg vare.png" alt="">
-                  <h2 id="price-som">${k.price.unit_quantity_name}</h2>
-                  <h2 id="price-quantity">kr ${k.price.gross_unit}/${k.price.unit_quantity_abbreviation}</h2>
-                  </div>`
-                  })
-              })
-            }
-          })
         setTimeout(() => {
           setEventListener()
-        }, 1000)
+        }, 3000)
       })
     })
   }
