@@ -259,7 +259,7 @@ class OAuth {
 
 			// db response OK
 			// add user referance to request object
-			req.user.ref = db_res.data[0].ref;
+			req.user.ref = db_res_user.data[0].ref;
 			req.user.lists = db_res_lists.data.map( p => {
 				return p.data().shoppingListId;
 			});
