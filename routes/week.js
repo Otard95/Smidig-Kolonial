@@ -4,6 +4,23 @@ const router = require('express').Router();
 const key = require('./../configs/tokens.json');
 const interface = require('kolonial_api_wrapper');
 const api = new interface(key.kolonial.user_agent, key.kolonial.token);
+const shopping_list_service = require('../bin/shopping-list');
+
+async function GetListOnDate (num_date, arr_list_ids) {
+
+  if (!num_date) return false;
+
+  prom = [];
+  arr_list_ids.forEach( id => {
+    prom.push(shopping_list_service.getShoppingList(id));
+  });
+  let res = await Promise.all(prom);
+
+  res.filter( ListDoc => ListDoc.date === num_date );
+
+  return res;
+
+}
 
 /* GET home page. */
 router.get('/:mon-:day', async (req, res, next) => {
