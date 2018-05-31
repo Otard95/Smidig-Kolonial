@@ -180,7 +180,13 @@ class ShoppingList {
 
             return new ShoppingListResponse(
                 ShoppingListResponse.status_codes.OK,
-                res.data[0],
+                new ShoppingListDocument(
+                    res.data[0].name,
+                    res.data[0].date,
+                    undefined,
+                    undefined,
+                    res.data[0].sharedWith
+                ),
                 'Successful response'
             )
         }
