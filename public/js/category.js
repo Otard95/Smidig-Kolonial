@@ -41,7 +41,14 @@ function setEventListener() {
                 .then(dat => dat.json())
                 .then(k => {
                   console.log(k);
-                  catlist.innerHTML += `<li class="list-item" data-categoryid="${k.id}">${k.name}</li>`
+                  catlist.innerHTML += `<div class="product-container">
+                  <img id="product-image" src=${k.images[0].thumbnail.url} alt="">
+                  <h1 id="product-name">${k.name.base}</h1>
+                  <h1 id="price-per-unit">kr ${k.price.gross}</h1>
+                  <img id="add-button" src="/imgs/icon/Velg vare.png" alt="">
+                  <h2 id="price-som">${k.price.unit_quantity_name}</h2>
+                  <h2 id="price-quantity">kr ${k.price.gross_unit}/${k.price.unit_quantity_abbreviation}</h2>
+                  </div>`
                 })
             })
           }
@@ -49,7 +56,7 @@ function setEventListener() {
         })
         setTimeout(() => {
         setEventListener()
-      }, 500)
+      }, 1500)
     })
   })
 }
