@@ -51,18 +51,9 @@ li#vare {
   height: 15%;
   border-bottom: 1px solid #d7d7d2; }
 
-#button {
-  height: 23%;
-  width: 23%; }
-
-.item-button {
-  position: absolute;
-  z-index: 0;
-  width: 100%;
-  bottom: 0; }
-
 .week-days {
   font-size: 2.3vh;
+  text-align: center;
   margin: .10em;
   margin-top: -1.5%; }
 
