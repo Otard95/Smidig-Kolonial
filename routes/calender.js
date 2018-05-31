@@ -3,6 +3,7 @@ const router = require('express').Router();
 const url = require('url');
 const OAuth = require('../bin/OAuth');
 const week = require('./week.js');
+const shopping_list_service = require('../bin/shopping-list');
 
 router.use('/', OAuth.Authorized(url.format({ // /user/login?redirect=<redirect-uri>&m=<message>
   pathname: '/user/login',
