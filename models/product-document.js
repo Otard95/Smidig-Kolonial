@@ -1,9 +1,10 @@
 class ProductDocument {
 
-    constructor (kolonialId, amount = 1, groupId = undefined) {
+    constructor (kolonialId, amount = 1, groupId = undefined, docId = undefined) {
         this.kolonialId = kolonialId;
         this.amount = amount;
         this.groupId = groupId;
+        this.dodumentId = docId;
     }
 
     getData(){
