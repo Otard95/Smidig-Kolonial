@@ -31,7 +31,9 @@ const color = '#someHex';
 
 async function TestCreateShoppingListNotShared () {
 
-	await shoping_list.createShoppingList(user_id, list_name, date);
+    let list = new ShoppingListDoc(list_name, date, [], [], []);
+
+	await shoping_list.createShoppingList(user_id, list);
 
 	let res = await db.Get(`shoppingLists/{"name": "${list_name}"}`);
 
@@ -160,7 +162,8 @@ async function TestUpdateShoppingListMeta(){
         res.data.name,
         timeNow,
         res.data.products,
-        res.data.groups
+        res.data.groups,
+        res.data.sharedWith
     )
 
     await shoping_list.updateShoppingList(list_id, updatedResDoc);
