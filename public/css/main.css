@@ -31,13 +31,13 @@ footer {
         -ms-flex-align: center;
             align-items: center; }
     footer .footer-menu #handlekurv-icon {
-      margin: 10px; }
+      margin: auto 10px; }
     footer .footer-menu .footer-text-output {
       position: absolute;
-      left: 5%; }
+      left: 25px; }
     footer .footer-menu .footer-price {
       position: absolute;
-      right: 5%; }
+      right: 25px; }
   footer .nav-menu {
     width: 100%;
     display: grid;
