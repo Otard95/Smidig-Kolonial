@@ -13,9 +13,7 @@ class ShoppingListDocument {
             date : this.date,
             name : this.name
         };
-
-        if (this.products) obj.products = this.products;
-        if (this.groups) obj.groups = this.groups;
+        
         if (this.sharedWith) obj.sharedWith = this.sharedWith;
         
         return obj;

@@ -33,7 +33,7 @@ class ShoppingList {
             );
         }
 
-        if (users && users.length() > 0) {
+        if (listObj.users && listObj.users.length() > 0) {
             users.forEach((user) => {
                 db.Create(`customers/${user}/sharedShoppingLists`,
                     { shoppingListID: DBres.data.id, owner: userId });
@@ -181,11 +181,11 @@ class ShoppingList {
             return new ShoppingListResponse(
                 ShoppingListResponse.status_codes.OK,
                 new ShoppingListDocument(
-                    res.data[0].name,
-                    res.data[0].date,
+                    res.data[0].data().name,
+                    res.data[0].data().date,
                     [],
                     [],
-                    res.data[0].sharedWith
+                    res.data[0].data().sharedWith
                 ),
                 'Successful response'
             )
@@ -209,11 +209,11 @@ class ShoppingList {
             groups = (DBResponse.OK(groups) ? groups.data.map( (e) => new GroupDocument(e.data().color, e.data().name, e.id)): undefined);
 
             let res = new ShoppingListDocument(
-                meta.data.data().name, 
-                meta.data.data().date,
+                meta.data.name, 
+                meta.data.date,
                 products, 
                 groups,
-                meta.data.data().sharedWith
+                meta.data.sharedWith
             );
             
             return new ShoppingListResponse(
