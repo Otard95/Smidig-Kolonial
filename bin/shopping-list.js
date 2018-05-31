@@ -154,8 +154,8 @@ class ShoppingList {
             let products = await db.Get(`shoppingLists/${listId}/products/{}`);
             let groups = await db.Get(`shoppingLists/${listId}/groups/{}`);
 
-            products = (DBResponse.OK(products) ? products.data.map( (e) => new ProductDocument(e.data().kolonialId, e.data().amount, e.data().groupId)): undefined);
-            groups = (DBResponse.OK(groups) ? groups.data.map( (e) => new GroupDocument(e.data().color, e.data().name)): undefined);
+            products = (DBResponse.OK(products) ? products.data.map( (e) => new ProductDocument(e.data().kolonialId, e.data().amount, e.data().groupId, e.id)): undefined);
+            groups = (DBResponse.OK(groups) ? groups.data.map( (e) => new GroupDocument(e.data().color, e.data().name, e.id)): undefined);
 
             let res = new ShoppingListDocument(
                 meta.data.data().name, 
