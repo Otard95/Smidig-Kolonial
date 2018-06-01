@@ -4,6 +4,26 @@ const router = require('express').Router();
 const key = require('./../configs/tokens.json');
 const interface = require('kolonial_api_wrapper');
 const api = new interface(key.kolonial.user_agent, key.kolonial.token);
+const shopping_list_service = require('../bin/shopping-list');
+const ShoppingListResponse = require('../models/shopping-list-response');
+
+async function GetListOnDate (num_date, arr_list_ids) {
+
+  if (!num_date) return false;
+
+  prom = [];
+  arr_list_ids.forEach( id => {
+    prom.push(shopping_list_service.getShoppingList(id));
+  });
+  let res = await Promise.all(prom);
+
+  res = res.filter( SLRes => ShoppingListResponse.OK(SLRes) );
+  res = res.map( SLRes => SLRes.data );
+  res = res.filter( ListDoc => ListDoc.date === num_date );
+
+  return res;
+
+}
 
 /* GET home page. */
 router.get('/:mon-:day', async (req, res, next) => {
@@ -17,6 +37,9 @@ router.get('/:mon-:day', async (req, res, next) => {
     });
     return;
   }
+
+  let test = await GetListOnDate(20180531, req.user.lists);
+  console.log(test);
 
   // Required  to pass month and day down to render successfully
   let categories = await api.GetAllCategories()
