@@ -34,7 +34,7 @@ router
   // ############
   // WEEK VIEW
   // ############
-  .get('/liste', week)
+  .use('/liste', week)
 
   // ############
   // KALENDER VIEW / MAIN ENTRY POINT
