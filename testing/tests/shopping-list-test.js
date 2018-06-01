@@ -230,6 +230,8 @@ async function TestDeleteList () {
     }
 
 }
+TestDeleteProductsFromList.description = 'Test ShoppingList::.deleteShoppingList(); deleting 1 shopping list with all content'
+
 
 let step1 = unit.parallel(
     TestAddItemToShoppingList,
