@@ -7,7 +7,6 @@ const GroupDocument = require('../models/group-document')
 
 class ShoppingList {
 
-
     constructor(){
         if (!ShoppingList._instance) {
 
@@ -20,9 +19,7 @@ class ShoppingList {
 
     }
 
-    async createShoppingList (userId, name, date, users) {
-
-        let listObj = new ShoppingListDocument(name, date);
+    async createShoppingList (userId, listObj) {
 
         let DBres = await db.Create("shoppingLists", listObj.getData());
 
@@ -35,21 +32,15 @@ class ShoppingList {
             );
         }
 
-        //TODO kaste feilmedling om det ikke går
-        let userObj = {
-            shoppingListId: DBres.data.id,
-            sharedWith: []
-        };
-
-        if (users && users.length() > 0) {
-            userObj.sharedWith = users;
+        if (listObj.users && listObj.users.length() > 0) {
             users.forEach((user) => {
                 db.Create(`customers/${user}/sharedShoppingLists`,
                     { shoppingListID: DBres.data.id, owner: userId });
             })
         }
 
-        DBres = await db.Create(`customers/${userId}/shoppingLists`, userObj);
+        DBres = await db.Create(`customers/${userId}/shoppingLists`, { shoppingListId : DBres.data.id });
+
         if (!DBResponse.OK(DBres)) {
             // error
             throw new ShoppingListResponse(
@@ -58,6 +49,12 @@ class ShoppingList {
                 "Error while creating shopping list"
             );
         }
+
+        return new ShoppingListResponse(
+            ShoppingListResponse.status_codes.OK,
+            {},
+            'Successfuly created shopping list'
+        );
     }
 
     async addDocumentToList(listId, doc) {
@@ -88,7 +85,6 @@ class ShoppingList {
             'Successful response'
         )
     }
-
 
     async addGroupToProduct (listId, productId, groupId) {
 
@@ -146,7 +142,6 @@ class ShoppingList {
             );
         }
 
-
         let new_doc = product.data[0].data();
         delete new_doc.groupId;
         let res = await db.Update(`shoppingLists/${listId}/products/${product.data[0].id}`, new_doc, false);
@@ -169,6 +164,7 @@ class ShoppingList {
     }
 
     async getShoppingList(listId){
+        
         if (listId){
             let res = await db.Get(`shoppingLists/${listId}`)
 
@@ -182,7 +178,13 @@ class ShoppingList {
 
             return new ShoppingListResponse(
                 ShoppingListResponse.status_codes.OK,
-                res.data[0],
+                new ShoppingListDocument(
+                    res.data[0].data().name,
+                    res.data[0].data().date,
+                    [],
+                    [],
+                    res.data[0].data().sharedWith
+                ),
                 'Successful response'
             )
         }
@@ -205,10 +207,11 @@ class ShoppingList {
             groups = (DBResponse.OK(groups) ? groups.data.map( (e) => new GroupDocument(e.data().color, e.data().name, e.id)): undefined);
 
             let res = new ShoppingListDocument(
-                meta.data.data().name, 
-                meta.data.data().date,
+                meta.data.name, 
+                meta.data.date,
                 products, 
-                groups
+                groups,
+                meta.data.sharedWith
             );
             
             return new ShoppingListResponse(
@@ -224,7 +227,6 @@ class ShoppingList {
             `Parameter error, could not find list with id: ${listId}`
         );
     }
-
 
     async updateShoppingList (listId, data, opt) {    
 	    let sub_id;
@@ -243,26 +245,30 @@ class ShoppingList {
         }
 
         if (data instanceof ShoppingListDocument) {
-            return await this.updateShoppingListMetaData(listId, data)
+            return await this.updateShoppingListMetaData(listId, data);
+
         } else if (data instanceof ProductDocument || data instanceof GroupDocument) {
-            return await this.updateShoppingListContent(listId, sub_id, data)
+            return await this.updateShoppingListContent(listId, sub_id, data);
+
         } else {
             throw new ShoppingListResponse(
                 ShoppingListResponse.status_codes.INVALID_PARAMETER,
                 listObj,
                 ""
-            )
+            );
         }
+
     }
 
-
     async updateShoppingListMetaData(listId, listObj){
+        
         if (listId && listObj && listObj instanceof ShoppingListDocument) {
 
             let res;
 
             try {
-                res =  await db.Update(`shoppingLists/${listId}`, listObj.getData())
+                res =  await db.Update(`shoppingLists/${listId}`, listObj.getData());
+
             }catch (e) {
                 throw new ShoppingListResponse(
                     ShoppingListResponse.status_codes.NOT_FOUND,
@@ -282,26 +288,29 @@ class ShoppingList {
 
                     },
                     `Error while updating list with id: ${listId}`
-                )
+                );
             }
 
             return new ShoppingListResponse(
                 ShoppingListResponse.status_codes.OK,
                 {},
                 'Successfuly updated list'
-            )
+            );
         }
     }
 
     async updateShoppingListContent(listId, docId, data){
+       
         if (listId && docId && data){
 
             let res;
 
             if (data instanceof ProductDocument){
-                res = await db.Update(`shoppingLists/${listId}/products/${docId}`, data.getData())
+                res = await db.Update(`shoppingLists/${listId}/products/${docId}`, data.getData());
+
             } else if(data instanceof GroupDocument){
-                res = await db.Update(`shoppingLists/${listId}/groups/${docId}`, data.getData())
+                res = await db.Update(`shoppingLists/${listId}/groups/${docId}`, data.getData());
+
             } else {
                 throw new ShoppingListResponse(
                     ShoppingListResponse.status_codes.INVALID_PARAMETER,
@@ -311,8 +320,7 @@ class ShoppingList {
                         EXPECTED_DATA_TYPE : "ProductDocument || GroupDocument"
                     },
                     "Parameter error, not supported type"
-
-                )
+                );
             }
 
            if (!DBResponse.OK(res)) {
@@ -348,13 +356,13 @@ class ShoppingList {
         }
     }
 
-
     async removeItemFromList(listId, itemId){
 
         let res;
 
         if (typeof listId === 'string' && typeof itemId === 'string'){
             res = await db.Delete(`shoppingLists/${listId}/products/${itemId}`);
+
         } else {
             throw new ShoppingListResponse(
                 ShoppingListResponse.status_codes.INVALID_PARAMETER,
@@ -407,7 +415,6 @@ class ShoppingList {
 
     }
 
-
     async deleteShoppingList(costumerId, listId){
 
         if (typeof costumerId !== 'string' || typeof listId !== 'string') {
@@ -419,11 +426,11 @@ class ShoppingList {
                     listId: `expected 'string' but was '${typeof listId}'`
                 },
                 'Parameter error'
-            )
+            );
         };
 
         // delete from users
-        let customerListDocument = await db.Get(`customers/${costumerId}/shoppingLists/{"shoppingListId": "${listId}"}`);
+        let customerListDocument = await db.Get(`shoppingLists/${listId}`);
 
         if (!DBResponse.OK(customerListDocument)) {
             throw new ShoppingListResponse(
