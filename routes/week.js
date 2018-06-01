@@ -1,11 +1,25 @@
 const router = require('express').Router();
 
 // API payload
-const key = require('./../configs/tokens.json');
-const interface = require('kolonial_api_wrapper');
-const api = new interface(key.kolonial.user_agent, key.kolonial.token);
+const key                   = require('./../configs/tokens.json');
+const interface             = require('kolonial_api_wrapper');
+const api                   = new interface(key.kolonial.user_agent, key.kolonial.token);
+const url                   = require('url');
 const shopping_list_service = require('../bin/shopping-list');
-const ShoppingListResponse = require('../models/shopping-list-response');
+const ShoppingListResponse  = require('../models/shopping-list-response');
+const ShoppingListDocument  = require('../models/shopping-list-document');
+
+function checkInt (val) {
+  
+  let int = parseInt(val);
+
+  if (int === NaN || '' + int !== val) {
+    return;
+  }
+
+  return int;
+
+}
 
 async function GetListOnDate (num_date, arr_list_ids) {
 
@@ -13,7 +27,7 @@ async function GetListOnDate (num_date, arr_list_ids) {
 
   prom = [];
   arr_list_ids.forEach( id => {
-    prom.push(shopping_list_service.getShoppingList(id));
+    prom.push(shopping_list_service.getShoppingListContent(id));
   });
   let res = await Promise.all(prom);
 
@@ -57,19 +71,22 @@ function getNumbersInWeek(year, month, daynum) {
 
 /* GET home page. */
 router.get('/:mon-:day', async (req, res, next) => {
-  let mon = parseInt(req.params.mon);
-  let day = parseInt(req.params.day);
-
-  if (mon === NaN || '' + mon !== req.params.mon ||
-    day === NaN || '' + day !== req.params.day) {
+  let mon = checkInt(req.params.mon);
+  let day = checkInt(req.params.day);
+  
+  if (mon && day) {
     next({
       msg: 'parameter error'
     });
     return;
   }
 
-  let test = await GetListOnDate(20180531, req.user.lists);
-  console.log(test);
+  let encoded_date = 201800;
+  encoded_date += mon; encoded_date *= 100;
+  encoded_date += day;
+  
+  let list = await GetListOnDate(encoded_date, req.user.lists);
+  list = list[0];
 
   // Required  to pass month and day down to render successfully
   let categories = await api.GetAllCategories()
@@ -87,8 +104,75 @@ router.get('/:mon-:day', async (req, res, next) => {
     days_arr,
     chosen_day: day,
     categories,
-    product
+    product,
+    list
   })
 })
+
+router.get('/:mon-:day/create', async (req, res, next) => {
+
+  let mon = checkInt(req.params.mon);
+  let day = checkInt(req.params.day);
+
+  if (mon && day) {
+    next({
+      msg: 'parameter error'
+    });
+    return;
+  }
+
+  let encoded_date = 201800;
+  encoded_date += mon; encoded_date *= 100;
+  encoded_date += day;
+
+  let list = await GetListOnDate(encoded_date, req.user.lists);
+  list = list[0];
+
+  if (list) {
+    res.status(400);
+    res.json({
+      code: 100,
+      message: 'Oops. Det finnes allere en liste på denne datoen.'
+    })
+    return;
+  }
+
+  let name = req.body.name || `Klikk for å endre navn på handlelisten.`;
+  let sharedWith = req.body.sharedWith || [];
+
+  const shoppinglist = new ShoppingListDocument(
+    name,
+    encoded_date,
+    [],
+    [],
+    sharedWith
+  )
+
+  try {
+    let SLRes = await shopping_list_service.createShoppingList(req.user.id, shoppinglist);
+  } catch (e) {
+    res.status(500);
+    res.json({
+      code: 101,
+      message: 'Oops. Vi klarte ikke opprette din handleliste. Du kan prøve på nytt. On problemet oppstår igjen ta kontakt med oss.',
+      err: e
+    })
+    return;
+  }
+
+  if (!ShoppingListResponse.OK(SLRes)) {
+    res.status(500);
+    res.json({
+      code: 101,
+      message: 'Oops. Vi klarte ikke opprette din handleliste. Du kan prøve på nytt. On problemet oppstår igjen ta kontakt med oss.',
+      err: SLRes
+    })
+    return;
+  }
+
+  res.status(200);
+  res.json(SLRes.data);
+
+});
 
 module.exports = router;
