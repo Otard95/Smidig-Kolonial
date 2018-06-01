@@ -74,7 +74,7 @@ module.exports = {
     let output = ''
 
     // Dont know why i need to plus the month+1 only on the getDate()
-    let daysInMonth = new Date(year, month - 1, 0).getDate()
+    let daysInMonth = new Date(year, month, 0).getDate()
     let getStartingDayOfMonth = new Date(year, month - 1, 1).getDay()
 
     // Fills up first inactive datys with empty divs
