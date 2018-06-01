@@ -5,6 +5,7 @@ const url = require('url');
 const OAuth = require('../bin/OAuth');
 const week = require('./week.js');
 const shopping_list_service = require('../bin/shopping-list');
+const ShoppingListResponse = require('../models/shopping-list-response');
 
 async function GetShoppingListsDates (arr_list) {
 
