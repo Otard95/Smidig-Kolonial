@@ -18,17 +18,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function getCategories(data) {
     catlist.innerHTML = ""
-    data.children.forEach(async (num) => {
+    let list = []
+    data.children.forEach(async (num, index) => {
       try {
         let response = await fetch(`/API/category/${num}`)
         let json = await response.json()
         if (json.name !== undefined) catlist.innerHTML += `<li class="list-item" data-categoryid="${json.id}">${json.name}</li>`
+        setEventListener()
       } catch (e) {
         console.log(e)
       }
     })
-    console.log('Done with categories')
-    return
   }
 
   async function getProducts(data) {
@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <h2 id="price-som">${json.price.unit_quantity_name}</h2>
                   <h2 id="price-quantity">kr ${json.price.gross_unit}/${json.price.unit_quantity_abbreviation}</h2>
                   </div>`
+        setEventListener()
       } catch (e) {
         console.log(e)
       }
@@ -52,6 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function setEventListener() {
+    console.log('Setting eventlisteners')
     let listitem = document.querySelectorAll(".list-item")
     listitem.forEach(item => {
       item.addEventListener("click", async () => {
@@ -61,15 +63,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (json.children.length > 0) {
           getCategories(json)
-          console.log('Adding eventlisterners')
         } else {
           console.log('Should log out data')
           getProducts(json)
         }
 
-        // setTimeout(() => {
-        //   setEventListener()
-        // }, 3000)
       })
     })
   }
