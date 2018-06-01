@@ -50,9 +50,19 @@ class ShoppingList {
             );
         }
 
+        let snappshot = await DBres.data.get();
+
+        let response = new ShoppingListDocument(
+            snappshot.data().name,
+            snappshot.data().date,
+            [],
+            [],
+            snappshot.data().sharedWith
+        )
+
         return new ShoppingListResponse(
             ShoppingListResponse.status_codes.OK,
-            {},
+            response,
             'Successfuly created shopping list'
         );
     }
