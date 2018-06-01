@@ -59,12 +59,10 @@ document.addEventListener("DOMContentLoaded", () => {
         let category = item.dataset.categoryid
         let data = await fetch(`/api/category/${category}`)
         let json = await data.json()
-        console.log(json)
 
         if (json.children_id && json.children_id.length > 0) {
           getCategories(json)
         } else {
-          console.log('Should log out data')
           getProducts(json)
         }
 
