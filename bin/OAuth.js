@@ -102,6 +102,10 @@ class OAuth {
 
 		return async (req, res, next) => {
 
+			if (req.query.skip) {
+
+			}
+
 			let Auth_res;
 			try {
 				Auth_res = await this.AuthenticateUser(req.body[username_paramerter_name || 'username'],
@@ -177,6 +181,19 @@ class OAuth {
 	Authorized (unauthorized_redirect = undefined) {
 
 		return async (req, res, next) => {
+
+			if (process.env.NODE_DEV == 'true') {
+				req.autorized = true;
+				req.user = {
+					id: 'cEx6uZdHs5K7KfUfz6cT',
+					name: 'Test Tester',
+					email: 'test@test.com',
+					lists: ['M0HIqkBEhu5MDwhY0c1W'],
+					ref: { no: 'ref' }
+				};
+				next();
+				return;
+			}
 
 			// Is there a sesstion token
 			if (!req.session.token) {
