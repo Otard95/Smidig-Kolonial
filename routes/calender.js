@@ -30,16 +30,9 @@ router.use('/', OAuth.Authorized(url.format({ // /user/login?redirect=<redirect-
   }
 })));
 
-router
-  // ############
-  // WEEK VIEW
-  // ############
-  .use('/liste', week)
+router.use('/liste', week);
 
-  // ############
-  // KALENDER VIEW / MAIN ENTRY POINT
-  // ############
-  .get('/:mon?', async (req, res, next) => {
+router.get('/:mon?', async (req, res, next) => {
 
     let shoppinglistdates = await GetShoppingListsDates (req.user.lists);
 
