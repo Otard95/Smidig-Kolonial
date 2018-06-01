@@ -34,20 +34,20 @@ router
   // ############
   // WEEK VIEW
   // ############
-  .get('/:mon-:day', week)
+  .get('/liste', week)
 
   // ############
   // KALENDER VIEW / MAIN ENTRY POINT
   // ############
   .get('/:mon?', async (req, res, next) => {
 
-    let test = await GetShoppingListsDates (req.user.lists);
-    console.log(test);
+    let shoppinglistdates = await GetShoppingListsDates (req.user.lists);
 
     let mon = req.params.mon
     res.render('calendar', {
       title: 'Kalender',
-      month: mon ? mon : new Date().getMonth() + 1
+      month: mon ? mon : new Date().getMonth() + 1,
+      shoppinglistdates
     });
   })
 

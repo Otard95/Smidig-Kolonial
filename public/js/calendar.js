@@ -9,9 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
   DOM_footer = document.querySelectorAll('footer')[0]
   DOM_shadow = document.querySelectorAll('.shadow')[0]
 
-  console.log(DOM_burger_button, DOM_content, DOM_side_overlay, DOM_footer, DOM_shadow)
-
-
   DOM_burger_button.addEventListener('click', () => {
     DOM_burger_button.classList.toggle('close');
     DOM_content.classList.toggle('overlay');
@@ -42,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     element.addEventListener('click', () => {
       let day = element.innerHTML
       month = element.dataset.month
-      window.location.href = `/kalender/${month}-${day}`
+      window.location.href = `/kalender/liste/${month}-${day}`
     })
   })
 
