@@ -42,6 +42,33 @@ router.get('/:mon?', async (req, res, next) => {
       month: mon ? mon : new Date().getMonth() + 1,
       shoppinglistdates
     });
-  })
+  });
+
+
+router.get('/lists-overview', async (req, res, next) => {
+
+  let listIds = req.user.lists;
+
+  console.log(listIds);
+
+  if (listIds.length > 0) {
+
+    prom = [];
+
+    listIds.forEach(id => {
+      prom.push(shopping_list_service.getShoppng(id));
+    });
+
+    let allLists = await Promise.all(prom);
+
+    allLists = allLists.filter(SLRes => ShoppingListResponse.OK(SLRes));
+
+    console.log(allLists);
+
+  }
+
+
+
+})
 
 module.exports = router;
