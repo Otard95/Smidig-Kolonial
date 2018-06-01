@@ -46,7 +46,7 @@ module.exports = {
 
   month_name(number, hbs_block) {
     let months = ['JANUAR', 'FEBRUAR', 'MARS', 'APRIL', 'MAI', 'JUNI', 'JULI', 'AUGUST', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER']
-    return hbs_block.fn(months[number])
+    return hbs_block.fn(months[number - 1])
   },
 
   // Prinits out weeks for a month (5 weeks)
@@ -54,7 +54,7 @@ module.exports = {
   weeks(year, month, hbs_block) {
     let output = ''
     // First day in month
-    let date = new Date(year, month, 0)
+    let date = new Date(year, month - 1, 0)
     date.setHours(0, 0, 0)
     // Make Sunday's day number 7  
     date.setDate(date.getDate() + 4 - (date.getDay() || 7))
@@ -74,8 +74,8 @@ module.exports = {
     let output = ''
 
     // Dont know why i need to plus the month+1 only on the getDate()
-    let daysInMonth = new Date(year, month, 0).getDate()
-    let getStartingDayOfMonth = new Date(year, month, 1).getDay()
+    let daysInMonth = new Date(year, month - 1, 0).getDate()
+    let getStartingDayOfMonth = new Date(year, month - 1, 1).getDay()
 
     // Fills up first inactive datys with empty divs
     if (getStartingDayOfMonth === 0) getStartingDayOfMonth = 7

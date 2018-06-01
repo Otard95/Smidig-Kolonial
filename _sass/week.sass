@@ -1,75 +1,71 @@
 @import "./imports/colors.sass"
+@import "./product-item.sass"
 
-.font-yellow
-  color: $eggeplomme
+.content
+  margin: 0
+  position: fixed
+  top: 9%
+  height: 79%
+  width: 100%
 
-.font-aubergine
-  color: $Mork-aubergine
-
-.week-view-container
-  margin: 0 1em
+.week-container
+  position: relative
+  height: 95%
+  margin: 1.1em 1.5em
   padding: 0.5em 0
   background: $Lys-varmgra
-  border-radius: 10px
+  border-radius: 15px
+
+.week-header
   position: relative
+  height: 18%
+  width: 100%
 
-  .week-view-month
-    text-align: left
-    font-size: 1.5vh
-    padding: 0 .5em
-    margin: 0 .5em
-    color: $Mork-aubergine
+.week-datename
+  text-align: left
+  font-size: 2.1vh
+  padding: .5em .5em
+  margin: 0 .5em
+  color: $Mork-aubergine
 
-  .week-view-days h3
-    margin: .25em
+.week-list
+  background-color: $white
+  height: 82.7%
+  margin: 0 auto
+  width: 99.2%
+  border-bottom-left-radius:  15px
+  border-bottom-right-radius: 15px
+  display: grid
+  grid-template-columns: repeat(1, 5fr)
+  overflow: scroll
 
-  .week-view-days ul
-    list-style: none
-    padding: 0 .5em
-    margin: 0
-    display: inline-grid
-    width: 100%
-    grid-template-columns: repeat(8, 1fr)
-    grid-template-rows: repeat(2, 1fr)
+li#vare
+  display: flex
+  position: relative
+  margin: 0 auto
+  align-items: flex-end
+  font-size: 2.2vh
+  width: 90%
+  text-align: left
+  height: 15%
+  border-bottom: 1px solid $Varmgra
 
-  .week-view-days
-    margin-bottom: 1em
+.week-days
+  font-size: 2.3vh
+  text-align: center
+  margin: .10em
+  margin-top: -1.5%
 
-    li
-      margin: auto
+.this-week
+  font-size: 2.3vh
+  margin: 0
 
-  .week-view-list
-    background: $white
-    margin: .5em .5em 0
-    border-radius: 10px
-    height: 31em
-    transition: 200ms
-
-.week-add-button
-  background: $eggeplomme
-  border-bottom-left-radius: 10px
-  border-bottom-right-radius: 10px
-  position: absolute
-  width: calc(100% - 1em)
-  margin: .5em
-  z-index: 0
-  bottom: 0
-
-  $size: 3vh
-
-  &::after
-    content: ''
-    position: absolute
-    top: -1.5vh
-    left: calc(50% - 5vh)
-    background: $eggeplomme
-    width: $size * 3
-    height: $size
-    z-index: -1
-    border-top-left-radius: $size
-    border-top-right-radius: $size
-
-  h3
-    color: $white
-    margin: 0 .5em
-    line-height: 4.5vh
+.week-days ul
+  list-style: none
+  padding: 0 .5em
+  margin: 0
+  color: grey
+  display: inline-grid
+  width: 100%
+  grid-template-columns: repeat(8, 1fr)
+  grid-template-rows: repeat(2, 1fr)

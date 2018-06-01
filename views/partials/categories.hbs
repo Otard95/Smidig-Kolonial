@@ -1,0 +1,29 @@
+{{#section 'head'}}
+  <link rel="stylesheet" href="/css/categories.css">
+  <script type="text/javascript" src="/js/category.js">
+
+  </script>
+{{/section}}
+
+<div class="category-container">
+  <div class="icon-button">
+    <img class="button-white" src="/imgs/icon/AddProductBlack.png" alt="">
+    <img class="add-product-button" src="/imgs/icon/AddProductWhite.png" alt="">
+  </div>
+  <div class="information-view">
+    <h3 class="search-title">Varer</h3>
+    <div class="search-container">
+      <!--Legg inn forstørrelsesglass-->
+      <input type="text" class="search-t" onkeyup="myFunction()" placeholder="Søk i tusenvis av varer">
+    </div>
+    <div class="categories">
+      <ul class="category-list">
+        <li>Inspirasjon</li>
+        <li>Dine Varer</li>
+        {{#each categories}}
+          <li class="list-item" data-categoryid={{this.id}}>{{this.name}}</li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</div>

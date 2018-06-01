@@ -1,19 +1,19 @@
-function start() {
-  let boolean = true;
+document.addEventListener("DOMContentLoaded", () => {
+  let backarrow = document.querySelectorAll('#pil-icon')[0]
+  let weekday = document.querySelectorAll('.btn-week-day')
 
-  $(".week-add-button").click(function() {
-    if (boolean) {
-      $(".week-add-button").animate({
-        bottom: '29em'
-      }, 1000);
-      boolean = false;
-    } else {
-      $(".week-add-button").animate({
-        bottom: 0
-      }, 1000);
-      boolean = true;
-    }
-  });
-}
+  // Eventlistener for presented weekdays
+  weekday.forEach(element => {
+    element.addEventListener('click', el => {
+      let month = element.dataset.month
+      let day = element.innerHTML
+      window.location.href = `/kalender/${month}-${day}`
+    })
+  })
 
-$(document).ready(start);
+  // Eventlistener to get back to calendar
+  backarrow.addEventListener('click', el => {
+    let month = backarrow.dataset.month
+    window.location.href = `/kalender/${month}`
+  })
+})

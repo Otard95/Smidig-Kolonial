@@ -1,22 +1,26 @@
-
 const router = require('express').Router();
 
-/* GET home page. */
-router.get('/:mon-:day', (req, res, next) => {
+// API payload
+const key = require('./../configs/tokens.json');
+const interface = require('kolonial_api_wrapper');
+const api = new interface(key.kolonial.user_agent, key.kolonial.token);
 
+/* GET home page. */
+router.get('/:mon-:day', async (req, res, next) => {
   let mon = parseInt(req.params.mon);
   let day = parseInt(req.params.day);
 
   if (mon === NaN || '' + mon !== req.params.mon ||
-      day === NaN || '' + day !== req.params.day)
-  {
+    day === NaN || '' + day !== req.params.day) {
     next({
       msg: 'parameter error'
     });
     return;
   }
 
-  // Required  to pass month down to render
+  // Required  to pass month and day down to render successfully
+  let categories = await api.GetAllCategories()
+  let product = await api.GetItemById(520)
   let months = ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember']
 
   function getWeekNumber(month, day) {
@@ -46,28 +50,11 @@ router.get('/:mon-:day', (req, res, next) => {
       temp += (temp < first_date ? 1 : 0);
       arr.push(temp);
     }
-
-    // // date = new Date(year, month - 1, daynum);
-    // while (arr.length < 7) {
-    //   let date = new Date(year, month, daynum)
-    //   // Difference checks if first days in week is negative (in to last month)
-    //   let differance = date.getDate() - day + (day == 0 ? -6 : arr.length + 1)
-    //   // If diff is < 1, starts from month before
-    //   if (differance < 1) {
-    //     arr.push(new Date(year, month - 1, differance).getDate())
-    //   } else {
-    //     let monthlength = new Date(year, month, 0).getDate() + 1
-    //     let thisdate = date.getDate() - day + (day == 0 ? -6 : arr.length + 1)
-    //     // checks if date is over the month length
-    //     thisdate > monthlength ? arr.push(thisdate - monthlength) : arr.push(thisdate)
-    //   }
-    // }
-
     return arr
   }
 
-  let uke_num = getWeekNumber(mon-1, day)
-  let days_arr = getNumbersInWeek(2018, mon-1, day)
+  let uke_num = getWeekNumber(mon - 1, day)
+  let days_arr = getNumbersInWeek(2018, mon - 1, day)
 
   res.render('week', {
     title: `Calendar: ${day} ${months[mon]}`,
@@ -75,8 +62,10 @@ router.get('/:mon-:day', (req, res, next) => {
     uke_num,
     daysstring: ['Man', 'Tis', 'Ons', 'Tor', 'Fre', 'Lor', 'Son'],
     days_arr,
-    chosen_day: day
-  });
-});
+    chosen_day: day,
+    categories,
+    product,
+  })
+})
 
 module.exports = router;
