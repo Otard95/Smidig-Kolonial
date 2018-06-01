@@ -88,6 +88,7 @@ router.get('/:mon-:day', async (req, res, next) => {
   
   let list = await GetListOnDate(encoded_date, req.user.lists);
   list = list[0];
+  console.log(list);
 
   // Required  to pass month and day down to render successfully
   let categories = await api.GetAllCategories()
