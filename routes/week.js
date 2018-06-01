@@ -56,7 +56,7 @@ function getNumbersInWeek(year, month, daynum) {
   let mon_len = new Date(year, month + 1, 0).getDate();
 
   if (first_date < 1) {
-    // Lengthog the month the week start in
+    // Lengthog the month the week start in 
     mon_len = new Date(year, month, 0).getDate();
     first_date = mon_len + first_date;
   }
@@ -71,7 +71,7 @@ function getNumbersInWeek(year, month, daynum) {
 
 /* GET home page. */
 router.get('/:mon-:day', async (req, res, next) => {
-  
+
   let mon = checkInt(req.params.mon);
   let day = checkInt(req.params.day);
   
@@ -149,8 +149,9 @@ router.get('/:mon-:day/create', async (req, res, next) => {
     sharedWith
   )
 
+  let SLRes;
   try {
-    let SLRes = await shopping_list_service.createShoppingList(req.user.id, shoppinglist);
+    SLRes = await shopping_list_service.createShoppingList(req.user.id, shoppinglist);
   } catch (e) {
     res.status(500);
     res.json({
