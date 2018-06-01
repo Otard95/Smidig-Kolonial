@@ -185,10 +185,10 @@ class OAuth {
 			if (process.env.NODE_DEV == 'true') {
 				req.autorized = true;
 				req.user = {
-					id: 'no id',
-					name: 'unknown',
-					email: 'nomail@nodomain.com',
-					lists: [],
+					id: 'cEx6uZdHs5K7KfUfz6cT',
+					name: 'Test Tester',
+					email: 'test@test.com',
+					lists: ['M0HIqkBEhu5MDwhY0c1W'],
 					ref: { no: 'ref' }
 				};
 				next();
