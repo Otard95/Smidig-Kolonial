@@ -7,6 +7,18 @@ const week = require('./week.js');
 const shopping_list_service = require('../bin/shopping-list');
 const ShoppingListResponse = require('../models/shopping-list-response');
 
+function checkInt (val) {
+  
+  let int = parseInt(val);
+
+  if (int === NaN || '' + int !== val) {
+    return;
+  }
+
+  return int;
+
+}
+
 async function GetShoppingListsDates (arr_list) {
 
   prom = [];
@@ -34,13 +46,22 @@ router.use('/liste', week);
 
 router.get('/:mon?', async (req, res, next) => {
 
-    let shoppinglistdates = await GetShoppingListsDates (req.user.lists);
+  let mon = req.params.mon ? checkInt(req.params.mon) : new Date().getMonth() + 1;
+  
+  if (mon === undefined) {
+    next({
+      msg: 'parameter error'
+    });
+    return;
+  }
 
-    let mon = req.params.mon
+    let shoppinglistdates = await GetShoppingListsDates (req.user.lists);
+    console.log(shoppinglistdates)
     res.render('calendar', {
       title: 'Kalender',
-      month: mon ? mon : new Date().getMonth() + 1,
-      shoppinglistdates
+      month: mon,
+      shoppinglistdates,
+      today: 20
     });
   })
 

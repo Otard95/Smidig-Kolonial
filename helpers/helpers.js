@@ -81,8 +81,11 @@ module.exports = {
     if (getStartingDayOfMonth === 0) getStartingDayOfMonth = 7
     for (let i = 1; i < getStartingDayOfMonth; i++) output += hbs_block.fn()
 
+    let date = 201800;
+    date += month; date *= 100;
+
     // Fills up days with numbers
-    for (let i = 0; i < daysInMonth; i++) output += hbs_block.fn(i + 1)
+    for (let i = 0; i < daysInMonth; i++) output += hbs_block.fn({ day: (i + 1), date: date + i + 1 });
     return output;
   },
 
@@ -154,5 +157,10 @@ module.exports = {
 
     return out;
 
+  },
+
+  contains (arr, val, hbs_options) {
+    if (arr.includes(val)) return hbs_options.fn();
   }
+
 };
