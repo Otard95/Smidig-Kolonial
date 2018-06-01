@@ -232,7 +232,7 @@ class Database {
 	}
 
 	//TODO metode for å oppdatere et eksisterende dokuemnt
-	async Update (str_path /* path to document */, update_doc) {
+	async Update (str_path /* path to document */, update_doc, merge = true) {
 
 		let res = await this.Get(str_path);
 
@@ -240,9 +240,18 @@ class Database {
 			return res;
 		}
 
-		await res.data[0].ref.update(update_doc);
-		// TODO: The set methud woth resolve if it can't connect to firebase.
-		// 			 Handle the edgae case where that happens.
+		let prom = [];
+		res.data.forEach( doc => {
+			doc.ref.set(update_doc, { merge });
+		});
+		
+		await Promise.all(prom);
+		
+		return new DBResponse(
+			DBResponse.status_codes.OK,
+			{},
+			'Update done.'
+		)
 
 	}
 

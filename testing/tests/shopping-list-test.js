@@ -5,6 +5,8 @@ const shoping_list = require('../../bin/shopping-list');
 const DBRes        = require('../../models/database-response');
 const ShoppingListDoc = require('../../models/shopping-list-document');
 const ProductDoc = require('../../models/product-document');
+const ShoppingListResponse = require('../../models/shopping-list-response');
+const GroupDoc = require('../../models/group-document');
 
 /**
  * ## Test data
@@ -12,13 +14,13 @@ const ProductDoc = require('../../models/product-document');
 
 const user_id = 'cEx6uZdHs5K7KfUfz6cT';
 const list_name = 'Some shopping list';
-const list_id = '7vaXLgq3hDZ3luAnYXPv';
-const product_id = 'sVwseIGDd7uNTwjpiQ42';
+let list_id;
+let product_id;
 const date = Date.now();
 const productName = "juice";
-const kolonialId = '3rwr3wbw3krb3wkrb3jbrjw3r';
+const kolonialId = '469';
 const amount = 3;
-const groupId = '4t4ete4te4gfe4t4';
+let groupId;
 const color = '#someHex';
 
 /**
@@ -29,16 +31,20 @@ const color = '#someHex';
 
 async function TestCreateShoppingListNotShared () {
 
-	await shoping_list.createShoppingList(user_id, list_name, date);
+    let list = new ShoppingListDoc(list_name, date, [], [], []);
+
+	await shoping_list.createShoppingList(user_id, list);
 
 	let res = await db.Get(`shoppingLists/{"name": "${list_name}"}`);
 
-	assert(DBRes.OK(res));
-	assert(res.data.length == 1, 'Multiple matches.');
+	assert(DBRes.OK(res), res);
+    assert.strictEqual(res.data.length, 1, 'Multiple matches.');
+    
+    list_id = res.data[0].id;
 
 	res = await db.Get(`customers/${user_id}/shoppingLists/{"shoppingListId": "${res.data[0].id}"}`);
 	
-	assert(DBRes.OK(res));
+	assert(DBRes.OK(res), res);
 
 }
 TestCreateShoppingListNotShared.description = 'Test ShoppingList::CreateShoppingList(); The list is not shared.';
@@ -49,29 +55,83 @@ TestCreateShoppingListNotShared.description = 'Test ShoppingList::CreateShopping
 
 async function TestAddItemToShoppingList(){
 
-    let res = await db.Get(`shoppingLists/{"name": "${list_name}"}`);
-
-    assert(DBRes.OK(res));
-    assert(res.data.length == 1, 'Multiple matches.');
-
     let product = new ProductDoc(kolonialId, amount, groupId);
 
-    let productRes = await shoping_list.addProductToList(res.data[0].id, product);
+    let productRes = await shoping_list.addDocumentToList(list_id, product);
 
-    assert(DBRes.OK(productRes));
+    assert(ShoppingListResponse.OK(productRes));
+
+    product_id = productRes.data.id;
+
 }
-TestAddItemToShoppingList.description = 'Test ShoppingList::AddProductTOList(); using already created list to add item'
+TestAddItemToShoppingList.description = 'Test ShoppingList::AddDocumentToList(); adding product'
+
+/**
+ * ## Unit Test
+*/
+
+async function TestAddGroupToShoppingList(){
+
+    let group = new GroupDoc(color, 'Food');
+
+    let groupRes = await shoping_list.addDocumentToList(list_id, group);
+
+    assert(ShoppingListResponse.OK(groupRes));
+
+    groupId = groupRes.data.id;
+
+    let dbResData = await db.Get(`shoppingLists/${list_id}/groups/${groupId}`);
+
+    assert(DBRes.OK(dbResData), dbResData);
+
+    assert.strictEqual(groupId, dbResData.data[0].id, 'Document with id not equal');
+
+    assert.strictEqual(color, dbResData.data[0].data().color, 'Color not the same');
+
+}
+TestAddGroupToShoppingList.description = 'Test ShoppingList::AddDocumentList(); adding group/category'
 
 /**
  * ## Unit Test
  */
+async function TestAddGroupToProduct () {
 
+    let res = await shoping_list.addGroupToProduct(list_id, product_id, groupId);
+
+    let updatedProduct = await db.Get(`shoppingLists/${list_id}/products/${product_id}`);
+
+    if (!DBRes.OK(updatedProduct)) assert.fail(updatedProduct);
+
+    assert.strictEqual(groupId, updatedProduct.data[0].data().groupId, 'Group id did not match');
+
+}
+TestAddGroupToProduct.description = 'Test ShoppingList::AddGroupToProduct(); adding group/category to product'
+
+/**
+ * ## Unit Test
+ */
+async function TestRemoveGroupFromProduct () {
+
+    let res = await shoping_list.removeGroupFromProduct(list_id, product_id);
+
+    let updatedProduct = await db.Get(`shoppingLists/${list_id}/products/${product_id}`);
+
+    if (!DBRes.OK(updatedProduct)) assert.fail(updatedProduct);
+
+    assert(!updatedProduct.data[0].data().groupId, 'Group id did not match');
+
+}
+TestRemoveGroupFromProduct.description = 'Test ShoppingList::AddGroupToProduct(); adding group/category to product'
+
+/**
+ * ## Unit Test
+ */
 async function TestGetShoppingListFromService() {
 
-	let res = await shoping_list.getShoppingList(list_id);
-    assert(DBRes.OK(res));
+    let res = await shoping_list.getShoppingList(list_id);
+    
+    assert(ShoppingListResponse.OK(res));
 
-	assert.strictEqual(list_id, res.data[0].id, `Id not equal`)
 }
 TestGetShoppingListFromService.description = 'Test ShoppingList::GetShoppingList(); using already created list and getting it'
 
@@ -83,8 +143,10 @@ async function TestGetContentFromShoppingList(){
 
     let res = await shoping_list.getShoppingListContent(list_id);
 
-    assert.strictEqual(kolonialId, res.data.products[0].kolonialId, `kolonial id not equal`)
-    assert.strictEqual(color, res.data.groups[0].color, `color not equal`)
+    assert.strictEqual(kolonialId, res.data.products[0].kolonialId, `kolonial id not equal`);
+
+    assert(res.data.products[0].documentId);
+
 }
 TestGetContentFromShoppingList.description = 'Test ShoppingList::GetShoppingListContent(); using already created list with content';
 
@@ -95,23 +157,22 @@ async function TestUpdateShoppingListMeta(){
 
     let res = await shoping_list.getShoppingListContent(list_id);
 
-    console.log(res.data.name)
-    console.log(`origional date: ${res.data.date}`);
-
     let timeNow = Date.now();
 
     let updatedResDoc = new ShoppingListDoc(
         res.data.name,
         timeNow,
         res.data.products,
-        res.data.groups
+        res.data.groups,
+        res.data.sharedWith
     )
 
     await shoping_list.updateShoppingList(list_id, updatedResDoc);
 
     let updatedRes = await shoping_list.getShoppingListContent(list_id);
+    
+    assert.strictEqual(timeNow, updatedRes.data.date, 'Date was not updated');
 
-    console.log(`updated date: ${updatedRes.data.date}`);
 }
 TestUpdateShoppingListMeta.description = 'Test ShoppingList::UpdateShoppingList(); with meta data'
 
@@ -119,9 +180,10 @@ TestUpdateShoppingListMeta.description = 'Test ShoppingList::UpdateShoppingList(
  * ## Unit Test
  */
 async function TestUpdateProductInList () {
+
     let res = await shoping_list.getShoppingListContent(list_id);
 
-    console.log(`original amount: ${res.data.products[0].amount}`)
+    let amount = res.data.products[0].amount;
 
     let updatedDoc = new ProductDoc(
         res.data.products[0].kolonialId,
@@ -133,18 +195,63 @@ async function TestUpdateProductInList () {
 
     let updatedRes = await shoping_list.getShoppingListContent(list_id);
 
-    console.log(`modified amount: ${updatedRes.data.products[0].amount}`)
-
-    assert(updatedRes.data.products[0].amount > res.data.products[0].amount)
+    assert.strictEqual(amount + 1, updatedRes.data.products[0].amount);
 }
 TestUpdateProductInList.description = 'Test ShoppingList::UpdateShoppingContent(); with meta data'
 
-let addToList = unit.series(
-    TestCreateShoppingListNotShared, 
-    TestAddItemToShoppingList, 
-    TestGetShoppingListFromService, 
+
+/**
+ * ## Unit Test
+ */
+async function TestDeleteProductsFromList (){
+
+    let res = await shoping_list.removeItemFromList(list_id, product_id);
+
+    assert(ShoppingListResponse.OK(res), res);
+
+    let failRes = await shoping_list.getShoppingListContent(list_id);
+
+    assert.strictEqual(0, failRes.data.products.length, 'expected empty list but was not');
+
+}
+TestDeleteProductsFromList.description = 'Test ShoppingList::removeItemFromList(); deleting 1 document'
+
+async function TestDeleteList () {
+
+    let res = await shoping_list.deleteShoppingList(user_id, list_id);
+
+    assert(ShoppingListResponse.OK(res), res);
+
+    try {
+        let failRes = await shoping_list.getShoppingList(list_id);
+        assert.fail('Found document, but expected not to');
+    } catch (e) {
+        assert.strictEqual(ShoppingListResponse.status_codes.UNKNOWN_ERROR, e.status, 'Document still exists');
+    }
+
+}
+TestDeleteProductsFromList.description = 'Test ShoppingList::.deleteShoppingList(); deleting 1 shopping list with all content'
+
+
+let step1 = unit.parallel(
+    TestAddItemToShoppingList,
+    TestAddGroupToShoppingList, 
+    TestGetShoppingListFromService
+);
+
+let step2 = unit.parallel(
+    TestAddGroupToProduct,
     TestGetContentFromShoppingList,
-    TestUpdateShoppingListMeta,
-    TestUpdateProductInList);
+    TestUpdateShoppingListMeta
+);
+
+let main = unit.series(
+    TestCreateShoppingListNotShared,
+    step1,
+    step2,
+    TestRemoveGroupFromProduct,
+    TestUpdateProductInList,
+    TestDeleteProductsFromList,
+    TestDeleteList);
     
-module.exports = unit.test(addToList);
+module.exports = unit.test(main);
