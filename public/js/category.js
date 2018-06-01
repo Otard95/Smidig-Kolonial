@@ -2,18 +2,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let btn = document.querySelector(".icon-button");
   let categoryBox = document.querySelector(".category-container");
-  let changeButton = document.querySelector(".icon-button");
   let whiteIconGone = document.querySelector(".add-product-button");
   let blackIconShow = document.querySelector(".button-white");
   let catlist = document.querySelector(".category-list")
 
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", async () => {
+    // Resets the list
+    if (btn.classList.contains("change-button")) {
+      let result = await fetch('/api/categories')
+      let json = await result.json()
 
-    changeButton.classList.toggle("change-button");
+      catlist.innerHTML = ""
+      catlist.innerHTML += `<li>Inspirasjon</li>
+      <li>Dine Varer</li>`
+      json.forEach(e => {
+        catlist.innerHTML += `<li class="list-item" data-categoryid="${e.id}">${e.name}</li>`
+        setEventListener()
+      })
+    }
+
+    btn.classList.toggle("change-button");
     categoryBox.classList.toggle("show");
     whiteIconGone.classList.toggle("hide-button");
     blackIconShow.classList.toggle("show-button");
-
   })
 
   async function getCategories(data) {
@@ -52,7 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function setEventListener() {
-    console.log('Setting eventlisteners')
     let listitem = document.querySelectorAll(".list-item")
     listitem.forEach(item => {
       item.addEventListener("click", async () => {
