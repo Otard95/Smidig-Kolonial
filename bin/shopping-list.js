@@ -7,7 +7,6 @@ const GroupDocument = require('../models/group-document')
 
 class ShoppingList {
 
-
     constructor(){
         if (!ShoppingList._instance) {
 
@@ -87,7 +86,6 @@ class ShoppingList {
         )
     }
 
-
     async addGroupToProduct (listId, productId, groupId) {
 
         if (!listId || !productId || !groupId ) {
@@ -144,7 +142,6 @@ class ShoppingList {
             );
         }
 
-
         let new_doc = product.data[0].data();
         delete new_doc.groupId;
         let res = await db.Update(`shoppingLists/${listId}/products/${product.data[0].id}`, new_doc, false);
@@ -167,6 +164,7 @@ class ShoppingList {
     }
 
     async getShoppingList(listId){
+        
         if (listId){
             let res = await db.Get(`shoppingLists/${listId}`)
 
@@ -230,7 +228,6 @@ class ShoppingList {
         );
     }
 
-
     async updateShoppingList (listId, data, opt) {    
 	    let sub_id;
 
@@ -248,26 +245,30 @@ class ShoppingList {
         }
 
         if (data instanceof ShoppingListDocument) {
-            return await this.updateShoppingListMetaData(listId, data)
+            return await this.updateShoppingListMetaData(listId, data);
+
         } else if (data instanceof ProductDocument || data instanceof GroupDocument) {
-            return await this.updateShoppingListContent(listId, sub_id, data)
+            return await this.updateShoppingListContent(listId, sub_id, data);
+
         } else {
             throw new ShoppingListResponse(
                 ShoppingListResponse.status_codes.INVALID_PARAMETER,
                 listObj,
                 ""
-            )
+            );
         }
+
     }
 
-
     async updateShoppingListMetaData(listId, listObj){
+        
         if (listId && listObj && listObj instanceof ShoppingListDocument) {
 
             let res;
 
             try {
-                res =  await db.Update(`shoppingLists/${listId}`, listObj.getData())
+                res =  await db.Update(`shoppingLists/${listId}`, listObj.getData());
+
             }catch (e) {
                 throw new ShoppingListResponse(
                     ShoppingListResponse.status_codes.NOT_FOUND,
@@ -287,26 +288,29 @@ class ShoppingList {
 
                     },
                     `Error while updating list with id: ${listId}`
-                )
+                );
             }
 
             return new ShoppingListResponse(
                 ShoppingListResponse.status_codes.OK,
                 {},
                 'Successfuly updated list'
-            )
+            );
         }
     }
 
     async updateShoppingListContent(listId, docId, data){
+       
         if (listId && docId && data){
 
             let res;
 
             if (data instanceof ProductDocument){
-                res = await db.Update(`shoppingLists/${listId}/products/${docId}`, data.getData())
+                res = await db.Update(`shoppingLists/${listId}/products/${docId}`, data.getData());
+
             } else if(data instanceof GroupDocument){
-                res = await db.Update(`shoppingLists/${listId}/groups/${docId}`, data.getData())
+                res = await db.Update(`shoppingLists/${listId}/groups/${docId}`, data.getData());
+
             } else {
                 throw new ShoppingListResponse(
                     ShoppingListResponse.status_codes.INVALID_PARAMETER,
@@ -316,8 +320,7 @@ class ShoppingList {
                         EXPECTED_DATA_TYPE : "ProductDocument || GroupDocument"
                     },
                     "Parameter error, not supported type"
-
-                )
+                );
             }
 
            if (!DBResponse.OK(res)) {
@@ -353,13 +356,13 @@ class ShoppingList {
         }
     }
 
-
     async removeItemFromList(listId, itemId){
 
         let res;
 
         if (typeof listId === 'string' && typeof itemId === 'string'){
             res = await db.Delete(`shoppingLists/${listId}/products/${itemId}`);
+
         } else {
             throw new ShoppingListResponse(
                 ShoppingListResponse.status_codes.INVALID_PARAMETER,
@@ -412,7 +415,6 @@ class ShoppingList {
 
     }
 
-
     async deleteShoppingList(costumerId, listId){
 
         if (typeof costumerId !== 'string' || typeof listId !== 'string') {
@@ -424,7 +426,7 @@ class ShoppingList {
                     listId: `expected 'string' but was '${typeof listId}'`
                 },
                 'Parameter error'
-            )
+            );
         };
 
         // delete from users

@@ -128,7 +128,8 @@ TestRemoveGroupFromProduct.description = 'Test ShoppingList::AddGroupToProduct()
  */
 async function TestGetShoppingListFromService() {
 
-	let res = await shoping_list.getShoppingList(list_id);
+    let res = await shoping_list.getShoppingList(list_id);
+    
     assert(ShoppingListResponse.OK(res));
 
 }
@@ -215,7 +216,6 @@ async function TestDeleteProductsFromList (){
 }
 TestDeleteProductsFromList.description = 'Test ShoppingList::removeItemFromList(); deleting 1 document'
 
-
 async function TestDeleteList () {
 
     let res = await shoping_list.deleteShoppingList(user_id, list_id);
@@ -226,7 +226,7 @@ async function TestDeleteList () {
         let failRes = await shoping_list.getShoppingList(list_id);
         assert.fail('Found document, but expected not to');
     } catch (e) {
-        assert.strictEqual(ShoppingListResponse.status_codes.UNKNOWN_ERROR, e.status, 'Document still exists')
+        assert.strictEqual(ShoppingListResponse.status_codes.UNKNOWN_ERROR, e.status, 'Document still exists');
     }
 
 }
