@@ -102,10 +102,6 @@ class OAuth {
 
 		return async (req, res, next) => {
 
-			if (req.query.skip) {
-
-			}
-
 			let Auth_res;
 			try {
 				Auth_res = await this.AuthenticateUser(req.body[username_paramerter_name || 'username'],
