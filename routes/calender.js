@@ -1,5 +1,6 @@
+const express = require('express');
+const router = express.Router()
 
-const router = require('express').Router();
 const url = require('url');
 const OAuth = require('../bin/OAuth');
 const week = require('./week.js');
@@ -24,21 +25,28 @@ router.use('/', OAuth.Authorized(url.format({ // /user/login?redirect=<redirect-
   pathname: '/user/login',
   query: {
     redirect: '/kalender',
-    m: 'Du må være logget inn for å bruke den siden.' 
+    m: 'Du må være logget inn for å bruke den siden.'
   }
 })));
 
-/* GET home page. */
 router
-  .get('/:mon-:day', week) // Gets week 
-  .get('/:mon?', function (req, res, next) {
+  // ############
+  // WEEK VIEW
+  // ############
+  .get('/:mon-:day', week)
 
-    let res = await GetShoppingListsDates(req.user.lists);
-    console.log(res);
+  // ############
+  // KALENDER VIEW / MAIN ENTRY POINT
+  // ############
+  .get('/:mon?', async (req, res, next) => {
 
+    let test = await GetShoppingListsDates (req.user.lists);
+    console.log(test);
+
+    let mon = req.params.mon
     res.render('calendar', {
       title: 'Kalender',
-      month: req.params.mon ? req.params.mon : new Date().getMonth()
+      month: mon ? mon : new Date().getMonth() + 1
     });
   })
 

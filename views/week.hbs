@@ -9,37 +9,40 @@
 
   {{> headerplanner}}
 
-    <div class="week-view-container">
-      <div class="week-view-header">
-        <div class="week-view-month">
-          {{#month_name month}}{{this}}{{/month_name}} 2018
-        </div>
-        <div class="week-view-days">
+  <div class="content">
+    <div class="week-container">
+      <div class="week-header">
+        <div class="week-datename">{{#month_name month}}{{this}}{{/month_name}} 2018</div>
+        <div class="week-days">
           <ul>
-            <h3 class="font-yellow">Uke {{weeknum}}</h3>
+            <h3 class="this-week">Uke</h3>
             {{#each daysstring}}
               <li>{{this}}</li>
             {{/each}}
-            <h3 class="font-yellow">{{uke_num}}</h3>
+            <h3 class="this-week">{{uke_num}}</h3>
             {{#each days_arr}}
               {{#condition this '==' ../chosen_day}}
-                <li class="font-yellow">{{this}}</li>
+                <li class="font-yellow" style="color: red" >{{this}}</li>
               {{/condition}}
               {{#condition this '!=' ../chosen_day}}
-                <li class="font-aubergine">{{this}}</li>
+                <li class="font-aubergine btn-week-day" data-month="{{../month}}">{{this}}</li>
               {{/condition}}
             {{/each}}
           </ul>
         </div>
       </div>
-      <!-- Fixar när vi vet height på fotter -->
-      <div class="week-view-list">
-      <!-- List content -->
-      </div>
-      <div class="week-add-button">
-        <h3>Legg til varer</h3>
+      <div class="week-list">
+        <div class="list-item">
+          {{#each daysstring}}
+            <li id="vare">{{this}}</li>
+          {{/each}}
+        </div>
+        <div class="item-button">
+          <img id="button" src="/imgs/icon/Varer.png" alt="">
+        </div>
       </div>
     </div>
   </div>
+  {{> categories}}
 
 {{/layout}}

@@ -1,0 +1,66 @@
+@import "./imports/colors.sass"
+
+footer
+  background: #555
+  color: $Varmgra
+  font-size: 1.5em
+  position: fixed
+  bottom: 0
+  width: 100%
+  height: 12%
+  display: grid
+  grid: 0.85fr 1.15fr / 1fr
+  
+  p
+    margin: 0
+
+  &.overlay
+    filter: blur(3px)
+
+  a
+    cursor: pointer
+    color: $Varmgra
+    text-decoration: none
+
+    &:visited
+      color: $Varmgra
+      text-decoration: none
+    
+  .footer-menu
+    position: relative
+    width: 100%
+    display: grid
+    grid: 1fr / repeat(3, auto)
+    background: $Varmgra
+    color: $sort-aubergine
+    align-items: center
+
+    #handlekurv-icon
+      margin: auto 10px
+
+    .footer-text-output
+      position: absolute
+      left: 25px
+    
+    .footer-price
+      position: absolute
+      right: 25px
+
+  .nav-menu
+    width: 100%
+    display: grid
+    text-align: center
+    grid: 1fr / repeat(5, 1fr)
+    background: $sort-aubergine
+
+    a
+      width: 100%
+      height: 100%
+      transition: 200ms all
+      vertical-align: middle
+      line-height: 400%
+      font-size: 2.0vh
+
+      &:hover
+        background: $Varmgra
+        color: $Mork-aubergine
