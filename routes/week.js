@@ -71,6 +71,7 @@ function getNumbersInWeek(year, month, daynum) {
 
 /* GET home page. */
 router.get('/:mon-:day', async (req, res, next) => {
+  
   let mon = checkInt(req.params.mon);
   let day = checkInt(req.params.day);
   
