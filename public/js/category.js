@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <h1 id="product-name">${json.name}</h1>
                   <h1 id="price-per-unit">kr ${json.price.gross}</h1>
                   <img id="add-button" src="/imgs/icon/Velg vare.png" alt="">
-                  <h2 id="price-som">stykk</h2>
+                  <span></span>
                   <h2 id="price-quantity">kr ${json.price.gross_unit}</h2>
                   </div>`
         setEventListener()
