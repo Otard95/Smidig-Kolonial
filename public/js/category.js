@@ -27,6 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(e)
       }
     })
+    console.log('Done with categories')
+    return
   }
 
   async function getProducts(data) {
@@ -59,14 +61,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (json.children.length > 0) {
           getCategories(json)
+          console.log('Adding eventlisterners')
         } else {
           console.log('Should log out data')
           getProducts(json)
         }
 
-        setTimeout(() => {
-          setEventListener()
-        }, 3000)
+        // setTimeout(() => {
+        //   setEventListener()
+        // }, 3000)
       })
     })
   }
