@@ -74,7 +74,7 @@ router.get('/:mon-:day', async (req, res, next) => {
   let mon = checkInt(req.params.mon);
   let day = checkInt(req.params.day);
   
-  if (mon && day) {
+  if (mon === undefined || day === undefined) {
     next({
       msg: 'parameter error'
     });
@@ -114,7 +114,7 @@ router.get('/:mon-:day/create', async (req, res, next) => {
   let mon = checkInt(req.params.mon);
   let day = checkInt(req.params.day);
 
-  if (mon && day) {
+  if (mon === undefined || day === undefined) {
     next({
       msg: 'parameter error'
     });
