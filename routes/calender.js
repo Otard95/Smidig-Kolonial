@@ -47,13 +47,13 @@ router.use('/liste', week);
 router.get('/:mon?', async (req, res, next) => {
 
   let mon = req.params.mon ? checkInt(req.params.mon) : new Date().getMonth() + 1;
-  
   if (mon === undefined) {
     next({
       msg: 'parameter error'
     });
     return;
   }
+  let day = (mon === new Date().getMonth() + 1) ? new Date().getDate() : ''
 
     let shoppinglistdates = await GetShoppingListsDates (req.user.lists);
     console.log(shoppinglistdates)
@@ -61,7 +61,7 @@ router.get('/:mon?', async (req, res, next) => {
       title: 'Kalender',
       month: mon,
       shoppinglistdates,
-      today: 20
+      today: day
     });
   })
 

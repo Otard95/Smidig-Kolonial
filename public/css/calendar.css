@@ -204,6 +204,25 @@ hr {
     color: #2d2832; }
     .cal .date div {
       height: 2em;
-      line-height: 2em; }
+      line-height: 2em;
+      position: relative; }
       .cal .date div.inactive {
         color: #d7d7d2; }
+    .cal .date .has-list::after {
+      position: absolute;
+      content: '';
+      width: 10px;
+      height: 10px;
+      background: #8255c3;
+      bottom: -5px;
+      left: 50%;
+      border-radius: 10px;
+      -webkit-transform: translateX(-50%);
+              transform: translateX(-50%); }
+  .cal .today {
+    position: absolute;
+    height: 100%;
+    background: #413746;
+    color: white;
+    border-radius: 5px;
+    margin: 0 5px; }

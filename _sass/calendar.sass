@@ -192,6 +192,26 @@ hr
     div
       height: 2em
       line-height: 2em
+      position: relative
 
       &.inactive
         color: $Varmgra
+
+    .has-list::after
+      position: absolute
+      content: ''
+      width: 10px
+      height: 10px
+      background: $aubergine
+      bottom: -5px
+      left: 50%
+      border-radius: 10px
+      transform: translateX(-50%)
+
+  .today
+    position: absolute
+    height: 100%
+    background: $Mork-aubergine
+    color: white
+    border-radius: 5px
+    margin: 0 5px
