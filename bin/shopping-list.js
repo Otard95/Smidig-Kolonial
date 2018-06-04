@@ -182,7 +182,7 @@ class ShoppingList {
                 throw new ShoppingListResponse(
                     ShoppingListResponse.status_codes.UNKNOWN_ERROR,
                     res,
-                    `Error while deleting element with id: ${listId}`
+                    `Error while getting document with id: ${listId}`
                 );
             }
 

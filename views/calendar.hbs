@@ -73,8 +73,11 @@
           <div class = "date">
             {{!-- Takes in year and month --}}
             {{#calendar 2018 month}}
-              <div data-month={{../month}} data-day="{{this}}" class="active calendar-btn">{{this}}</div>
+                <div data-month={{../month}} data-day="{{this.day}}" class="active calendar-btn {{#condition this.day '==' ../today}}today{{/condition}} {{#contains ../shoppinglistdates this.date}}has-list{{/contains}}">
+                  {{this.day}}
+                </div>
             {{/calendar}}
+              
           </div>
         </div>
     </div>

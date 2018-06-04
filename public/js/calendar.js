@@ -37,8 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   calendarbtn.forEach(element => {
     element.addEventListener('click', () => {
-      let day = element.innerHTML
-      month = element.dataset.month
+      let day = element.dataset.day,
+          month = element.dataset.month
       window.location.href = `/kalender/liste/${month}-${day}`
     })
   })

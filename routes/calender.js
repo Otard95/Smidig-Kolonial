@@ -7,6 +7,20 @@ const week = require('./week.js');
 const shopping_list_service = require('../bin/shopping-list');
 const ShoppingListResponse = require('../models/shopping-list-response');
 
+Number.prototype.clamp = (a, b) => {return Math.min(Math.max(this, min), max)};
+
+function checkInt (val) {
+  
+  let int = parseInt(val);
+
+  if (int === NaN || '' + int !== val) {
+    return;
+  }
+
+  return int;
+
+}
+
 async function GetShoppingListsDates (arr_list) {
 
   prom = [];
@@ -34,13 +48,43 @@ async function GetAllShoppingLists(listIds) {
     prom.push(shopping_list_service.getShoppingList(id));
   });
 
-  let allLists = await Promise.all(prom);
+  let allLists;
+  try {
+    allLists = await Promise.all(prom);
+  } catch(err) {
+    console.log(err);
+  }
 
   allLists = allLists.filter(SLRes => ShoppingListResponse.OK(SLRes));
 
-  return allLists.map(SLres => SLres.data);
+  return allLists.map(SLRes => SLRes.data);
 
- }
+}
+
+function SortShoppingLists(allLists) {
+    let encoded_date = 201800;
+    encoded_date += new Date().getMonth() + 1;
+    encoded_date *= 100;
+    encoded_date += new Date().getDate();
+
+    let upcommingLists = allLists.filter(list => list.date > encoded_date);
+    let passedLists = allLists.filter(list => list.date < encoded_date);
+
+    upcommingLists.sort((a, b) => {
+      let num = (a.date - b.date);
+      return Math.min(Math.max(num, -1), 1);
+    });
+
+    passedLists.sort((a, b) => {
+      let num = (b.date - a.date);
+      return Math.min(Math.max(num, -1), 1);
+    });
+
+    return {
+      upcoming: upcommingLists,
+      passed: passedLists
+    }
+}
 
 router.use('/', OAuth.Authorized(url.format({ // /user/login?redirect=<redirect-uri>&m=<message>
   pathname: '/user/login',
@@ -60,36 +104,30 @@ router.get('/lists-overview', async (req, res, next) => {
 
   let allLists = await GetAllShoppingLists(listIds);
 
-  let prom = [];
-  allLists.forEach(e => {
-    let p = new Promise((resolve, reject) => {
-      res.render('partials/shopping-list-mini-block', e, (err, html) => {
-        if (err) {
-          resolve('');
-          console.log(err);
-          return;
-        }
-        resolve(html);
-      });
-    });
-    prom.push(p);
-  });
-  let response = await Promise.all(prom);
-
-  res.status(200).send(response.join());
+  res.render('partials/shoping-lists-panel', SortShoppingLists(allLists));
 
 });
 
 router.get('/:mon?', async (req, res, next) => {
 
-  let shoppinglistdates = await GetShoppingListsDates (req.user.lists);
+  let mon = req.params.mon ? checkInt(req.params.mon) : new Date().getMonth() + 1;
+  
+  if (mon === undefined) {
+    next({
+      msg: 'parameter error'
+    });
+    return;
+  }
 
-  let mon = req.params.mon
+  let shoppinglistdates = await GetShoppingListsDates (req.user.lists);
+  console.log(shoppinglistdates)
   res.render('calendar', {
     title: 'Kalender',
-    month: mon ? mon : new Date().getMonth() + 1,
-    shoppinglistdates
+    month: mon,
+    shoppinglistdates,
+    today: 20
   });
 });
+
 
 module.exports = router;
