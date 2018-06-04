@@ -99,7 +99,7 @@ router.get('/:mon-:day', async (req, res, next) => {
   let days_arr = getNumbersInWeek(2018, mon - 1, day)
 
   res.render('week', {
-    title: `Calendar: ${day} ${months[mon]}`,
+    title: `Calendar: ${day} ${months[mon - 1]}`,
     month: mon,
     uke_num,
     daysstring: ['Man', 'Tis', 'Ons', 'Tor', 'Fre', 'Lor', 'Son'],
