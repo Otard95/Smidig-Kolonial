@@ -1,28 +1,24 @@
 .planner-grid {
   position: relative;
-  margin-top: 3.5%;
   display: grid;
-  font-size: 1.5vh;
-  text-align: center; }
-  .planner-grid .planner-header {
-    display: inline-grid;
-    grid-row: 1;
-    grid-template-columns: 1fr 1fr 14fr 2fr 2fr;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-    border-bottom: 1px solid #d7d7d2;
-    padding-bottom: 2%; }
-    .planner-grid .planner-header .img {
-      width: 50%;
-      height: 50%; }
-    .planner-grid .planner-header .header-text {
-      font-size: 2.7vh;
-      margin-left: 10%; }
-    .planner-grid .planner-header #pil-icon {
-      height: 45%; }
-    .planner-grid .planner-header h1 {
-      margin: .5em 0 .25em; }
+  margin-top: 3.5vh;
+  grid: 12%/repeat(8, 1fr);
+  text-align: center;
+  grid-gap: 2.5%;
+  grid-template-areas: ". . . . . . . ." "pil . text text text text chat handleliste"; }
+  .planner-grid img {
+    height: 100%;
+    width: auto; }
+  .planner-grid #pil-icon {
+    grid-area: pil;
+    margin: 0 auto; }
+  .planner-grid .header-text {
+    grid-area: text;
+    font-size: 2em;
+    margin: 0; }
+  .planner-grid #chat-icon {
+    grid-area: chat;
+    margin: 0 auto; }
+  .planner-grid #handleliste-icon {
+    grid-area: handleliste;
+    margin: 0 auto; }
