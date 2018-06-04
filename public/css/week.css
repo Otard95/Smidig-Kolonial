@@ -129,3 +129,21 @@ li#vare {
   width: 100%;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(2, 1fr); }
+
+.chosen-day {
+  color: white;
+  position: relative;
+  z-index: 2; }
+  .chosen-day::after {
+    content: '';
+    position: absolute;
+    background: #413746;
+    width: 90%;
+    height: 100%;
+    bottom: 0;
+    left: 50%;
+    z-index: -1;
+    margin: 0 auto;
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+    border-radius: 5px; }

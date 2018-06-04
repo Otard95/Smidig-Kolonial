@@ -22,7 +22,7 @@
             <h3 class="this-week">{{uke_num}}</h3>
             {{#each days_arr}}
               {{#condition this '==' ../chosen_day}}
-                <li class="font-yellow" style="color: red" >{{this}}</li>
+                <li class="chosen-day">{{this}}</li>
               {{/condition}}
               {{#condition this '!=' ../chosen_day}}
                 <li class="font-aubergine btn-week-day" data-month="{{../month}}">{{this}}</li>
