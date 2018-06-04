@@ -56,7 +56,7 @@ router.get('/lists-overview', async (req, res, next) => {
     prom = [];
 
     listIds.forEach(id => {
-      prom.push(shopping_list_service.getShoppng(id));
+      prom.push(shopping_list_service.getShoppingList(id));
     });
 
     let allLists = await Promise.all(prom);
@@ -65,10 +65,16 @@ router.get('/lists-overview', async (req, res, next) => {
 
     console.log(allLists);
 
+    return allLists;
+
+  } else {
+    return new ShoppingListResponse(
+      ShoppingListResponse.status_codes.NOT_FOUND,
+      {},
+      'No lists found'
+    );
   }
-
-
-
-})
+  
+});
 
 module.exports = router;
