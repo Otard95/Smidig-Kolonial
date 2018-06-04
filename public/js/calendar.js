@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     element.addEventListener('click', () => {
       let day = element.innerHTML
       month = element.dataset.month
-      window.location.href = `/kalender/${month}-${day}`
+      window.location.href = `/kalender/liste/${month}-${day}`
     })
   })
 
