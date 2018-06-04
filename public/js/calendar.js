@@ -18,18 +18,21 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 
   // fit images in shoppinglist info
-  document.querySelectorAll('.shoppinglist-box').forEach(() => {
-    // let img_container = el.find('.image-container')
-    let img = document.querySelectorAll('.image-container img')[0]
-    let h = img.style.height,
-      w = img.style.width
-    let r = h / w
-    if (r < 0) {
-      img.style.width = '100%'
-    } else {
-      img.style.height = '100%'
-    }
-  });
+
+  // ### Not used in beta ###
+
+  // document.querySelectorAll('.shoppinglist-box').forEach(() => {
+  //   // let img_container = el.find('.image-container')
+  //   let img = document.querySelectorAll('.image-container img')[0]
+  //   let h = img.style.height,
+  //     w = img.style.width
+  //   let r = h / w
+  //   if (r < 0) {
+  //     img.style.width = '100%'
+  //   } else {
+  //     img.style.height = '100%'
+  //   }
+  // });
 
   let nextpoiner = document.querySelectorAll('#next-pointer')[0],
     previouspoiner = document.querySelectorAll('#previous-pointer')[0],

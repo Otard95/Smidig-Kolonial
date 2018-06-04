@@ -85,26 +85,6 @@ footer {
     .planner-grid .planner-header h1 {
       margin: .5em 0 .25em; }
 
-.handleliste-container {
-  position: relative;
-  display: grid;
-  grid: auto 5fr/repeat(4, 1fr);
-  grid-template-areas: "head head head head" "img text text ."; }
-  .handleliste-container .handleliste-header {
-    grid-area: head;
-    background: #413746;
-    position: relative;
-    height: 50px; }
-    .handleliste-container .handleliste-header .handleliste-delbtn {
-      position: absolute;
-      right: 0; }
-  .handleliste-container .image-container {
-    grid-area: img; }
-    .handleliste-container .image-container img {
-      border-radius: 50%; }
-  .handleliste-container .handleliste-text {
-    grid-area: text; }
-
 @font-face {
   font-family: 'GT Walsheim Regular';
   src: url("../fonts/GT-Walsheim-Regular.ttf");
