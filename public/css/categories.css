@@ -48,7 +48,8 @@
     border: 0; }
 
 .categories {
-  position: relative;
+  position: absolute;
+  width: 100%;
   margin-top: 2vh;
   height: 47vh;
   list-style: none;
