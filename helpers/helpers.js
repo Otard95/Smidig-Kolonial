@@ -56,9 +56,9 @@ module.exports = {
     // First day in month
     let date = new Date(year, month - 1, 0)
     date.setHours(0, 0, 0)
-    // Make Sunday's day number 7  
+    // Make Sunday's day number 7
     date.setDate(date.getDate() + 4 - (date.getDay() || 7))
-    // Get first day of year  
+    // Get first day of year
     let firstDay = new Date(date.getFullYear(), 0, 1)
     let num = Math.ceil((((date - firstDay) / 86400000) + 1) / 7)
 

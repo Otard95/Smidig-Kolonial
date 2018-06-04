@@ -36,7 +36,7 @@
   background-color: #f0f0ec;
   border-radius: 40px; }
 
-.search-t {
+#search-t {
   position: relative;
   top: 0.7vh;
   text-align: left;
@@ -44,7 +44,7 @@
   color: grey;
   font-size: 2.2vh;
   border: 0; }
-  .search-t:active {
+  #search-t:active {
     border: 0; }
 
 .categories {

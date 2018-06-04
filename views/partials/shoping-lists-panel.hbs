@@ -1,0 +1,10 @@
+<div>
+    <h4>Kommende</h4>
+    {{#each upcoming }}
+        {{> shopping-list-mini-block this}}
+    {{/each}}
+    <h4>Tidligere</h4>
+    {{#each passed }} 
+        {{> shopping-list-mini-block this}} 
+    {{/each}}
+</div>
