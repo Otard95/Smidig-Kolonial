@@ -1,0 +1,45 @@
+@import "./imports/colors.sass"
+
+.product-list-container
+  width: 90%
+  height: 8vh
+  margin: 0 auto
+  display: grid
+  grid-template-columns: 15% 60% 25%
+  grid-template-rows: 50% 50%
+  grid-template-areas: "prodImg name amount" "prodImg price amount"
+  border-bottom: 1px solid $Varmgra
+
+  #product-image
+    max-height: 90%
+    max-width: 90%
+    margin: 0
+    grid-area: prodImg
+    justify-self: center
+    align-self: center
+
+  #product-name
+    grid-area: name
+    max-width: 100%
+    margin: 0
+    font-size: 2em
+    line-height: 2.2em
+    padding-right: 20px
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+
+  #price
+    grid-area: price
+    font-size: 1.5em
+    margin: 0
+    line-height: 2em
+
+  #quantity-block
+    grid-area: amount
+    display: flex
+    justify-content: space-around
+    align-items: center
+    
+    #amount
+      font-size: 2em

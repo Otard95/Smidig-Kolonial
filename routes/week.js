@@ -88,11 +88,22 @@ router.get('/:mon-:day', async (req, res, next) => {
   
   let list = await GetListOnDate(encoded_date, req.user.lists);
   list = list[0];
+
+  let prom = [];
+  list.products.forEach(item => {
+    prom.push(api.GetItemById(item.kolonialId));
+  });
+  let products = await Promise.all(prom);
+
+  list.products.forEach((item, index) => {
+    item.data = products[index];
+  });
+  
   console.log(list);
 
   // Required  to pass month and day down to render successfully
   let categories = await api.GetAllCategories()
-  let product = await api.GetItemById(520)
+  //let product = await api.GetItemById(520)
   let months = ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember']
 
   let uke_num = getWeekNumber(mon - 1, day)
@@ -106,7 +117,6 @@ router.get('/:mon-:day', async (req, res, next) => {
     days_arr,
     chosen_day: day,
     categories,
-    product,
     list
   })
 })

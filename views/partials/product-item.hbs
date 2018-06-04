@@ -4,10 +4,10 @@
 {{/section}}
 
 <div class="product-container">
-  <img id="product-image" src="{{product.images.thumbnail}}" alt="">
-  <h1 id="product-name">{{product.name}}</h1>
-  <h1 id="price-per-unit">kr {{product.price.gross}}</h1>
+  <img id="product-image" src="{{images.0.thumbnail.url}}" alt="">
+  <h1 id="product-name">{{name.base}}</h1>
+  <h1 id="price-per-unit">kr {{price.gross}}</h1>
   <img id="add-button" src="/imgs/icon/Velg vare.png" alt="">
   <span></span>
-  <h2 id="price-quantity">kr {{product.price.gross_unit}}</h2>
+  <h2 id="price-quantity">kr {{price.gross_unit}}</h2>
 </div>
