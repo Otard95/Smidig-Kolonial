@@ -22,6 +22,26 @@ async function GetShoppingListsDates (arr_list) {
 
 }
 
+async function GetAllShoppingLists(listIds) { 
+  
+  if (listIds.length === 0) {
+    return [];
+  }
+
+  prom = [];
+
+  listIds.forEach(id => {
+    prom.push(shopping_list_service.getShoppingList(id));
+  });
+
+  let allLists = await Promise.all(prom);
+
+  allLists = allLists.filter(SLRes => ShoppingListResponse.OK(SLRes));
+
+  return allLists.map(SLres => SLres.data);
+
+ }
+
 router.use('/', OAuth.Authorized(url.format({ // /user/login?redirect=<redirect-uri>&m=<message>
   pathname: '/user/login',
   query: {
@@ -32,49 +52,44 @@ router.use('/', OAuth.Authorized(url.format({ // /user/login?redirect=<redirect-
 
 router.use('/liste', week);
 
-router.get('/:mon?', async (req, res, next) => {
-
-    let shoppinglistdates = await GetShoppingListsDates (req.user.lists);
-
-    let mon = req.params.mon
-    res.render('calendar', {
-      title: 'Kalender',
-      month: mon ? mon : new Date().getMonth() + 1,
-      shoppinglistdates
-    });
-  });
-
-
 router.get('/lists-overview', async (req, res, next) => {
 
   let listIds = req.user.lists;
 
   console.log(listIds);
 
-  if (listIds.length > 0) {
+  let allLists = await GetAllShoppingLists(listIds);
 
-    prom = [];
-
-    listIds.forEach(id => {
-      prom.push(shopping_list_service.getShoppingList(id));
+  let prom = [];
+  allLists.forEach(e => {
+    let p = new Promise((resolve, reject) => {
+      res.render('partials/shopping-list-mini-block', e, (err, html) => {
+        if (err) {
+          resolve('');
+          console.log(err);
+          return;
+        }
+        resolve(html);
+      });
     });
+    prom.push(p);
+  });
+  let response = await Promise.all(prom);
 
-    let allLists = await Promise.all(prom);
+  res.status(200).send(response.join());
 
-    allLists = allLists.filter(SLRes => ShoppingListResponse.OK(SLRes));
+});
 
-    console.log(allLists);
+router.get('/:mon?', async (req, res, next) => {
 
-    return allLists;
+  let shoppinglistdates = await GetShoppingListsDates (req.user.lists);
 
-  } else {
-    return new ShoppingListResponse(
-      ShoppingListResponse.status_codes.NOT_FOUND,
-      {},
-      'No lists found'
-    );
-  }
-  
+  let mon = req.params.mon
+  res.render('calendar', {
+    title: 'Kalender',
+    month: mon ? mon : new Date().getMonth() + 1,
+    shoppinglistdates
+  });
 });
 
 module.exports = router;
