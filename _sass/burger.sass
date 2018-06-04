@@ -1,3 +1,4 @@
+@import "./imports/colors.sass"
 
 .shadow
   position: fixed
@@ -25,35 +26,22 @@
   z-index: 1000
   transition: right 500ms ease-in-out
 
+    .burger-choice
+        display: grid
+        grid: auto / repeat(2, 1fr)
+        text-align: center
+
+      h2
+        margin: 0 10%
+        font-size: 1.7em
+        border: 2px solid $Lys-varmgra
+
   &.show
     right: 0
 
-  .shoppinglist-box
-    display: flex
-    justify-content: space-between
-    margin: 150px auto
-    align-items: center
+.shoppinglist-container
     width: 90%
-    height: 190px
-    background-color: $Lys-varmgra
-    border-radius: 20px
-    font-size: 1.7em
-    color: darken($Varmgra, 13%)
-
-    .list-info
-      margin-left: 12px
-
-    .list-name
-      color: $sort-aubergine
-      font-size: 2.3rem
-      margin: 10px 0
-
-    .image-container
-      height: 125px
-      width: 125px
-      margin-right: 40px
-      border-radius: 50%
-      overflow: hidden
+    margin: 0 auto
 
 .container
   &.overlay
@@ -87,3 +75,30 @@
       transform: translateY(16.5px) rotate(45deg)
     div:nth-child(3)
       transform: translateY(-16.5px) rotate(-45deg)
+
+    // .shoppinglist-box
+    // display: flex
+    // justify-content: space-between
+    // margin: 150px auto
+    // align-items: center
+    // width: 90%
+    // height: 190px
+    // background-color: $Lys-varmgra
+    // border-radius: 20px
+    // font-size: 1.7em
+    // color: darken($Varmgra, 13%)
+
+    // .list-info
+    //   margin-left: 12px
+
+    // .list-name
+    //   color: $sort-aubergine
+    //   font-size: 2.3rem
+    //   margin: 10px 0
+
+    // .image-container
+    //   height: 125px
+    //   width: 125px
+    //   margin-right: 40px
+    //   border-radius: 50%
+    //   overflow: hidden

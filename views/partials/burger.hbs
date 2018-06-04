@@ -1,17 +1,23 @@
+  {{#section 'head'}}
+  <link rel="stylesheet" href="/css/burger.css">
+{{/section}}
 
   <div class="shadow"></div>
   <div class="side-overlay">
-{{#each upcoming}}<div class="shoppinglist-box">
-      {{!-- <div class="list-info">
-        <div class="list-date">22.12.17</div>
-        <div class="list-name">Julie 5 år!</div>
-        <div class="list-cost">240kr</div>
-      </div>--}}
-        <div class="list-info">
-            <div class="list-date">{{this.date}}</div>
+
+  <h1 class="burger-title">Handlelister</h1>
+  <div class="burger-choice">
+    <h2>Aktiv</h2><h2>Historikk</h2>
+  </div>
+  <hr>
+
+    {{#each upcoming}}
+        <div class="shoppinglist-container">
+            <div class="shoppinglist-header">🗑️</div>
             <div class="list-name">{{this.name}}</div>
+            <div class="list-date">{{this.date}}</div>
         </div>
-    </div>{{/each}}
+    {{/each}}
   </div>
 
   <div class="burger">
