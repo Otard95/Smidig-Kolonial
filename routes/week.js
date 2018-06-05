@@ -217,15 +217,18 @@ router.post('/:mon-:day/update', async (req, res, next) => {
     return;
   }
 
-  if (req.body.product_update) {
+  // ### Update products in list
+  if (Array.isArray(req.body.product_update)) {
+    // loop through and update all the products
     for (let p of req.body.product_update) {
+      // create a ProductDocument with the new data
       let product = new ProductDocument(
         undefined,
         p.amount,
         undefined
       );
-      let response;
       try {
+        // try to update the shopping list
         response = await shopping_list_service.updateShoppingList(list.documentId, p.pid, product);
       } catch (e) {
         res.status(500).json({
@@ -234,6 +237,7 @@ router.post('/:mon-:day/update', async (req, res, next) => {
         });
         return;
       }
+      // make sure everythinf is ok
       if (!ShoppingListResponse.OK(response)) {
         res.status(500).json({
           code: 104,
@@ -242,13 +246,50 @@ router.post('/:mon-:day/update', async (req, res, next) => {
         return;
       }
     }
-  }
 
-  if (req.body.group_update) {
+  } // END pruduct update
+
+  // ### Add products to list
+  if (Array.isArray(req.body.product_add)) {
+    // loop through and update all the products
+    for (let p of req.body.product_add) {
+      // create a ProductDocument with the new data
+      let product = new ProductDocument(
+        p.kolonialId,
+        p.amount,
+        p.groupId
+      );
+      // define a response vaiable
+      let response;
+      try {
+        // try to update the shopping list
+        response = await shopping_list_service.addDocumentToList(list.documentId, product);
+      } catch (e) {
+        res.status(500).json({
+          code: 103,
+          message: 'Det oppstod en feil på våre servere, og vi fikk ikke lagret handlelisten din.'
+        });
+        return;
+      }
+      // make sure everythinf is ok
+      if (!ShoppingListResponse.OK(response)) {
+        res.status(500).json({
+          code: 104,
+          message: 'Det oppstod en feil på våre servere. Det kan hende at handlelisten ikke ble lagret slik den skulle.'
+        });
+        return;
+      }
+      // push the response to the raw output
+      p.pid = response.data.id;
+    }
+
+  } // END product add
+
+  if (Array.isArray(req.body.group_update)) {
     // TODO: implement
   }
 
-  if (req.body.meta_update) {
+  if (Array.isArray(req.body.meta_update)) {
     // TODO: implement
   }
 
@@ -259,6 +300,9 @@ router.post('/:mon-:day/update', async (req, res, next) => {
       products: req.body.product_update,
       groups: req.body.group_update,
       meta: req.body.meta_update
+    },
+    created: {
+      products: req.body.product_add
     }
   });
 

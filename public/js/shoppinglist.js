@@ -85,6 +85,33 @@ function ShoppingListModule () {
 
 					unsetLeave();
 				}
+
+				async AddToList (arr_products, callback /* (err, res) */) {
+
+					let res;
+
+					try {
+						let http_response = await fetch(window.location.pathname + '/update', {
+							method: 'POST',
+							body: JSON.stringify({
+								product_add: arr_products
+							}),
+							headers: {
+								'Content-Type': 'application/json'
+							}
+						});
+
+						res = await http_response.json();
+
+					} catch (e) {
+						console.log(e);
+						callback(e);
+						return;
+					}
+
+					callback(null, res.created)
+
+				}
 				
 			}
 			
