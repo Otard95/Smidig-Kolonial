@@ -162,9 +162,5 @@ module.exports = {
   contains (arr, val, hbs_options) {
     if (arr.includes(val)) return hbs_options.fn();
   }
-<<<<<<< HEAD
-};
-=======
 
 };
->>>>>>> origin/frontend/helpers

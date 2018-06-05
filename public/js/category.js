@@ -4,7 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let categoryBox = document.querySelector(".category-container");
   let whiteIconGone = document.querySelector(".add-product-button");
   let blackIconShow = document.querySelector(".button-white");
-  let catlist = document.querySelector(".category-list")
+  let catlist = document.querySelector(".category-list");
+  let showArrow = document.querySelector(".back-arrow");
+
+  let itemId = []
+
 
   btn.addEventListener("click", async () => {
     // Resets the list
@@ -70,12 +74,16 @@ document.addEventListener("DOMContentLoaded", () => {
         let data = await fetch(`/API/category/${category}`)
         let json = await data.json()
 
+        if(!itemId.includes(json.id)){
+          itemId.push(json.id)
+        }
+
+        console.log(itemId);
         if (json.children_id && json.children_id.length > 0) {
           getCategories(json)
         } else {
           getProducts(json)
         }
-
       })
     })
   }
@@ -102,6 +110,33 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     })
   }
+
+  function goBack() {
+    showArrow.addEventListener("click", async () => {
+      console.log("Trykket tilbake");
+      if(itemId.length >= 2){
+        let last = itemId[itemId.length - 2]
+        catlist.innerHTML = ""
+        let data = await fetch(`/API/category/${last}`)
+        let json = await data.json()
+        console.log(json);
+        getCategories(json)
+      }if(itemId.length < 2){
+        let result = await fetch('/api/categories')
+        let json = await result.json()
+
+        catlist.innerHTML = ""
+        catlist.innerHTML += `<li>Inspirasjon</li>
+        <li>Dine Varer</li>`
+        json.forEach(e => {
+          catlist.innerHTML += `<li class="list-item" data-categoryid="${e.id}">${e.name}</li>`
+          setEventListener()
+        })
+      }
+      itemId.pop()
+    })
+  }
   setEventListener()
   searchTerm()
+  goBack()
 })
