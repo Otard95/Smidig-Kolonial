@@ -19,9 +19,19 @@
       <!--Legg inn forstørrelsesglass-->
       <input type="text" id="search-t" onkeyup="searchTerm()" placeholder="Søk i tusenvis av varer">
     </div>
+    <div class="inspiration-container">
+      <ul class="inspiration-border">
+        <li>Familiemiddag</li>
+        <li>Helgekos</li>
+        <li>Selskap</li>
+        <li>Gjester</li>
+        <li>Høytid</li>
+      </ul>
+    </div>
+
     <div class="categories">
       <ul class="category-list">
-        <li>Inspirasjon</li>
+        <li class="inspiration">Inspirasjon</li>
         <li>Dine Varer</li>
         {{#each categories}}
           <li class="list-item" data-categoryid={{this.id}}>{{this.name}}</li>
