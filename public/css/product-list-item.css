@@ -27,8 +27,9 @@
     white-space: nowrap; }
   .product-list-container #price {
     grid-area: price;
-    font-size: 1.5em;
     margin: 0;
+    color: #d7d7d2;
+    font-size: 1.5em;
     line-height: 2em; }
   .product-list-container #quantity-block {
     grid-area: amount;
@@ -41,4 +42,8 @@
         -ms-flex-align: center;
             align-items: center; }
     .product-list-container #quantity-block #amount {
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: center;
       font-size: 2em; }
