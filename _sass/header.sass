@@ -1,13 +1,14 @@
 @import "./imports/colors.sass"
 
-
 .planner-grid
   position: relative
+  width: 90%
+  margin: 0 auto
   display: grid
   margin-top: 3.5vh
   grid: 12% / repeat(8, 1fr)
   text-align: center
-  grid-gap: 2.5%
+  grid-gap: .5%
   grid-template-areas: "pil . text text text text chat handleliste"
 
   img
@@ -27,6 +28,6 @@
     grid-area: chat
     margin: 0 auto
 
-  #handleliste-icon
+  .handleliste-icon
     grid-area: handleliste
     margin: 0 auto

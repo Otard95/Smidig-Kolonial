@@ -1,9 +1,0 @@
-#button {
-  height: 23%;
-  width: 23%; }
-
-.item-button {
-  position: absolute;
-  z-index: 0;
-  width: 100%;
-  bottom: 0; }

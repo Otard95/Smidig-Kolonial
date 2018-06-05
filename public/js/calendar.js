@@ -3,19 +3,19 @@
 
 let DOM_burger_button, DOM_side_overlay, DOM_content, DOM_footer, DOM_shadow;
 document.addEventListener("DOMContentLoaded", () => {
-  DOM_burger_button = document.querySelectorAll('.burger')[0]
-  DOM_content = document.querySelectorAll('.container')[0]
-  DOM_side_overlay = document.querySelectorAll('.side-overlay')[0]
-  DOM_footer = document.querySelectorAll('footer')[0]
-  DOM_shadow = document.querySelectorAll('.shadow')[0]
+  // DOM_burger_button = document.querySelectorAll('.burger')[0]
+  // DOM_content = document.querySelectorAll('.container')[0]
+  // DOM_side_overlay = document.querySelectorAll('.side-overlay')[0]
+  // DOM_footer = document.querySelectorAll('footer')[0]
+  // DOM_shadow = document.querySelectorAll('.shadow')[0]
 
-  DOM_burger_button.addEventListener('click', () => {
-    DOM_burger_button.classList.toggle('close');
-    DOM_content.classList.toggle('overlay');
-    DOM_side_overlay.classList.toggle('show');
-    DOM_footer.classList.toggle('overlay');
-    DOM_shadow.classList.toggle('show');
-  })
+  // DOM_burger_button.addEventListener('click', () => {
+  //   DOM_burger_button.classList.toggle('close');
+  //   DOM_content.classList.toggle('overlay');
+  //   DOM_side_overlay.classList.toggle('show');
+  //   DOM_footer.classList.toggle('overlay');
+  //   DOM_shadow.classList.toggle('show');
+  // })
 
   // fit images in shoppinglist info
 

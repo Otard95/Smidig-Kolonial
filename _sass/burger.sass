@@ -30,47 +30,72 @@
     display: grid
     grid: auto / repeat(2, 1fr)
     text-align: center
+    font-size: 2em
+
+    .active
+      color: black
+      background: $Lys-varmgra
 
   h2
     margin: 0 10%
     font-size: 1.7em
     border: 2px solid $Lys-varmgra
+    border-radius: 10px
+    transition: 200ms all
 
   &.show
     right: 0
 
+.shoppinglist-hidden
+  opacity: 0
+  display: none
+
 .shoppinglist-container
+    opacity: 1
     width: 90%
-    margin: 0 auto
+    margin: 20px auto
+    font-size: 2em
+    background: $Lys-varmgra
+    border-radius: 10px
+    transition: 200ms all
+
+    .shoppinglist-header
+      height: 2em
+      position: relative
+      background: $Mork-aubergine
+      border-top-left-radius: 10px
+      border-top-right-radius: 10px
+
+      .icon
+        position: absolute
+        right: 10px
+        height: calc(100% - 20px)
+        margin: 10px
+
+    .list-date
+      padding-top: 10px
+      margin-left: 15px
+      color: #9B9B9B
+
+    .list-name
+      margin-left: 15px
+      padding-bottom: 10px
 
 .container
   &.overlay
     filter: blur(3px)
 
 .burger
+  position: absolute
   height: 50px
   width: 70px
-  display: flex
-  flex-direction: column
-  justify-content: space-around
-  position: absolute
   right: 60px
-  font-size: 1em
-  color: $sort-aubergine
-  z-index: 2000
-
-  div
-    width: 100%
-    height: 7px
-    background: $sort-aubergine
-    border-radius: 3px
-    transition: 300ms ease-in-out
+  z-index: 0
+  transition: z-index 200ms ease-in 150ms
 
   &.close
-    div:nth-child(2)
-      opacity: 0
+    z-index: 1001
 
-    div:nth-child(1)
-      transform: translateY(16.5px) rotate(45deg)
-    div:nth-child(3)
-      transform: translateY(-16.5px) rotate(-45deg)
+.burger-title
+  font-size: 2.7em
+  margin-left: 10%
