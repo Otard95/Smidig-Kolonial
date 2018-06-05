@@ -6,26 +6,7 @@
 
 {{#> layout }}
 
-  <div class="shadow"></div>
-  <div class="side-overlay">
-    <div class="shoppinglist-box">
-      <div class="list-info">
-        <div class="list-date">22.12.17</div>
-        <div class="list-name">Julie 5 år!</div>
-        <div class="list-cost">240kr</div>
-      </div>
-      <div class="image-container">
-        <img src="/imgs/kid.jpg" alt="Søt unge">
-      </div>
-    </div>
-  </div>
-
-  <div class="burger">
-    <!--legg inn ikon-->
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
+{{> burger}}
 
   <div class="container">
     <div class="calendar-title">
@@ -73,9 +54,8 @@
           <div class = "date">
             {{!-- Takes in year and month --}}
             {{#calendar 2018 month}}
-                <div data-month={{../month}} data-day="{{this.day}}" class="active calendar-btn {{#condition this.day '==' ../today}}today{{/condition}} {{#contains ../shoppinglistdates this.date}}has-list{{/contains}}">{{this.day}}</div>
+              <div data-month={{../month}} data-day="{{this.day}}" class="active calendar-btn{{#condition this.day '==' ../today}} today{{/condition}}{{#contains ../shoppinglistdates this.date}} has-list{{/contains}}">{{this.day}}</div>
             {{/calendar}}
-
           </div>
         </div>
     </div>

@@ -56,7 +56,7 @@ function getNumbersInWeek(year, month, daynum) {
   let mon_len = new Date(year, month + 1, 0).getDate();
 
   if (first_date < 1) {
-    // Lengthog the month the week start in
+    // Lengthog the month the week start in 
     mon_len = new Date(year, month, 0).getDate();
     first_date = mon_len + first_date;
   }
@@ -71,7 +71,7 @@ function getNumbersInWeek(year, month, daynum) {
 
 /* GET home page. */
 router.get('/:mon-:day', async (req, res, next) => {
-  
+
   let mon = checkInt(req.params.mon);
   let day = checkInt(req.params.day);
   
@@ -88,6 +88,7 @@ router.get('/:mon-:day', async (req, res, next) => {
   
   let list = await GetListOnDate(encoded_date, req.user.lists);
   list = list[0];
+  console.log(list);
 
   // Required  to pass month and day down to render successfully
   let categories = await api.GetAllCategories()
@@ -98,7 +99,7 @@ router.get('/:mon-:day', async (req, res, next) => {
   let days_arr = getNumbersInWeek(2018, mon - 1, day)
 
   res.render('week', {
-    title: `Calendar: ${day} ${months[mon]}`,
+    title: `Calendar: ${day} ${months[mon - 1]}`,
     month: mon,
     uke_num,
     daysstring: ['Man', 'Tis', 'Ons', 'Tor', 'Fre', 'Lor', 'Son'],
@@ -149,8 +150,9 @@ router.get('/:mon-:day/create', async (req, res, next) => {
     sharedWith
   )
 
+  let SLRes;
   try {
-    let SLRes = await shopping_list_service.createShoppingList(req.user.id, shoppinglist);
+    SLRes = await shopping_list_service.createShoppingList(req.user.id, shoppinglist);
   } catch (e) {
     res.status(500);
     res.json({

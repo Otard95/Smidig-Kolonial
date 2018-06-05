@@ -102,10 +102,6 @@ class OAuth {
 
 		return async (req, res, next) => {
 
-			if (req.query.skip) {
-
-			}
-
 			let Auth_res;
 			try {
 				Auth_res = await this.AuthenticateUser(req.body[username_paramerter_name || 'username'],
@@ -182,21 +178,10 @@ class OAuth {
 
 		return async (req, res, next) => {
 
-			if (process.env.NODE_DEV == 'true') {
-				req.autorized = true;
-				req.user = {
-					id: 'cEx6uZdHs5K7KfUfz6cT',
-					name: 'Test Tester',
-					email: 'test@test.com',
-					lists: ['M0HIqkBEhu5MDwhY0c1W'],
-					ref: { no: 'ref' }
-				};
-				next();
-				return;
-			}
+			let dev = process.env.NODE_DEV == 'true';
 
 			// Is there a sesstion token
-			if (!req.session.token) {
+			if (!req.session.token && !dev) {
 
 				req.autorized = false;
 
@@ -217,7 +202,18 @@ class OAuth {
 			let Auth_res;
 			try {
 
-				Auth_res = await this.IsAuthorized(req.session.token);
+				if (!dev)
+					Auth_res = await this.IsAuthorized(req.session.token);
+				else
+					Auth_res = new OAuthResponse(
+						OAuthResponse.status_codes.OK,
+						new Session(
+							'cEx6uZdHs5K7KfUfz6cT',
+							'Test Tester',
+							'test@test.com'
+						),
+						'User authorized'
+					)
 				
 			} catch (err) {
 
