@@ -1,6 +1,7 @@
-let DOM_burger_button, DOM_side_overlay, DOM_content, DOM_footer, DOM_shadow
+
 
 document.addEventListener("DOMContentLoaded", () => {
+    let DOM_burger_button, DOM_side_overlay, DOM_content, DOM_footer, DOM_shadow
     DOM_burger_button = (document.querySelector('.burger')) ? document.querySelectorAll('.burger')[0] : document.querySelectorAll('.handleliste-icon')[0]
     DOM_content = document.querySelectorAll('.container')[0]
     DOM_side_overlay = document.querySelectorAll('.side-overlay')[0]

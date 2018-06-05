@@ -34,7 +34,7 @@
       background: #f0f0ec; }
   .side-overlay h2 {
     margin: 0 10%;
-    font-size: 1.7em;
+    font-size: 2vh;
     border: 2px solid #f0f0ec;
     border-radius: 10px;
     -webkit-transition: 200ms all;
@@ -50,7 +50,7 @@
   opacity: 1;
   width: 90%;
   margin: 20px auto;
-  font-size: 2em;
+  font-size: 1.7vh;
   background: #f0f0ec;
   border-radius: 10px;
   -webkit-transition: 200ms all;
