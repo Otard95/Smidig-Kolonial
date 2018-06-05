@@ -1,11 +1,12 @@
 class ShoppingListDocument {
 
-    constructor (name, date, products = [], groups = [], sharedWith = []) {
+    constructor (name, date, products = [], groups = [], sharedWith = [], id = undefined) {
         this.date = date;
         this.name = name;
         this.products = products;
         this.groups = groups;
         this.sharedWith = sharedWith;
+        this.documentId = id
     }
 
     getData () {

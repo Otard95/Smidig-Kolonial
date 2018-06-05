@@ -8,11 +8,12 @@ class ProductDocument {
     }
 
     getData(){
-        let obj = {
-            kolonialId : this.kolonialId,
-            amount : this.amount
-        };
+        let obj = {};
+
+        if (this.kolonialId) obj.kolonialId = this.kolonialId;
+        if (this.amount) obj.amount = this.amount;
         if (this.groupId) obj.groupId = this.groupId;
+        
         return obj;
     }
 

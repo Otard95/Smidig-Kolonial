@@ -193,7 +193,8 @@ class ShoppingList {
                     res.data[0].data().date,
                     [],
                     [],
-                    res.data[0].data().sharedWith
+                    res.data[0].data().sharedWith,
+                    listId
                 ),
                 'Successful response'
             )
@@ -221,7 +222,8 @@ class ShoppingList {
                 meta.data.date,
                 products, 
                 groups,
-                meta.data.sharedWith
+                meta.data.sharedWith,
+                listId
             );
             
             return new ShoppingListResponse(

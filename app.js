@@ -11,8 +11,11 @@ const favicon      = require('serve-favicon');
 const logger       = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser   = require('body-parser');
+//const multer       = require('multer');
 const session      = require('express-session');
 const helmet       = require('helmet');
+
+//const upload = multer(); // for parsing multipart/form-data
 
 // import routes
 const index    = require('./routes/index');
@@ -54,7 +57,8 @@ app.use(session({
 }));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(upload.array());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // set routes
