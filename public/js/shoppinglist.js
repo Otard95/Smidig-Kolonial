@@ -12,7 +12,7 @@ function ShoppingListModule () {
 			
 			/**
 			 * ### Classes
-			 */
+			*/
 			
 			class ShoppingList {
 				
@@ -157,18 +157,8 @@ function ShoppingListModule () {
 			}
 			
 			/**
-			 * ### OnLoad Init
-			 */
-			
-			document.addEventListener('DOMContentLoaded', e => {
-
-				module.ShoppingList = new ShoppingList();
-
-			});
-			
-			/**
 			 * ### Helper Functions
-			 */
+			*/
 			
 			function setLeave(msg, action) {
 				window.onbeforeunload = e => {
@@ -181,11 +171,27 @@ function ShoppingListModule () {
 				window.onbeforeunload = undefined
 			}
 
+			/**
+			 * ### OnLoad Init
+			*/
+
+			if (document.readyState == 'loading') {
+				document.addEventListener('DOMContentLoaded', init);
+			} else {
+				init();
+			}
+
+			function init() {
+				module.ShoppingList = new ShoppingList();
+			}
+
+			/**
+			 * ### Return module
+			*/
+
 			return module;
 			
 		})();
 	
 	return ShoppingListModule._instance;
 }
-
-ShoppingListModule();
