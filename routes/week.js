@@ -9,6 +9,7 @@ const shopping_list_service = require('../bin/shopping-list');
 const ShoppingListResponse  = require('../models/shopping-list-response');
 const ShoppingListDocument  = require('../models/shopping-list-document');
 const ProductDocument       = require('../models/product-document');
+const GroupDocument         = require("../models/group-document");
 
 function checkInt (val) {
   
@@ -225,7 +226,7 @@ router.post('/:mon-:day/update', async (req, res, next) => {
       let product = new ProductDocument(
         undefined,
         p.amount,
-        undefined
+        p.groupId
       );
       try {
         // try to update the shopping list
@@ -285,13 +286,159 @@ router.post('/:mon-:day/update', async (req, res, next) => {
 
   } // END product add
 
-  if (Array.isArray(req.body.group_update)) {
+  if (typeof req.body.group_update === Object && !Array.isArray(req.body.group_update)) {
     // TODO: implement
+
+    let group = new GroupDocument(
+      req.body.group_update.color,
+      req.body.group_update.name,
+      req.body.group_update.id
+    );
+
+    try {
+      response = await shopping_list_service.updateShoppingList(list.documentId, group.docId, group);
+    } catch (e) {
+      res.status(500).json({
+        code: 103,
+        message: 'Det oppstod en feil på våre servere, og vi fikk ikke oppdatert kategorien din.'
+      });
+      return;
+    }
+
+    if (!ShoppingListResponse.OK(response)) {
+      res.status(500).json({
+        code: 104,
+        message: 'Det oppstod en feil på våre servere. Det kan hende at kategorien ikke ble lagret slik den skulle.'
+      });
+      return;
+    }
+  } // END group update
+
+  if (typeof req.body.group_create === Object && !Array.isArray(req.body.group_create)) {
+    
+    let group = new GroupDocument(
+      req.body.group_update.color,
+      req.body.group_update.name,
+      req.body.group_update.id
+    );
+
+    try {
+      response = await shopping_list_service.addDocumentToList(list.documentId, group.docId, group);
+    } catch (e) {
+      res.status(500).json({
+        code: 103,
+        message: 'Det oppstod en feil på våre servere, og vi fikk ikke opprettet kategorien din.'
+      });
+      return;
+    }
+
+     if (!ShoppingListResponse.OK(response)) {
+       res.status(500).json({
+         code: 104,
+         message: 'Det oppstod en feil på våre servere. Det kan hende at kategorien ikke ble lagret slik den skulle.'
+       });
+       return;
+     }
+
+  } // END group create
+
+  if (typeof req.body.group_delete === Object && !Array.isArray(req.body.group_delete)) {
+    
+    try {
+      response = await shopping_list_service.deleteGroup(list.documentId, req.body.group_delete.groupId);
+    } catch (e) {
+      res.status(500).json({
+        code: 103,
+        message: 'Det oppstod en feil på våre servere, og vi fikk ikke slettet kategorien din.'
+      });
+      return;
+    }
+
+    if (!ShoppingListResponse.OK(response)) {
+      res.status(500).json({
+        code: 104,
+        message: 'Det oppstod en feil på våre servere. Det kan hende at kategorien ikke ble slettet slik den skulle.'
+      });
+      return;
+    }
+  } // END delete group
+
+  if (typeof req.body.group_add === Object && !Array.isArray(req.body.group_add)) {
+
+    try {
+      response = await shopping_list_service.addGroupToProduct(
+        list.documentId, 
+        req.body.group_add.productId, 
+        req.body.group_add.groupId
+      );
+    } catch (e) {
+      res.status(500).json({
+        code: 103,
+        message: 'Det oppstod en feil på våre servere, og vi fikk ikke tilegnet produktet din kategori.'
+      });
+      return;
+    }
+
+     if (!ShoppingListResponse.OK(response)) {
+       res.status(500).json({
+         code: 104,
+         message: 'Det oppstod en feil på våre servere. Det kan hende at kategorien ikke ble lagret til produktet slik den skulle.'
+       });
+       return;
+     }
+  } // END add group to product
+
+  if (typeof req.body.group_remove === Object && !Array.isArray(req.body.group_remove)) {
+
+    try {
+      response = await shopping_list_service.removeGroupFromProduct(list.documentId, req.body.group_remove.productId);
+    } catch (e) {
+      res.status(500).json({
+        code: 103,
+        message: 'Det oppstod en feil på våre servere, og vi fikk ikke fjernet kategorien fra produktet.'
+      });
+      return;
+    }
+
+    if (!ShoppingListResponse.OK(response)) {
+      res.status(500).json({
+        code: 104,
+        message: 'Det oppstod en feil på våre servere. Det kan hende at kategorien ikke ble fjernet fra produktet slik den skulle.'
+      });
+      return;
+    }
   }
 
-  if (Array.isArray(req.body.meta_update)) {
-    // TODO: implement
-  }
+  if (typeof req.body.meta_update === Object && !Array.isArray(req.body.meta_update)) {
+    
+    let listObj = new ShoppingListDocument(
+      req.body.meta_update.name,
+      undefined,
+      undefined,
+      undefined,
+      req.body.meta_update.sharedWith
+    );
+
+    try {
+      response = await shopping_list_service.updateShoppingList(list.documentId, listObj);
+    } catch (e) {
+      res.status(500).json({
+        code: 103,
+        message: 'Det oppstod en feil på våre servere, og vi fikk ikke oppdatert listen din.'
+      });
+      return;
+    }
+
+    if (!ShoppingListResponse.OK(response)) {
+      res.status(500).json({
+        code: 104,
+        message: 'Det oppstod en feil på våre servere. Det kan hende at endringene i listen ikke ble lagret slik de skulle.'
+      });
+      return;
+    }
+
+    
+  } // END update meta
 
   res.json({
     code: 0,
@@ -299,10 +446,16 @@ router.post('/:mon-:day/update', async (req, res, next) => {
     updated: {
       products: req.body.product_update,
       groups: req.body.group_update,
-      meta: req.body.meta_update
+      meta: req.body.meta_update,
+      group: req.body.group_add
     },
     created: {
-      products: req.body.product_add
+      products: req.body.product_add,
+      groups: req.body.group_create,
+    },
+    deleted: {
+      group: req.body.group_delete,
+      group_in_product: req.body.group_remove
     }
   });
 

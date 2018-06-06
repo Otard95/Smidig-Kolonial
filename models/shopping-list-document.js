@@ -11,10 +11,10 @@ class ShoppingListDocument {
 
     getData () {
         let obj = {
-            date : this.date,
             name : this.name
         };
         
+        if (this.date) obj.date = this.date;
         if (this.sharedWith) obj.sharedWith = this.sharedWith;
         
         return obj;
