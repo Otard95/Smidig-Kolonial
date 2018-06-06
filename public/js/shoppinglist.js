@@ -135,11 +135,11 @@ ShoppingListModule._instance = (() => {
 				return;
 			}
 
-			callback(null, res.created)
+			callback(null, res.updated);
 
 		}
 
-		async createGategory(group, callback) {
+		async createGroup(group, callback) {
 
 			let res;
 
@@ -161,6 +161,90 @@ ShoppingListModule._instance = (() => {
 			callback(null, res.created)
 		}
 
+		async deleteGroup(groupId, callback){
+			
+			let res;
+
+			try {
+				let http_response = await this.update({
+					group_delete: {
+						groupId : groupId
+					}
+				});
+				res = await http_response.json();
+
+			} catch (e) {
+				console.log(e);
+				callback(e);
+				return;
+			}
+
+			callback(null, res.deleted);
+		}
+
+		async addGroupToProduct(productId, groupId, callback) {
+
+			let res;
+
+			try {
+				let http_response = await this.update({
+					group_add: {
+						productId: productId,
+						groupId: groupId
+					}
+				});
+				res = await http_response.json();
+
+			} catch (e) {
+				console.log(e);
+				callback(e);
+				return;
+			}
+
+			callback(null, res.updated);
+		}
+
+		async removeGroupFromProduct(productId, callback) {
+			let res;
+
+			try {
+				let http_response = await this.update({
+					group_remove: {
+						productId: productId					
+					}
+				});
+				res = await http_response.json();
+
+			} catch (e) {
+				console.log(e);
+				callback(e);
+				return;
+			}
+
+			callback(null, res.deleted);
+		}
+
+		async updateMeta (name, sharedWith, callback) {
+			
+			let res;
+
+			try {
+				let http_response = await this.update({
+					meta_update: {
+						name: name,
+						sharedWith: sharedWith
+					}
+				});
+				res = await http_response.json();
+
+			} catch (e) {
+				console.log(e);
+				callback(e);
+				return;
+			}
+
+			callback(null, res.updated);
+		}
 
 		async update (body) {
 			return await fetch(window.location.pathname + '/update', {
