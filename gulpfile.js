@@ -31,9 +31,9 @@ gulp.task('server', () => {
     script: './bin/www',
     ext: 'js',
     ignore: [
-              './public/*',
-              'views/*',
-              '_sass/*'
+              'public',
+              'views',
+              '_sass'
             ]
   });
 });
