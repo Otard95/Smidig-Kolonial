@@ -228,6 +228,9 @@ router.post('/:mon-:day/update', async (req, res, next) => {
         p.amount,
         p.groupId
       );
+      
+      let response;
+
       try {
         // try to update the shopping list
         response = await shopping_list_service.updateShoppingList(list.documentId, p.pid, product);
@@ -286,8 +289,7 @@ router.post('/:mon-:day/update', async (req, res, next) => {
 
   } // END product add
 
-  if (typeof req.body.group_update === Object && !Array.isArray(req.body.group_update)) {
-    // TODO: implement
+  if (typeof req.body.group_update === 'object' && !Array.isArray(req.body.group_update)) {
 
     let group = new GroupDocument(
       req.body.group_update.color,
@@ -295,8 +297,10 @@ router.post('/:mon-:day/update', async (req, res, next) => {
       req.body.group_update.id
     );
 
+    let response;
+
     try {
-      response = await shopping_list_service.updateShoppingList(list.documentId, group.docId, group);
+      response = await shopping_list_service.updateShoppingList(list.documentId, group.documentId, group);
     } catch (e) {
       res.status(500).json({
         code: 103,
@@ -314,15 +318,18 @@ router.post('/:mon-:day/update', async (req, res, next) => {
     }
   } // END group update
 
-  if (typeof req.body.group_create === Object && !Array.isArray(req.body.group_create)) {
+  if (typeof req.body.group_create === 'object' && !Array.isArray(req.body.group_create)) {
     
     let group = new GroupDocument(
-      req.body.group_update.color,
-      req.body.group_update.name,
+      req.body.group_create.color,
+      req.body.group_create.name,
     );
+
+    let response;
 
     try {
       response = await shopping_list_service.addDocumentToList(list.documentId, group);
+
     } catch (e) {
       res.status(500).json({
         code: 103,
@@ -341,10 +348,11 @@ router.post('/:mon-:day/update', async (req, res, next) => {
 
   } // END group create
 
-  if (typeof req.body.group_delete === Object && !Array.isArray(req.body.group_delete)) {
+  if (typeof req.body.group_delete === 'object' && !Array.isArray(req.body.group_delete)) {
     
+
     try {
-      response = await shopping_list_service.deleteGroup(list.documentId, req.body.group_delete.groupId);
+      await shopping_list_service.deleteGroup(list.documentId, req.body.group_delete.groupId);
     } catch (e) {
       res.status(500).json({
         code: 103,
@@ -352,17 +360,11 @@ router.post('/:mon-:day/update', async (req, res, next) => {
       });
       return;
     }
-
-    if (!ShoppingListResponse.OK(response)) {
-      res.status(500).json({
-        code: 104,
-        message: 'Det oppstod en feil på våre servere. Det kan hende at kategorien ikke ble slettet slik den skulle.'
-      });
-      return;
-    }
   } // END delete group
 
-  if (typeof req.body.group_add === Object && !Array.isArray(req.body.group_add)) {
+  if (typeof req.body.group_add === 'object' && !Array.isArray(req.body.group_add)) {
+
+    let response;
 
     try {
       response = await shopping_list_service.addGroupToProduct(
@@ -387,7 +389,9 @@ router.post('/:mon-:day/update', async (req, res, next) => {
      }
   } // END add group to product
 
-  if (typeof req.body.group_remove === Object && !Array.isArray(req.body.group_remove)) {
+  if (typeof req.body.group_remove === 'object' && !Array.isArray(req.body.group_remove)) {
+
+    let response;
 
     try {
       response = await shopping_list_service.removeGroupFromProduct(list.documentId, req.body.group_remove.productId);
@@ -406,9 +410,9 @@ router.post('/:mon-:day/update', async (req, res, next) => {
       });
       return;
     }
-  }
+  } // END remove group from product
 
-  if (typeof req.body.meta_update === Object && !Array.isArray(req.body.meta_update)) {
+  if (typeof req.body.meta_update === 'object' && !Array.isArray(req.body.meta_update)) {
     
     let listObj = new ShoppingListDocument(
       req.body.meta_update.name,
@@ -417,6 +421,8 @@ router.post('/:mon-:day/update', async (req, res, next) => {
       undefined,
       req.body.meta_update.sharedWith
     );
+
+    let response;
 
     try {
       response = await shopping_list_service.updateShoppingList(list.documentId, listObj);
