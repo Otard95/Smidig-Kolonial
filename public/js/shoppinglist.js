@@ -13,6 +13,16 @@ function ShoppingListModule () {
 			/**
 			 * ### Classes
 			*/
+
+			class ProductSelectionManager {
+
+				constructor () {
+
+					
+
+				}
+
+			}
 			
 			class ShoppingList {
 				
@@ -72,7 +82,8 @@ function ShoppingListModule () {
 							}),
 							headers: {
 								'Content-Type': 'application/json'
-							}
+							},
+							credentials: 'include'
 						});
 
 						let response = await http_response.json();
@@ -98,7 +109,8 @@ function ShoppingListModule () {
 							}),
 							headers: {
 								'Content-Type': 'application/json'
-							}
+							},
+							credentials: 'include'
 						});
 
 						res = await http_response.json();
