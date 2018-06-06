@@ -1,3 +1,4 @@
+/*
 document.addEventListener("DOMContentLoaded", () => {
 
   let btn = document.querySelector(".icon-button");
@@ -16,6 +17,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   btn.addEventListener("click", async () => {
     // Resets the list
+    inspirationClick()
+    btn.classList.toggle("change-button");
+    categoryBox.classList.toggle("show");
+    whiteIconGone.classList.toggle("hide-button");
+    blackIconShow.classList.toggle("show-button");
+    
     if (btn.classList.contains("change-button")) {
       let result = await fetch('/api/categories')
       let json = await result.json()
@@ -27,11 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
         setEventListener()
       })
     }
-    inspirationClick()
-    btn.classList.toggle("change-button");
-    categoryBox.classList.toggle("show");
-    whiteIconGone.classList.toggle("hide-button");
-    blackIconShow.classList.toggle("show-button");
   })
 
   async function getCategories(data) {
@@ -201,3 +203,4 @@ document.addEventListener("DOMContentLoaded", () => {
   searchTerm()
   goBack()
 })
+*/

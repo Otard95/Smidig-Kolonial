@@ -1,10 +1,10 @@
 <div class="product-list-container" data-pid={{documentId}} data-kolonialid={{data.id}}>
 	<img id="product-image" src="{{data.images.thumbnail}}" alt="">
-	<h1 id="product-name">{{data.name.full}}</h1>
+	<h1 id="product-name">{{data.fullname}}</h1>
 	<p id="price">{{data.price.gross}},- | {{data.price.gross_unit}}kr/{{data.price.unit_quantity_abbreviation}}</p>
 	<div id="quantity-block">
-		<img id="add-button" src="/imgs/icon/pluss-large.png">
+		<img id="add-button" src="/imgs/icon/pluss-large.png" />
 		<input id="amount" type="number" value="{{amount}}" min="0"></input>
-		<img id="sub-button" src="/imgs/icon/minus-large.png">
+		<img id="sub-button" src="/imgs/icon/minus-large.png" />
 	</div>
 </div>

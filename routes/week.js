@@ -308,4 +308,31 @@ router.post('/:mon-:day/update', async (req, res, next) => {
 
 });
 
+router.get('/render/:partial_name', async (req, res, next) => {
+
+  let data = { layout: false };
+
+  if (req.params.partial_name == 'product-item' && req.query.kolonialId) {
+    let id = parseInt(req.query.kolonialId);
+    let response = await api.GetItemById(id);
+    data.product = response;
+  }
+
+  // Get 
+  if (req.params.partial_name == 'product-list-item' &&
+      req.query.kolonialId &&
+      req.query.pid)
+  {
+
+    data.documentId = req.query.pid;
+
+    let response = await api.GetItemById(req.query.kolonialId);
+    data.data = response;
+
+  }
+
+  res.render(`partials/${req.params.partial_name}`, data);
+
+});
+
 module.exports = router;

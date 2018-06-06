@@ -19,7 +19,253 @@ ShoppingListModule._instance = (() => {
 
 		constructor() {
 
+			this.renderable = {
+				render () {
+					let el = module.ProductSelectionManager
+					return () => {
+						el.updateView(el.categories.map(c => c.DOM), 'Varer');
+					}
+				}
+			}
 
+			this.categories = [
+				new Category('Inspirasjon', 'lol', this.renderable),
+				new Category('Dine Varer', 'lmao', this.renderable)
+			];
+			this.category_container = document.querySelector(".category-list");
+			this.backArrow = document.querySelector(".back-arrow");
+			this.btn = document.querySelector(".icon-button");
+			this.categoryBox = document.querySelector(".category-container");
+			this.whiteIconGone = document.querySelector(".add-product-button");
+			this.blackIconShow = document.querySelector(".button-white");
+			this.headerName = document.querySelector(".search-title");
+			this.headerContainer = document.querySelector(".information-header");
+			this.input = document.getElementById("search-t");
+
+			this.path = [];
+
+			this.initEvents();
+			this.initCategories();
+
+		}
+
+		/**
+		 * ### Init
+		*/
+
+		initEvents () {
+
+			this.btn.addEventListener("click", this.showEvent);
+			
+			this.backArrow.addEventListener("click", this.goBackEvent);
+
+			this.input.addEventListener("change", this.searchEvent);
+
+		}
+
+		async initCategories () {
+			let result = await fetch('/api/categories');
+			let json = await result.json();
+
+			json.forEach(item => {
+				this.categories.push(new Category(item.name, item.id, this.renderable));
+			})
+
+			this.updateView(this.categories.map(c => c.DOM), 'Varer');
+
+		}
+
+		/**
+		 * ### Events
+		*/
+		
+		async showEvent (e) {
+			// Resets the list
+			module.ProductSelectionManager.btn.classList.toggle("change-button");
+			module.ProductSelectionManager.categoryBox.classList.toggle("show");
+			module.ProductSelectionManager.whiteIconGone.classList.toggle("hide-button");
+			module.ProductSelectionManager.blackIconShow.classList.toggle("show-button");
+		}
+
+		goBackEvent () {
+
+			let toRender = module.ProductSelectionManager.path.pop();
+
+			if (toRender) toRender.render()();
+
+		}
+
+		async searchEvent () {
+
+			let i = this.input.value;
+			let data = await fetch(`/API/item/search?name=${i}`);
+			let json = await data.json();
+
+			this.catlist.innerHTML = ""
+
+			json.forEach(async (json) => {
+				this.catlist.innerHTML += `<div class="product-container">
+											<img id="product-image" src=${json.images.thumbnail} alt="">
+											<h1 id="product-name">${json.name}</h1>
+											<h1 id="price-per-unit">kr ${json.price.gross}</h1>
+											<img id="add-button" src="/imgs/icon/Velg vare.png" alt="">
+											<h2 id="price-som">stykk</h2>
+											<h2 id="price-quantity">kr ${json.price.gross_unit}</h2>
+											</div>`
+				this.setEventListener()
+			});
+
+		}
+
+		updateView (arr_dom, name, parent) {
+
+			while (this.category_container.firstChild) {
+				this.category_container.removeChild(this.category_container.firstChild);
+			}
+
+			arr_dom.forEach(e => {
+				this.category_container.appendChild(e);
+			});
+
+			if (parent) this.path.push(parent);
+			this.headerName.innerText = name;
+
+		}
+
+	}
+
+	class Category {
+
+		constructor (name, id, parent) {
+			this.name = name;
+			this.id = id;
+			this.parent = parent;
+
+			this.DOM = createDOM(
+				`<li class="list-item" data-categoryid="${this.id}">Laster...</li>`
+			);
+
+			if (!this.name) 
+				this.getData();
+			else
+				this.init();
+
+			this.children = [];
+		}
+
+		init () {
+			this.DOM.innerText = this.name;
+			this.DOM.addEventListener('click', this.render());
+		}
+
+		getData () {
+
+			fetch(`/API/category/${this.id}`)
+			.then(data => data.json())
+			.then(json => new Promise((resolve, rejects) => {
+
+				if (!json.name) {
+					let i = this.parent.children.indexOf(this);
+					if (i > -1) {
+						this.parent.children.splice(i, 1);
+						module.ProductSelectionManager.category_container.removeChild(this.DOM);
+					}
+				}
+
+				this.name = json.name;
+	
+				this.init();
+				resolve();
+			}));
+
+		}
+
+		getChildren () {
+
+			if (this.children.length > 0)
+				return new Promise((resolve, reject) => { resolve(); });
+			else
+				return fetch(`/API/category/${this.id}`)
+				.then(data => data.json())
+				.then(json => new Promise((resolve, rejects) => {
+						if (json.children_id) {
+							json.children_id.forEach(id => this.children.push(new Category(undefined, id, this)));
+						} else {
+							json.products.forEach(id => this.children.push(new ProductItem(id)));
+						}
+						resolve();
+					})
+				);
+			
+		}
+
+		render () {
+			let el = this;
+			return () => {
+				el.getChildren()
+				.then(() => {
+					module.ProductSelectionManager.updateView(
+						el.children.map(c => c.DOM),
+						el.name,
+						el.parent
+					);
+				});
+			}
+			
+		}
+
+	}
+
+	class ProductItem {
+		
+		constructor (id) {
+			this.id = id;
+
+			this.DOM = createDOM(
+				`<li class="product-container">
+					<img id="product-image" src="/imgs/loading.gif" alt="">
+					<h1 id="product-name">Laster...</h1>
+					<h1 id="price-per-unit"></h1>
+					<img id="add-button" src="/imgs/icon/Velg vare.png" alt="">
+					<div id="quantity-block">
+						<img id="add-button" src="/imgs/icon/pluss-large.png" />
+						<input id="amount" type="number" value="{{amount}}" min="0"></input>
+						<img id="sub-button" src="/imgs/icon/minus-large.png" />
+					</div>
+					<h2 id="price-quantity"></h2>
+				</li>
+				`
+			);
+
+			this.getData();
+
+		}
+
+		init() {
+			this.DOM.querySelector('#product-name').innerText = this.name;
+			this.DOM.querySelector('#price-per-unit').innerText = this.price;
+			this.DOM.querySelector('#price-quantity').innerText = this.unit_price;
+			this.DOM.querySelector('#product-image').setAttribute('src', this.thumbnail);
+
+			this.DOM.querySelector('#add-button').addEventListener('click', () => {});
+		}
+
+		getData() {
+
+			fetch(`/API/item/${this.id}`)
+				.then(data => data.json())
+				.then(json => new Promise((resolve, rejects) => {
+
+					this.name = json.name;
+					this.thumbnail = json.images.thumbnail;
+					this.price = json.price.gross;
+					this.unit_price = json.price.gross_unit;
+
+					this.init();
+
+					resolve();
+
+				}));
 
 		}
 
@@ -32,7 +278,7 @@ ShoppingListModule._instance = (() => {
 
 			this.items = [];
 			for (let item of this.root.children) {
-				this.items.push(new ListItem(item));
+				this.items.push(new ListProductItem(item));
 			}
 
 			this._saved = true;
@@ -122,13 +368,13 @@ ShoppingListModule._instance = (() => {
 				return;
 			}
 
-			callback(null, res.created)
+			callback(undefined, res.created)
 
 		}
 
 	}
 
-	class ListItem {
+	class ListProductItem {
 
 		constructor(dom_element) {
 			this.dom = {};
@@ -184,6 +430,11 @@ ShoppingListModule._instance = (() => {
 		window.onbeforeunload = undefined
 	}
 
+	function createDOM (str_html) {
+		return createDOM._parser.parseFromString(str_html, 'text/html').body.firstChild;
+	}
+	createDOM._parser = new DOMParser();
+
 	/**
 	 * ### OnLoad Init
 	*/
@@ -195,8 +446,12 @@ ShoppingListModule._instance = (() => {
 	}
 
 	function init() {
+		if (init._called) return;
+		init._called = true;
 		module.ShoppingList = new ShoppingList();
+		module.ProductSelectionManager = new ProductSelectionManager();
 	}
+	init._called = false;
 
 	/**
 	 * ### Return module
