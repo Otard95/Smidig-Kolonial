@@ -8,41 +8,51 @@
   grid-template-rows: 50% 50%;
   grid-template-areas: "prodImg name pricePerUnit iconImg" "prodImg description price iconImg";
   border-bottom: 1px solid #d7d7d2; }
-  .product-container h1 {
-    font-size: 2.1vh;
-    font-family: "GT Walsheim Regular";
-    font-weight: 300; }
-  .product-container h2 {
-    font-size: 2.1vh;
-    font-family: "GT Walsheim Regular";
-    font-weight: 300;
-    color: #d7d7d2; }
-  .product-container #product-image {
-    position: relative;
-    height: 80%;
-    margin: 0 auto;
-    top: 1vh;
-    grid-area: prodImg; }
-  .product-container #product-name {
-    position: absolute;
-    grid-area: name; }
-  .product-container #price-per-unit {
-    position: absolute;
-    grid-area: pricePerUnit;
-    right: 0; }
-  .product-container #add-button {
-    grid-area: iconImg;
-    position: relative;
-    top: 2vh;
-    height: 3.5vh;
-    width: 3.5vh;
-    margin: 0 auto; }
-  .product-container #price-som {
-    position: absolute;
-    grid-area: description;
-    top: -1.5vh; }
-  .product-container #price-quantity {
-    position: absolute;
-    grid-area: price;
-    right: 0;
-    top: -1.5vh; }
+  .product-container img {
+    width: 100%; }
+
+h1 {
+  font-size: 2.1vh;
+  font-family: "GT Walsheim Regular";
+  font-weight: 300; }
+
+h2 {
+  font-size: 2.1vh;
+  font-family: "GT Walsheim Regular";
+  font-weight: 300;
+  color: #d7d7d2; }
+
+#product-image {
+  position: relative;
+  height: 80%;
+  margin: 0 auto;
+  top: 1vh;
+  grid-area: prodImg; }
+
+#product-name {
+  position: absolute;
+  grid-area: name; }
+
+#price-per-unit {
+  position: absolute;
+  grid-area: pricePerUnit;
+  right: 0; }
+
+#add-button {
+  grid-area: iconImg;
+  position: relative;
+  top: 2vh;
+  height: 3.5vh;
+  width: 3.5vh;
+  margin: 0 auto; }
+
+#price-som {
+  position: absolute;
+  grid-area: description;
+  top: -1.5vh; }
+
+#price-quantity {
+  position: absolute;
+  grid-area: price;
+  right: 0;
+  top: -1.5vh; }

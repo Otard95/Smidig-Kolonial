@@ -1,0 +1,40 @@
+
+{{#section 'head'}}
+  <link rel="stylesheet" href="/css/burger.css">
+  <script src="/js/burger.js"></script>
+{{/section}}
+
+  <div class="shadow"></div>
+  <div class="side-overlay">
+
+  <h1 class="burger-title">Handlelister</h1>
+
+  <div class="burger-choice">
+    <h2 class="active choice-one">Aktiv</h2><h2 class="choice-two">Historikk</h2>
+  </div>
+  <hr>
+
+    {{#each upcoming}}
+        <div class="shoppinglist-container upcoming">
+            <div class="shoppinglist-header"><img src="/imgs/icon/Slette handlelister.png" alt="delete-picture" class="icon"></div>
+            <div class="list-date">{{this.date}}</div>
+            <div class="list-name">{{this.name}}</div>
+        </div>
+    {{/each}}
+
+    {{#each passed}}
+      <div class="shoppinglist-container shoppinglist-hidden passed">
+          <div class="shoppinglist-header"><img src="/imgs/icon/Slette handlelister.png" alt="delete-picture" class="icon"></div>
+          <div class="list-date">{{this.date}}</div>
+          <div class="list-name">{{this.name}}</div>
+      </div>
+  {{/each}}
+  </div>
+
+{{!-- 
+  <div class="burger">
+    <!--legg inn ikon-->
+    <div></div>
+    <div></div>
+    <div></div>
+  </div> --}}

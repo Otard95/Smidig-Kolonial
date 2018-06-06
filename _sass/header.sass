@@ -2,30 +2,32 @@
 
 .planner-grid
   position: relative
-  margin-top: 3.5%
+  width: 90%
+  margin: 0 auto
   display: grid
-  font-size: 1.5vh
+  margin-top: 3.5vh
+  grid: 12% / repeat(8, 1fr)
   text-align: center
+  grid-gap: .5%
+  grid-template-areas: "pil . text text text text chat handleliste"
 
-  .planner-header
-    display: inline-grid
-    grid-row: 1
-    grid-template-columns: 1fr 1fr 14fr 2fr 2fr
-    align-items: center
-    justify-content: center
-    border-bottom: 1px solid $Varmgra
-    padding-bottom: 2%
+  img
+    height: 100%
+    width: auto
 
-    .img
-      width: 50%
-      height: 50%
+  #pil-icon
+    grid-area: pil
+    margin: 0 auto
 
-    .header-text
-      font-size: 2.7vh
-      margin-left: 10%
+  .header-text
+    grid-area: text
+    font-size: 2em
+    margin: 0
 
-    #pil-icon
-      height: 45%
+  #chat-icon
+    grid-area: chat
+    margin: 0 auto
 
-    h1
-      margin: .5em 0 .25em
+  .handleliste-icon
+    grid-area: handleliste
+    margin: 0 auto
