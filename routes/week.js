@@ -319,11 +319,10 @@ router.post('/:mon-:day/update', async (req, res, next) => {
     let group = new GroupDocument(
       req.body.group_update.color,
       req.body.group_update.name,
-      req.body.group_update.id
     );
 
     try {
-      response = await shopping_list_service.addDocumentToList(list.documentId, group.docId, group);
+      response = await shopping_list_service.addDocumentToList(list.documentId, group);
     } catch (e) {
       res.status(500).json({
         code: 103,

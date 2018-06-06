@@ -76,16 +76,15 @@ ShoppingListModule._instance = (() => {
 			let items_to_save = module.ShoppingList.items.filter(i => !i._saved);
 
 			try {
-				let http_response = await fetch(window.location.pathname + '/update', {
-					method: 'POST',
-					body: JSON.stringify({
-						product_update: items_to_save.map(i => { return { amount: i.amount, pid: i.pid }; })
-					}),
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					credentials: 'include'
-				});
+				let http_response = await this.update({
+						product_update: items_to_save.map(i => {
+							return {
+								amount: i.amount,
+								pid: i.pid,
+								groupId: i.groupId
+							};
+						})
+					});
 
 				let response = await http_response.json();
 
@@ -103,17 +102,7 @@ ShoppingListModule._instance = (() => {
 			let res;
 
 			try {
-				let http_response = await fetch(window.location.pathname + '/update', {
-					method: 'POST',
-					body: JSON.stringify({
-						product_add: arr_products
-					}),
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					credentials: 'include'
-				});
-
+				let http_response = await this.update({ product_add: arr_products });
 				res = await http_response.json();
 
 			} catch (e) {
@@ -124,6 +113,64 @@ ShoppingListModule._instance = (() => {
 
 			callback(null, res.created)
 
+		}
+
+		async updateGroup (group, callback) {
+			
+			let res;
+
+			try {
+				let http_response = await this.update({
+					group_update: {
+						color: group.color,
+						name: group.name,
+						id: group.id
+					}
+				});
+				res = await http_response.json();
+
+			} catch (e) {
+				console.log(e);
+				callback(e);
+				return;
+			}
+
+			callback(null, res.created)
+
+		}
+
+		async createGategory(group, callback) {
+
+			let res;
+
+			try {
+				let http_response = await this.update({
+					group_create: {
+						color: group.color,
+						name: group.name,
+					}
+				});
+				res = await http_response.json();
+
+			} catch (e) {
+				console.log(e);
+				callback(e);
+				return;
+			}
+
+			callback(null, res.created)
+		}
+
+
+		async update (body) {
+			return await fetch(window.location.pathname + '/update', {
+				method: 'POST',
+				body: JSON.stringify(body),
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				credentials: 'include'
+			});
 		}
 
 	}
