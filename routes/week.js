@@ -413,6 +413,14 @@ router.post('/:mon-:day/update', async (req, res, next) => {
   } // END remove group from product
 
   if (typeof req.body.meta_update === 'object' && !Array.isArray(req.body.meta_update)) {
+
+    if (!Array.isArray(req.body.meta_update.sharedWith)){
+      res.status(500).json({
+        code: 105,
+        message: 'Det oppstod en feil på våre servere. Det kan hende at endringene i listen ikke ble lagret slik de skulle.'
+      });
+      return;
+    }
     
     let listObj = new ShoppingListDocument(
       req.body.meta_update.name,
