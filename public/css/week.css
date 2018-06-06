@@ -25,6 +25,7 @@ h2 {
 #product-image {
   position: relative;
   height: 80%;
+  width: 100%;
   margin: 0 auto;
   top: 1vh;
   grid-area: prodImg; }
@@ -86,7 +87,7 @@ h2 {
 
 .week-list {
   background-color: white;
-  height: 82.7%;
+  height: 82.3%;
   margin: 0 auto;
   width: 99.2%;
   position: relative;

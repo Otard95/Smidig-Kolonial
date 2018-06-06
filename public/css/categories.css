@@ -11,7 +11,7 @@
 .information-view {
   position: relative;
   background-color: white;
-  height: 60.9vh;
+  height: 60vh;
   margin: 0 auto;
   width: 99%;
   top: -7.5vh;
@@ -19,10 +19,27 @@
   border-bottom-right-radius: 15px;
   overflow: hidden; }
 
+.information-header {
+  width: 100%;
+  margin-top: 3vh;
+  height: 6vh;
+  display: grid;
+  grid-template-columns: 15vh auto 15vh;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.information-event-header {
+  margin-top: 10vh; }
+
+.back-arrow {
+  position: relative;
+  margin-left: 3.5vh;
+  height: 2.5vh; }
+
 .search-title {
   position: relative;
   text-align: center;
-  top: 2.5vh;
   z-index: 2;
   font-size: 2.3vh; }
 
@@ -33,7 +50,12 @@
   height: 4.5vh;
   width: 90%;
   background-color: #f0f0ec;
-  border-radius: 40px; }
+  border-radius: 40px;
+  font-size: 2.2vh;
+  opacity: 1; }
+
+.hide-search-container {
+  opacity: 0; }
 
 #search-t {
   position: relative;
@@ -41,13 +63,39 @@
   text-align: left;
   left: 7vh;
   color: grey;
-  font-size: 2.2vh;
   border: 0; }
   #search-t:active {
     border: 0; }
 
-.categories {
+.inspiration-container {
   position: relative;
+  margin: 0 auto;
+  width: 90%;
+  font-size: 2.2vh;
+  opacity: 0; }
+
+.inspiration-container-show {
+  opacity: 1; }
+
+.inspiration-border {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 5fr);
+  grid-gap: 2.5vh;
+  list-style: none;
+  overflow-x: scroll; }
+
+.inspiration-border li {
+  border: #f0f0ec 3px solid;
+  padding: 1vh;
+  border-radius: 25px; }
+
+.selected-inspiration-border {
+  background-color: #f0f0ec; }
+
+.categories {
+  position: absolute;
+  width: 100%;
   margin-top: 2vh;
   height: 47vh;
   list-style: none;
@@ -55,6 +103,9 @@
   overflow: scroll;
   display: grid;
   grid-template-rows: repeat(1, 7fr); }
+
+.inspiration-categories {
+  margin-top: -7vh; }
 
 .categories li {
   display: -webkit-box;

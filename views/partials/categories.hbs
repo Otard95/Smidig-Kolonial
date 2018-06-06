@@ -11,14 +11,27 @@
     <img class="add-product-button" src="/imgs/icon/AddProductWhite.png" alt="">
   </div>
   <div class="information-view">
-    <h3 class="search-title">Varer</h3>
+    <div class="information-header">
+      <img class="back-arrow" src="/imgs/icon/Pil.png" alt="">
+      <h3 class="search-title">Varer</h3>
+    </div>
     <div class="search-container">
       <!--Legg inn forstørrelsesglass-->
       <input type="text" id="search-t" onkeyup="searchTerm()" placeholder="Søk i tusenvis av varer">
     </div>
+    <div class="inspiration-container">
+      <ul class="inspiration-border">
+        <li>Familiemiddag</li>
+        <li>Helgekos</li>
+        <li>Selskap</li>
+        <li>Gjester</li>
+        <li>Høytid</li>
+      </ul>
+    </div>
+
     <div class="categories">
       <ul class="category-list">
-        <li>Inspirasjon</li>
+        <li class="inspiration">Inspirasjon</li>
         <li>Dine Varer</li>
         {{#each categories}}
           <li class="list-item" data-categoryid={{this.id}}>{{this.name}}</li>
