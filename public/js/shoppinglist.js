@@ -166,7 +166,12 @@ ShoppingListModule._instance = (() => {
 		}
 
 		addFinished (err, data) {
-			console.log(err || data);
+			if (err) {
+				// do stuff
+			}
+
+			data.forEach( i => module.ShoppingList.createNewItem(i) );
+
 		}
 
 	}
@@ -207,6 +212,8 @@ ShoppingListModule._instance = (() => {
 						this.parent.children.splice(i, 1);
 						module.ProductSelectionManager.category_container.removeChild(this.DOM);
 					}
+					resolve();
+					return;
 				}
 
 				this.name = json.name;
@@ -396,6 +403,35 @@ ShoppingListModule._instance = (() => {
 
 		}
 
+		async createNewItem (data) {
+
+			if (!data || typeof data !== 'object' || Array.isArray(data)) return;
+
+			// Create the new item
+			let html;
+			
+			let param = new URLSearchParams(data);
+			let url = `/kalender/liste/render/product-list-item?${param.toString()}`
+
+			try {
+
+				let http_res = await fetch(url, {
+					method: 'GET',
+					credentials: 'include'
+				})
+				html = await http_res.text();
+
+			} catch (e) {
+				console.log(e);
+			}
+
+			if (!html) return;
+			let dom = createDOM(html);
+			this.root.appendChild(dom);
+			this.items.push(new ListProductItem(dom));
+
+		}
+
 		async Save() {
 			module.ShoppingList.update();
 
@@ -417,11 +453,15 @@ ShoppingListModule._instance = (() => {
 
 				let response = await http_response.json();
 
+
 			} catch (e) {
 				console.log(e);
 			}
 
-			items_to_save.forEach(i => i._saved = true);
+			items_to_save.forEach(i => {
+				i._saved = true;
+				i.OnSaved();
+			});
 
 			unsetLeave();
 		}
@@ -439,7 +479,7 @@ ShoppingListModule._instance = (() => {
 				return;
 			}
 
-			callback(null, res.created)
+			callback(null, res.created.products)
 
 		}
 
@@ -621,9 +661,17 @@ ShoppingListModule._instance = (() => {
 		}
 
 		update() {
-
 			this.amount = parseInt(this.dom.amount.value);
+		}
 
+		OnSaved () {
+			if (this.amount <= 0) {
+				module.ShoppingList.root.removeChild(this.dom.root);
+				let i = module.ShoppingList.items.indexOf(this);
+				if (i > -1) {
+					module.ShoppingList.items.splice(i, 1);
+				}
+			}
 		}
 
 	}

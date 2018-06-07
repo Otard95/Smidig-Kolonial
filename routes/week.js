@@ -100,8 +100,6 @@ router.get('/:mon-:day', async (req, res, next) => {
   list.products.forEach((item, index) => {
     item.data = products[index];
   });
-  
-  console.log(list);
 
   // Required  to pass month and day down to render successfully
   let categories = await api.GetAllCategories()
@@ -264,7 +262,19 @@ router.post('/:mon-:day/update', async (req, res, next) => {
 
       try {
         // try to update the shopping list
-        response = await shopping_list_service.updateShoppingList(list.documentId, p.pid, product);
+        if (p.amount <= 0) {
+          response = await shopping_list_service.removeItemFromList(
+            list.documentId,
+            p.pid
+          );
+        } else {
+          response = await shopping_list_service.updateShoppingList(
+            list.documentId,
+            p.pid,
+            product
+          );
+        }
+
       } catch (e) {
         res.status(500).json({
           code: 103,
@@ -518,10 +528,12 @@ router.get('/render/:partial_name', async (req, res, next) => {
   // Get 
   if (req.params.partial_name == 'product-list-item' &&
       req.query.kolonialId &&
-      req.query.pid)
+      req.query.pid &&
+      req.query.amount)
   {
 
     data.documentId = req.query.pid;
+    data.amount = req.query.amount;
 
     let response = await api.GetItemById(req.query.kolonialId);
     data.data = response;
