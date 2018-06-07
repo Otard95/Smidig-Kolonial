@@ -10,7 +10,7 @@
           column-gap: 10px;
   border-bottom: 1px solid #d7d7d2; }
   .product-container.selected {
-    grid-template-columns: 8vh auto 10vh 12vh;
+    grid-template-columns: 8vh 6vh auto 12vh;
     grid-template-areas: "prodImg name name iconImg" "prodImg pricePerUnit price iconImg"; }
     .product-container.selected #price-per-unit {
       text-align: left;

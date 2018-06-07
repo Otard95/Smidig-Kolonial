@@ -28,6 +28,9 @@ ShoppingListModule._instance = (() => {
 				}
 			}
 
+			this.open = false;
+			this.items_to_add_count = 0;
+
 			this.categories = [
 				new Category('Inspirasjon', 'lol', this.renderable),
 				new Category('Dine Varer', 'lmao', this.renderable)
@@ -55,7 +58,7 @@ ShoppingListModule._instance = (() => {
 
 		initEvents () {
 
-			this.btn.addEventListener("click", this.showEvent);
+			this.btn.addEventListener("click", this.showEvent.bind(this));
 			
 			this.backArrow.addEventListener("click", this.goBackEvent);
 
@@ -64,6 +67,7 @@ ShoppingListModule._instance = (() => {
 		}
 
 		async initCategories () {
+
 			let result = await fetch('/api/categories');
 			let json = await result.json();
 
@@ -80,11 +84,18 @@ ShoppingListModule._instance = (() => {
 		*/
 		
 		async showEvent (e) {
-			// Resets the list
-			module.ProductSelectionManager.btn.classList.toggle("change-button");
-			module.ProductSelectionManager.categoryBox.classList.toggle("show");
-			module.ProductSelectionManager.whiteIconGone.classList.toggle("hide-button");
-			module.ProductSelectionManager.blackIconShow.classList.toggle("show-button");
+			
+			this.btn.classList.toggle("change-button");
+			this.categoryBox.classList.toggle("show");
+			this.whiteIconGone.classList.toggle("hide-button");
+			this.blackIconShow.classList.toggle("show-button");
+
+			if (this.open && this.items_to_add_count > 0) {
+				this.addToList();
+			}
+
+			this.open = !this.open;
+
 		}
 
 		goBackEvent () {
@@ -130,6 +141,32 @@ ShoppingListModule._instance = (() => {
 			if (parent) this.path.push(parent);
 			this.headerName.innerText = name;
 
+		}
+
+		collect() {
+
+			let items = [];
+
+			for (let child of this.categories) {
+				let dat = child.collect();
+				if (dat && Array.isArray(dat)) items.push.apply(items, dat);
+				else if (dat) items.push(dat);
+			}
+
+			return items;
+
+		}
+
+		async addToList () {
+
+			let to_add = this.collect();
+
+			module.ShoppingList.AddToList(to_add, this.addFinished.bind(this));
+
+		}
+
+		addFinished (err, data) {
+			console.log(err || data);
 		}
 
 	}
@@ -214,6 +251,20 @@ ShoppingListModule._instance = (() => {
 			
 		}
 
+		collect () {
+
+			let items = [];
+
+			for (let child of this.children) {
+				let dat = child.collect();
+				if      (dat && Array.isArray(dat)) items.push.apply(items, dat);
+				else if (dat)                       items.push(dat);
+			}
+
+			return items;
+
+		}
+
 	}
 
 	class ProductItem {
@@ -237,6 +288,9 @@ ShoppingListModule._instance = (() => {
 				`
 			);
 
+			this.selected = false;
+			this.amount_dom = this.DOM.querySelector('#amount');
+
 			this.getData();
 
 		}
@@ -247,7 +301,19 @@ ShoppingListModule._instance = (() => {
 			this.DOM.querySelector('#price-quantity').innerText = this.unit_price;
 			this.DOM.querySelector('#product-image').setAttribute('src', this.thumbnail);
 
-			this.DOM.querySelector('#add-button').addEventListener('click', () => {});
+			this.DOM.querySelector('#add-button').addEventListener('click', () => {
+				this.amount_dom.stepUp();
+			});
+			this.DOM.querySelector('#sub-button').addEventListener('click', () => {
+				this.amount_dom.stepDown();
+				if (parseInt(this.amount_dom.value) === 0) {
+					this.amount_dom.value = 1;
+					this.unsetSelected();
+				}
+			});
+
+			this.DOM.querySelector('#include-button')
+				.addEventListener('click', this.setSelected.bind(this));
 		}
 
 		getData() {
@@ -267,6 +333,23 @@ ShoppingListModule._instance = (() => {
 
 				}));
 
+		}
+
+		setSelected () {
+			module.ProductSelectionManager.items_to_add_count++;
+			this.selected = true;
+			this.DOM.classList.add('selected');
+		}
+		unsetSelected() {
+			module.ProductSelectionManager.items_to_add_count--;
+			this.selected = false;
+			this.DOM.classList.remove('selected');
+		}
+
+		collect () {
+			if (this.selected) {
+				return { kolonialId: this.id, amount: parseInt(this.amount_dom.value) };
+			}
 		}
 
 	}
@@ -322,7 +405,7 @@ ShoppingListModule._instance = (() => {
 			let items_to_save = module.ShoppingList.items.filter(i => !i._saved);
 
 			try {
-				let http_response = await this.update({
+				let http_response = await module.ShoppingList.pushUpdate({
 						product_update: items_to_save.map(i => {
 							return {
 								amount: i.amount,
@@ -348,9 +431,8 @@ ShoppingListModule._instance = (() => {
 			let res;
 
 			try {
-				let http_response = await this.update({ product_add: arr_products });
+				let http_response = await this.pushUpdate({ product_add: arr_products });
 				res = await http_response.json();
-
 			} catch (e) {
 				console.log(e);
 				callback(e);
@@ -366,7 +448,7 @@ ShoppingListModule._instance = (() => {
 			let res;
 
 			try {
-				let http_response = await this.update({
+				let http_response = await this.pushUpdate({
 					group_update: {
 						color: group.color,
 						name: group.name,
@@ -390,7 +472,7 @@ ShoppingListModule._instance = (() => {
 			let res;
 
 			try {
-				let http_response = await this.update({
+				let http_response = await this.pushUpdate({
 					group_create: {
 						color: group.color,
 						name: group.name,
@@ -412,7 +494,7 @@ ShoppingListModule._instance = (() => {
 			let res;
 
 			try {
-				let http_response = await this.update({
+				let http_response = await this.pushUpdate({
 					group_delete: {
 						groupId : groupId
 					}
@@ -433,7 +515,7 @@ ShoppingListModule._instance = (() => {
 			let res;
 
 			try {
-				let http_response = await this.update({
+				let http_response = await this.pushUpdate({
 					group_add: {
 						productId: productId,
 						groupId: groupId
@@ -454,7 +536,7 @@ ShoppingListModule._instance = (() => {
 			let res;
 
 			try {
-				let http_response = await this.update({
+				let http_response = await this.pushUpdate({
 					group_remove: {
 						productId: productId					
 					}
@@ -475,7 +557,7 @@ ShoppingListModule._instance = (() => {
 			let res;
 
 			try {
-				let http_response = await this.update({
+				let http_response = await this.pushUpdate({
 					meta_update: {
 						name: name,
 						sharedWith: sharedWith
@@ -492,7 +574,7 @@ ShoppingListModule._instance = (() => {
 			callback(null, res.updated);
 		}
 
-		async update (body) {
+		async pushUpdate (body) {
 			return await fetch(window.location.pathname + '/update', {
 				method: 'POST',
 				body: JSON.stringify(body),
