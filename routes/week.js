@@ -121,11 +121,12 @@ router.get('/:mon-:day', async (req, res, next) => {
     days_arr,
     chosen_day: day,
     categories,
-    list
+    list,
+    encoded_date
   })
 });
 
-router.get('/:mon-:day/create', async (req, res, next) => {
+router.post('/:mon-:day/create', async (req, res, next) => {
 
   let mon = checkInt(req.params.mon);
   let day = checkInt(req.params.day);

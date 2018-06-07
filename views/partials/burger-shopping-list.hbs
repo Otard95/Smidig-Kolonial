@@ -8,12 +8,16 @@
 
 
 <div class="side-overlay">
-
+<div class="burger-list-container">
     <h1 class="burger-title">{{#if list}}Rediger liste{{else}}Opprett liste{{/if}}</h1>
-
     <label>Navn på listen</label>
-    <input type="text" value="{{#if list}}{{list.name}}{{/if}}">
+    <input type="text" class="burger-list-name" value="{{#if list}}{{list.name}}{{/if}}">
 
+    {{#if list}}
     <label>Dato</label>
-    <div type="text" class="list-date">{{#if list}}{{list.date}}{{/if}}</div>
+    <div type="text" class="list-date">{{list.date}}</div>
+    {{else}}
+        <button class="list-add-btn">Legg til liste</button>
+    {{/if}}  
+</div>
 </div>

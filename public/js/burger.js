@@ -15,35 +15,49 @@ document.addEventListener("DOMContentLoaded", () => {
       DOM_footer.classList.toggle('overlay');
       DOM_shadow.classList.toggle('show');
     })
-  
 
-
-
+    let addListBtn = document.querySelector('.list-add-btn')
     let upcoming = document.querySelectorAll('.upcoming')
     let passed = document.querySelectorAll('.passed')
 
     let upcomingbtn = document.querySelector('.choice-one')
     let passedbtn = document.querySelector('.choice-two')
+    let burgerlistname = document.querySelector('.burger-list-name')
 
-    upcomingbtn.addEventListener('click', () => {
-        if (passedbtn.classList.contains('active')) {
-            passedbtn.classList.toggle('active')
-            upcomingbtn.classList.toggle('active')
+    if (addListBtn) {
+        addListBtn.addEventListener('click', () => {
+            let name = burgerlistname.value
+            if (name.length > 2) {
+                // postRequest towards server to create list
+                let instance = ShoppingListModule();
+                instance.ShoppingList.createCustomList(name);
+            }
+        })
+    }
 
-            upcoming.forEach(item => item.classList.toggle('shoppinglist-hidden'))
-            passed.forEach(item => item.classList.toggle('shoppinglist-hidden'))
-        }
-    })
+    if (upcomingbtn) {
+        upcomingbtn.addEventListener('click', () => {
+            if (passedbtn.classList.contains('active')) {
+                passedbtn.classList.toggle('active')
+                upcomingbtn.classList.toggle('active')
 
-    passedbtn.addEventListener('click', () => {
-        if (upcomingbtn.classList.contains('active')) {
-            upcomingbtn.classList.toggle('active')
-            passedbtn.classList.toggle('active')
+                upcoming.forEach(item => item.classList.toggle('shoppinglist-hidden'))
+                passed.forEach(item => item.classList.toggle('shoppinglist-hidden'))
+            }
+        })
+    }
 
-            upcoming.forEach(item => item.classList.toggle('shoppinglist-hidden'))
-            passed.forEach(item => item.classList.toggle('shoppinglist-hidden'))
-        }
-    })
+    if (passedbtn) {
+        passedbtn.addEventListener('click', () => {
+            if (upcomingbtn.classList.contains('active')) {
+                upcomingbtn.classList.toggle('active')
+                passedbtn.classList.toggle('active')
+
+                upcoming.forEach(item => item.classList.toggle('shoppinglist-hidden'))
+                passed.forEach(item => item.classList.toggle('shoppinglist-hidden'))
+            }
+        })
+    }
 
     document.querySelectorAll('.list-date').forEach(element => {
         let date = element.innerHTML
