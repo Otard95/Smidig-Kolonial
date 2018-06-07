@@ -137,10 +137,18 @@
   z-index: 2;
   -webkit-transition: all 300ms ease-in-out;
   transition: all 300ms ease-in-out; }
-
-.change-button {
-  background-color: white;
-  top: -10vh; }
+  .icon-button.change-button {
+    background-color: white;
+    top: -10vh; }
+    .icon-button.change-button .pluss-icon {
+      opacity: 0; }
+  .icon-button .pluss-icon {
+    position: absolute;
+    height: 35%;
+    top: 0;
+    right: 0;
+    -webkit-transition: all 300ms ease-in-out;
+    transition: all 300ms ease-in-out; }
 
 .button-white {
   position: absolute;
