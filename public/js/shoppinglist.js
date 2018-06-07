@@ -222,18 +222,18 @@ ShoppingListModule._instance = (() => {
 			this.id = id;
 
 			this.DOM = createDOM(
-				`<li class="product-container">
+				`<div class="product-container">
 					<img id="product-image" src="/imgs/loading.gif" alt="">
 					<h1 id="product-name">Laster...</h1>
 					<h1 id="price-per-unit"></h1>
-					<img id="add-button" src="/imgs/icon/Velg vare.png" alt="">
+					<img id="include-button" src="/imgs/icon/Velg vare.png" alt="">
 					<div id="quantity-block">
 						<img id="add-button" src="/imgs/icon/pluss-large.png" />
-						<input id="amount" type="number" value="{{amount}}" min="0"></input>
+						<input id="amount" type="number" value="1" min="0"></input>
 						<img id="sub-button" src="/imgs/icon/minus-large.png" />
 					</div>
 					<h2 id="price-quantity"></h2>
-				</li>
+				</div>
 				`
 			);
 
