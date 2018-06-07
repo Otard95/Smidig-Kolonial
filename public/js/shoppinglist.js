@@ -428,9 +428,9 @@ ShoppingListModule._instance = (() => {
 
 		async createCustomList(name) {
 
-			return await fetch(window.location.pathname + '/create', {
+			await fetch(window.location.pathname + '/create', {
 				method: 'POST',
-				body: JSON.stringify(name),
+				body: JSON.stringify({name}),
 				headers: {
 					'Content-Type': 'application/json'
 				},
