@@ -2,50 +2,75 @@
   width: 90%;
   height: 8vh;
   margin: 0 auto;
-  position: relative;
   display: grid;
-  grid-template-columns: 8vh auto 15vh 7vh;
+  grid-template-columns: 8vh auto 10vh 5vh;
   grid-template-rows: 50% 50%;
   grid-template-areas: "prodImg name pricePerUnit iconImg" "prodImg description price iconImg";
+  -webkit-column-gap: 10px;
+          column-gap: 10px;
   border-bottom: 1px solid #d7d7d2; }
-  .product-container img {
-    width: 100%; }
-  .product-container h1 {
-    font-size: 2.1vh;
-    font-family: "GT Walsheim Regular";
-    font-weight: 300; }
-  .product-container h2 {
-    font-size: 2.1vh;
-    font-family: "GT Walsheim Regular";
-    font-weight: 300;
-    color: #d7d7d2; }
+  .product-container.selected {
+    grid-template-columns: 8vh auto 10vh 12vh;
+    grid-template-areas: "prodImg name name iconImg" "prodImg pricePerUnit price iconImg"; }
+    .product-container.selected #price-per-unit {
+      text-align: left;
+      color: #d7d7d2; }
+    .product-container.selected #price-quantity {
+      text-align: left;
+      color: #d7d7d2; }
+    .product-container.selected #include-button {
+      visibility: hidden; }
+    .product-container.selected #quantity-block {
+      visibility: visible; }
+  .product-container * {
+    margin: 0;
+    padding: 0; }
   .product-container #product-image {
-    position: relative;
-    height: 80%;
-    width: 100%;
-    margin: 0 auto;
-    top: 1vh;
-    grid-area: prodImg; }
+    max-width: 90%;
+    max-height: 90%;
+    grid-area: prodImg;
+    -ms-flex-item-align: center;
+        align-self: center;
+    justify-self: center; }
   .product-container #product-name {
-    position: absolute;
+    max-width: 100%;
+    font-size: 0.85em;
+    line-height: 2.2em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     grid-area: name; }
   .product-container #price-per-unit {
-    position: absolute;
-    grid-area: pricePerUnit;
-    right: 0; }
-  .product-container #add-button {
-    grid-area: iconImg;
-    position: relative;
-    top: 2vh;
+    text-align: right;
+    font-size: 0.85em;
+    line-height: 2.2em;
+    grid-area: pricePerUnit; }
+  .product-container #price-quantity {
+    text-align: right;
+    font-size: 0.85em;
+    line-height: 2.2em;
+    grid-area: price; }
+  .product-container #include-button {
     height: 3.5vh;
     width: 3.5vh;
-    margin: 0 auto; }
-  .product-container #price-som {
-    position: absolute;
-    grid-area: description;
-    top: -1.5vh; }
-  .product-container #price-quantity {
-    position: absolute;
-    grid-area: price;
-    right: 0;
-    top: -1.5vh; }
+    grid-area: iconImg;
+    -ms-flex-item-align: center;
+        align-self: center;
+    justify-self: center; }
+  .product-container #quantity-block {
+    grid-area: iconImg;
+    visibility: hidden;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+    .product-container #quantity-block #amount {
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: center;
+      font-size: 0.8em; }

@@ -74,7 +74,7 @@ footer {
     margin: 0 auto; }
   .planner-grid .header-text {
     grid-area: text;
-    font-size: 2em;
+    font-size: 3em;
     margin: 0; }
   .planner-grid #chat-icon {
     grid-area: chat;
