@@ -9,8 +9,11 @@
 
 <div class="side-overlay">
 
-    <h1 class="burger-title">{{#if list}}Rediger{{else}}Opprett ny liste{{/if}}</h1>
+    <h1 class="burger-title">{{#if list}}Rediger liste{{else}}Opprett liste{{/if}}</h1>
 
-    <hr>
+    <label>Navn på listen</label>
+    <input type="text" value="{{#if list}}{{list.name}}{{/if}}">
 
+    <label>Dato</label>
+    <div type="text" class="list-date">{{#if list}}{{list.date}}{{/if}}</div>
 </div>
