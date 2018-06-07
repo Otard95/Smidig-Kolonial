@@ -39,13 +39,13 @@ class ShoppingList {
             })
         }
 
-        DBres = await db.Create(`customers/${userId}/shoppingLists`, { shoppingListId : DBres.data.id });
+        let DbCostumerRes = await db.Create(`customers/${userId}/shoppingLists`, { shoppingListId : DBres.data.id });
 
-        if (!DBResponse.OK(DBres)) {
+        if (!DBResponse.OK(DbCostumerRes)) {
             // error
             throw new ShoppingListResponse(
                 ShoppingListResponse.status_codes.UNKNOWN_ERROR,
-                DBres,
+                DbCostumerRes,
                 "Error while creating shopping list"
             );
         }
@@ -57,7 +57,8 @@ class ShoppingList {
             snappshot.data().date,
             [],
             [],
-            snappshot.data().sharedWith
+            snappshot.data().sharedWith,
+            snappshot.id
         )
 
         return new ShoppingListResponse(

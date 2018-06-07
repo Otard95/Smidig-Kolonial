@@ -210,12 +210,43 @@ router.post('/:mon-:day/update', async (req, res, next) => {
   list = list[0];
 
   if (!list) {
-    res.status(400);
-    res.json({
-      code: 102,
-      message: 'Oops. Det er ingen liste på denne datoen.'
-    })
-    return;
+
+    let name = req.body.name || `Klikk for å endre navn på handlelisten.`;
+    let sharedWith = req.body.sharedWith || [];
+
+    const shoppinglist = new ShoppingListDocument(
+      name,
+      encoded_date, 
+      [], 
+      [],
+      sharedWith
+    );
+
+    let SLRes;
+    try {
+      SLRes = await shopping_list_service.createShoppingList(req.user.id, shoppinglist);
+    } catch (e) {
+      res.status(500);
+      res.json({
+        code: 101,
+        message: 'Oops. Vi klarte ikke opprette din handleliste. Du kan prøve på nytt. On problemet oppstår igjen ta kontakt med oss.',
+        err: e
+      })
+      return;
+    }
+
+    if (!ShoppingListResponse.OK(SLRes)) {
+      res.status(500);
+      res.json({
+        code: 101,
+        message: 'Oops. Vi klarte ikke opprette din handleliste. Du kan prøve på nytt. On problemet oppstår igjen ta kontakt med oss.',
+        err: SLRes
+      })
+      return;
+    }
+
+    list = SLRes.data;
+
   }
 
   // ### Update products in list
