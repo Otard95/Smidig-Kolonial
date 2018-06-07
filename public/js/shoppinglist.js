@@ -673,12 +673,14 @@ ShoppingListModule._instance = (() => {
 				this.dom.amount.stepUp();
 				this._saved = false;
 				module.ShoppingList.Saved = false;
+				this.OnChange();
 			});
 
 			this.dom.sub_button.addEventListener('click', e => {
 				this.dom.amount.stepDown();
 				this._saved = false;
 				module.ShoppingList.Saved = false;
+				this.OnChange();
 			});
 
 		}
@@ -697,7 +699,17 @@ ShoppingListModule._instance = (() => {
 			}
 		}
 
-		
+		OnChange () {
+			if (parseInt(this.dom.amount.value) === 0) {
+				let spinner = this.dom.root.querySelector('.spinner');
+				if (!spinner) this.dom.root.appendChild(createSpinner(80,80));
+				this.dom.root.classList.add('removing');
+			} else {
+				let spinner = this.dom.root.querySelector('.spinner');
+				if (spinner) this.dom.root.removeChild(spinner);
+				this.dom.root.classList.remove('removing');
+			}
+		}
 
 	}
 
