@@ -286,9 +286,9 @@ ShoppingListModule._instance = (() => {
 					<h1 id="price-per-unit"></h1>
 					<img id="include-button" src="/imgs/icon/Velg vare.png" alt="">
 					<div id="quantity-block">
-						<img id="add-button" src="/imgs/icon/pluss-large.png" />
-						<input id="amount" type="number" value="1" min="0"></input>
 						<img id="sub-button" src="/imgs/icon/minus-large.png" />
+						<input id="amount" type="number" value="1" min="0"></input>
+						<img id="add-button" src="/imgs/icon/pluss-large.png" />
 					</div>
 					<h2 id="price-quantity"></h2>
 				</div>
