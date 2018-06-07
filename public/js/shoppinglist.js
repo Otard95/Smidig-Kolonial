@@ -292,7 +292,7 @@ ShoppingListModule._instance = (() => {
 					<img id="product-image" src="/imgs/loading.gif" alt="">
 					<h1 id="product-name">Laster...</h1>
 					<h1 id="price-per-unit"></h1>
-					<img id="include-button" src="/imgs/icon/Velg vare.png" alt="">
+					${ module.ShoppingList.hasChildWithId(id) ? '' : '<img id="include-button" src="/imgs/icon/Velg vare.png" alt="">'}
 					<div id="quantity-block">
 						<img id="sub-button" src="/imgs/icon/minus-large.png" />
 						<input id="amount" type="number" value="1" min="0"></input>
@@ -383,6 +383,15 @@ ShoppingListModule._instance = (() => {
 			this._saved = true;
 		}
 
+		hasChildWithId(id) {
+
+			for (let i of this.items) {
+				if (i.kolonialid === id) return true;
+			}
+			return false;
+
+		}
+
 		set Saved(value) {
 			if (value) return;
 			this.ScheduleSave();
@@ -440,6 +449,10 @@ ShoppingListModule._instance = (() => {
 			this.items.push(new ListProductItem(dom));
 
 		}
+
+		/**
+		 * # Async server communication
+		*/
 
 		async Save() {
 			module.ShoppingList.update();
@@ -660,7 +673,7 @@ ShoppingListModule._instance = (() => {
 			this.dom.sub_button = dom_element.querySelector('#sub-button');
 
 			this.pid = this.dom.root.dataset.pid;
-			this.kolonialid = this.dom.root.dataset.kolonialid;
+			this.kolonialid = parseInt(this.dom.root.dataset.kolonialid);
 			this._saved = true;
 
 			this.initEvents();
