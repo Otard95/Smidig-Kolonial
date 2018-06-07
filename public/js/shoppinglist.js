@@ -30,6 +30,7 @@ ShoppingListModule._instance = (() => {
 
 			this.open = false;
 			this.items_to_add_count = 0;
+			this.spinner = createSpinner(100,100);
 
 			this.categories = [
 				new Category('Inspirasjon', 'lol', this.renderable),
@@ -159,6 +160,8 @@ ShoppingListModule._instance = (() => {
 
 		async addToList () {
 
+			module.ShoppingList.root.appendChild(this.spinner);
+
 			let to_add = this.collect();
 
 			module.ShoppingList.AddToList(to_add, this.addFinished.bind(this));
@@ -168,9 +171,14 @@ ShoppingListModule._instance = (() => {
 		addFinished (err, data) {
 			if (err) {
 				// do stuff
+				module.ShoppingList.root.removeChild(this.spinner);
 			}
 
-			data.forEach( i => module.ShoppingList.createNewItem(i) );
+			let prom = [];
+			data.forEach(i => prom.push(module.ShoppingList.createNewItem(i)) );
+			Promise.all(prom).then(res => {
+				module.ShoppingList.root.removeChild(this.spinner);
+			});
 
 		}
 
@@ -291,8 +299,7 @@ ShoppingListModule._instance = (() => {
 						<img id="add-button" src="/imgs/icon/pluss-large.png" />
 					</div>
 					<h2 id="price-quantity"></h2>
-				</div>
-				`
+				</div>`
 			);
 
 			this.selected = false;
@@ -314,7 +321,6 @@ ShoppingListModule._instance = (() => {
 			this.DOM.querySelector('#sub-button').addEventListener('click', () => {
 				this.amount_dom.stepDown();
 				if (parseInt(this.amount_dom.value) === 0) {
-					this.amount_dom.value = 1;
 					this.unsetSelected();
 				}
 			});
@@ -348,6 +354,7 @@ ShoppingListModule._instance = (() => {
 			this.DOM.classList.add('selected');
 		}
 		unsetSelected() {
+			this.amount_dom.value = 1;
 			module.ProductSelectionManager.items_to_add_count--;
 			this.selected = false;
 			this.DOM.classList.remove('selected');
@@ -355,7 +362,9 @@ ShoppingListModule._instance = (() => {
 
 		collect () {
 			if (this.selected) {
-				return { kolonialId: this.id, amount: parseInt(this.amount_dom.value) };
+				let dat = { kolonialId: this.id, amount: parseInt(this.amount_dom.value) };
+				this.unsetSelected();
+				return dat;
 			}
 		}
 
@@ -690,6 +699,8 @@ ShoppingListModule._instance = (() => {
 			}
 		}
 
+		
+
 	}
 
 	/**
@@ -711,6 +722,12 @@ ShoppingListModule._instance = (() => {
 		return createDOM._parser.parseFromString(str_html, 'text/html').body.firstChild;
 	}
 	createDOM._parser = new DOMParser();
+
+	function createSpinner(width, height) {
+		return createDOM(
+			`<div class="spinner" style="height: ${height}px; width: ${width}px;"></div>`
+		);
+	}
 
 	/**
 	 * ### OnLoad Init
