@@ -477,17 +477,17 @@ ShoppingListModule._instance = (() => {
 
 		async createCustomList(name) {
 			try {
-			return await fetch(window.location.pathname + '/create', {
-				method: 'POST',
-				body: JSON.stringify({name}),
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				credentials: 'include'
-			});
-		} catch (e) {
-			console.log(e);
-		}
+				return await fetch(window.location.pathname + '/create', {
+					method: 'POST',
+					body: JSON.stringify({name}),
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					credentials: 'include'
+				});
+			} catch (e) {
+				console.log(e);
+			}
 
 		}
 
