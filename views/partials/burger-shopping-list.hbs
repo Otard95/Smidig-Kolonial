@@ -3,3 +3,17 @@
     <script src="/js/burger.js"></script> 
 {{/section}}
 
+
+<div class="shadow"></div>
+
+
+<div class="side-overlay">
+
+    <h1 class="burger-title">{{#if list}}Rediger liste{{else}}Opprett liste{{/if}}</h1>
+
+    <label>Navn på listen</label>
+    <input type="text" value="{{#if list}}{{list.name}}{{/if}}">
+
+    <label>Dato</label>
+    <div type="text" class="list-date">{{#if list}}{{list.date}}{{/if}}</div>
+</div>

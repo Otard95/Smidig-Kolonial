@@ -466,6 +466,19 @@ ShoppingListModule._instance = (() => {
 			unsetLeave();
 		}
 
+		async createCustomList(name) {
+
+			await fetch(window.location.pathname + '/create', {
+				method: 'POST',
+				body: JSON.stringify({name}),
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				credentials: 'include'
+			});
+
+		}
+
 		async AddToList(arr_products, callback /* (err, res) */) {
 
 			let res;

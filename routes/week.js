@@ -90,16 +90,18 @@ router.get('/:mon-:day', async (req, res, next) => {
   
   let list = await GetListOnDate(encoded_date, req.user.lists);
   list = list[0];
-
   let prom = [];
-  list.products.forEach(item => {
-    prom.push(api.GetItemById(item.kolonialId));
-  });
-  let products = await Promise.all(prom);
 
-  list.products.forEach((item, index) => {
-    item.data = products[index];
-  });
+  if (list) {
+    list.products.forEach(item => {
+      prom.push(api.GetItemById(item.kolonialId));
+    });
+    let products = await Promise.all(prom);
+
+    list.products.forEach((item, index) => {
+      item.data = products[index];
+    });
+  }
 
   // Required  to pass month and day down to render successfully
   let categories = await api.GetAllCategories()
