@@ -617,7 +617,7 @@ ShoppingListModule._instance = (() => {
 			callback(null, res.deleted);
 		}
 
-		async updateMeta (name, sharedWith, callback) {
+		async updateMeta (name, sharedWith) {
 			
 			let res;
 
@@ -632,11 +632,9 @@ ShoppingListModule._instance = (() => {
 
 			} catch (e) {
 				console.log(e);
-				callback(e);
 				return;
 			}
 
-			callback(null, res.updated);
 		}
 
 		async pushUpdate (body) {

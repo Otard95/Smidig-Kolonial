@@ -458,7 +458,7 @@ router.post('/:mon-:day/update', async (req, res, next) => {
 
   if (typeof req.body.meta_update === 'object' && !Array.isArray(req.body.meta_update)) {
 
-    if (!Array.isArray(req.body.meta_update.sharedWith)){
+    if (req.body.meta_update.sharedWith && !Array.isArray(req.body.meta_update.sharedWith)) {
       res.status(500).json({
         code: 105,
         message: 'Det oppstod en feil på våre servere. Det kan hende at endringene i listen ikke ble lagret slik de skulle.'
