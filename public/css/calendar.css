@@ -5,8 +5,8 @@ hr {
   position: absolute;
   top: 0;
   opacity: 1;
-  -webkit-transition: all 600ms ease-in;
-  transition: all 600ms ease-in; }
+  -webkit-transition-delay: 0.15s;
+          transition-delay: 0.15s; }
   .burgermenu-icon.display-sidebar {
     opacity: 0; }
 
@@ -16,8 +16,8 @@ hr {
   opacity: 0; }
   .burgermenu-icon-close.display-sidebar {
     opacity: 1;
-    -webkit-transition: all 600ms ease-in;
-    transition: all 600ms ease-in; }
+    -webkit-transition-delay: 0.15s;
+            transition-delay: 0.15s; }
 
 .calendar-title {
   text-align: center;
