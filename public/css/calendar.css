@@ -1,6 +1,24 @@
 hr {
   width: 100%; }
 
+.burgermenu-icon {
+  position: absolute;
+  top: 0;
+  opacity: 1;
+  -webkit-transition: all 600ms ease-in;
+  transition: all 600ms ease-in; }
+  .burgermenu-icon.display-sidebar {
+    opacity: 0; }
+
+.burgermenu-icon-close {
+  position: absolute;
+  top: 0;
+  opacity: 0; }
+  .burgermenu-icon-close.display-sidebar {
+    opacity: 1;
+    -webkit-transition: all 600ms ease-in;
+    transition: all 600ms ease-in; }
+
 .calendar-title {
   text-align: center;
   font-size: 2.7em;

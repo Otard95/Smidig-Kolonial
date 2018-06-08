@@ -1,19 +1,23 @@
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    let DOM_burger_button, DOM_side_overlay, DOM_content, DOM_footer, DOM_shadow
+    let DOM_burger_button, DOM_side_overlay, DOM_content, DOM_footer, DOM_shadow, DOM_burger_icon, DOM_burger_icon_close
     DOM_burger_button = (document.querySelector('.burger')) ? document.querySelectorAll('.burger')[0] : document.querySelectorAll('.handleliste-icon')[0]
     DOM_content = document.querySelectorAll('.container')[0]
     DOM_side_overlay = document.querySelectorAll('.side-overlay')[0]
     DOM_footer = document.querySelectorAll('footer')[0]
     DOM_shadow = document.querySelectorAll('.shadow')[0]
-  
+    DOM_burger_icon = document.querySelectorAll('.burgermenu-icon')[0]
+    DOM_burger_icon_close = document.querySelectorAll('.burgermenu-icon-close')[0]
+
     DOM_burger_button.addEventListener('click', () => {
       DOM_burger_button.classList.toggle('close');
       DOM_content.classList.toggle('overlay');
       DOM_side_overlay.classList.toggle('show');
       DOM_footer.classList.toggle('overlay');
       DOM_shadow.classList.toggle('show');
+      DOM_burger_icon.classList.toggle('display-sidebar');
+      DOM_burger_icon_close.classList.toggle('display-sidebar');
     })
 
     let addListBtn = document.querySelector('.list-add-btn')
