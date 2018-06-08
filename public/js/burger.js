@@ -21,6 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
     let addListBtn = document.querySelector('.list-add-btn')
+    let updateListBtn = document.querySelector('.list-update-btn')
+
     let upcoming = document.querySelectorAll('.upcoming')
     let passed = document.querySelectorAll('.passed')
 
@@ -38,6 +40,19 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         })
     }
+
+    if (updateListBtn) {
+        updateListBtn.addEventListener('click' ,() => {
+            let name = burgerlistname.value;
+            if (name.length > 2) {
+                let instance = ShoppingListModule();
+                instance.ShoppingList.updateMeta(name, undefined);
+            }
+
+        })
+    }
+
+
 
     if (upcomingbtn) {
         upcomingbtn.addEventListener('click', () => {

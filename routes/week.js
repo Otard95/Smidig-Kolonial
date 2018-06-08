@@ -71,6 +71,51 @@ function getNumbersInWeek(year, month, daynum) {
   return arr
 }
 
+function RequireList(bool_yes_no, bool_json_err) {
+
+  return async (req, res, next) => {
+
+    let mon = checkInt(req.params.mon);
+    let day = checkInt(req.params.day);
+
+    if (mon === undefined || day === undefined) {
+      next({
+        msg: 'parameter error'
+      });
+      return;
+    }
+
+    let encoded_date = 201800;
+    encoded_date += mon; encoded_date *= 100;
+    encoded_date += day;
+
+    let list = await GetListOnDate(encoded_date, req.user.lists);
+    list = list[0];
+
+    if ((list !== undefined) === bool_yes_no) {
+      if (bool_json_err) {
+        res.status(404);
+        res.json({
+          code: 105,
+          message: 'Det er ingen liste på denne dagen.'
+        })
+        return;
+      }
+
+      next({
+        status: 404,
+        err: 'No list on the selected date; List is required'
+      });
+      return;
+    }
+
+    req.shopping_list = list;
+    next();
+
+  }
+
+}
+
 /* GET home page. */
 router.get('/:mon-:day', async (req, res, next) => {
 
@@ -188,6 +233,64 @@ router.post('/:mon-:day/create', async (req, res, next) => {
 
   res.status(200);
   res.json(SLRes.data);
+
+});
+
+router.get('/:mon-:day/delete', async (req, res, next) => {
+
+  let mon = checkInt(req.params.mon);
+  let day = checkInt(req.params.day);
+
+  if (mon === undefined || day === undefined) {
+    next({
+      msg: 'parameter error'
+    });
+    return;
+  }
+
+  let encoded_date = 201800;
+  encoded_date += mon; encoded_date *= 100;
+  encoded_date += day;
+
+  let list = await GetListOnDate(encoded_date, req.user.lists);
+  list = list[0];
+
+  if (!list) {
+    res.status(400);
+    res.json({
+      code: 105,
+      message: 'Det er ingen liste på denne dagen.'
+    })
+    return;
+  }
+
+  let SLres;
+  try {
+    SLres = await shopping_list_service.deleteShoppingList(req.user.id, list.documentId);
+  } catch (e) {
+    res.status(500);
+    res.json({
+      code: 101,
+      message: 'Oops, det oppstod en feil under slettingen av listen.'
+    })
+    return;
+  }
+
+  if (!ShoppingListResponse.OK(SLres)) {
+    res.status(500);
+    res.json({
+      code: 102,
+      message: 'Oops, det oppstod en feil under slettingen av listen.'
+    })
+    return;
+  }
+
+  res.status(200);
+  res.json({
+    code: 0,
+    message: 'Listen ble slettet.'
+  })
+  return;
 
 });
 
@@ -458,7 +561,7 @@ router.post('/:mon-:day/update', async (req, res, next) => {
 
   if (typeof req.body.meta_update === 'object' && !Array.isArray(req.body.meta_update)) {
 
-    if (!Array.isArray(req.body.meta_update.sharedWith)){
+    if (req.body.meta_update.sharedWith && !Array.isArray(req.body.meta_update.sharedWith)) {
       res.status(500).json({
         code: 105,
         message: 'Det oppstod en feil på våre servere. Det kan hende at endringene i listen ikke ble lagret slik de skulle.'

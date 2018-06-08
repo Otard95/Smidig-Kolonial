@@ -40,3 +40,20 @@ body, html
   .half-width
     position: relative
     grid-column: span 1
+
+.spinner
+  position: absolute
+  top: 50%
+  left: 50%
+  border-radius: 50%
+  border: 8px solid transparent
+  border-top-width: 0px
+  border-right-color: $eggeplomme
+  animation: spinn 1s linear infinite
+  transform: translate(-50%, -50%) rotate(0deg)
+
+@keyframes spinn
+  from
+    transform: translate(-50%, -50%) rotate(0deg)
+  to
+    transform: translate(-50%, -50%) rotate(360deg)

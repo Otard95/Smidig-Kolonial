@@ -30,6 +30,7 @@ ShoppingListModule._instance = (() => {
 
 			this.open = false;
 			this.items_to_add_count = 0;
+			this.spinner = createSpinner(100,100);
 
 			this.categories = [
 				new Category('Inspirasjon', 'lol', this.renderable),
@@ -159,6 +160,8 @@ ShoppingListModule._instance = (() => {
 
 		async addToList () {
 
+			module.ShoppingList.root.appendChild(this.spinner);
+
 			let to_add = this.collect();
 
 			module.ShoppingList.AddToList(to_add, this.addFinished.bind(this));
@@ -168,9 +171,14 @@ ShoppingListModule._instance = (() => {
 		addFinished (err, data) {
 			if (err) {
 				// do stuff
+				module.ShoppingList.root.removeChild(this.spinner);
 			}
 
-			data.forEach( i => module.ShoppingList.createNewItem(i) );
+			let prom = [];
+			data.forEach(i => prom.push(module.ShoppingList.createNewItem(i)) );
+			Promise.all(prom).then(res => {
+				module.ShoppingList.root.removeChild(this.spinner);
+			});
 
 		}
 
@@ -284,15 +292,14 @@ ShoppingListModule._instance = (() => {
 					<img id="product-image" src="/imgs/loading.gif" alt="">
 					<h1 id="product-name">Laster...</h1>
 					<h1 id="price-per-unit"></h1>
-					<img id="include-button" src="/imgs/icon/Velg vare.png" alt="">
+					${ module.ShoppingList.hasChildWithId(id) ? '' : '<img id="include-button" src="/imgs/icon/Velg vare.png" alt="">'}
 					<div id="quantity-block">
-						<img id="add-button" src="/imgs/icon/pluss-large.png" />
-						<input id="amount" type="number" value="1" min="0"></input>
 						<img id="sub-button" src="/imgs/icon/minus-large.png" />
+						<input id="amount" type="number" value="1" min="0"></input>
+						<img id="add-button" src="/imgs/icon/pluss-large.png" />
 					</div>
 					<h2 id="price-quantity"></h2>
-				</div>
-				`
+				</div>`
 			);
 
 			this.selected = false;
@@ -314,7 +321,6 @@ ShoppingListModule._instance = (() => {
 			this.DOM.querySelector('#sub-button').addEventListener('click', () => {
 				this.amount_dom.stepDown();
 				if (parseInt(this.amount_dom.value) === 0) {
-					this.amount_dom.value = 1;
 					this.unsetSelected();
 				}
 			});
@@ -348,6 +354,7 @@ ShoppingListModule._instance = (() => {
 			this.DOM.classList.add('selected');
 		}
 		unsetSelected() {
+			this.amount_dom.value = 1;
 			module.ProductSelectionManager.items_to_add_count--;
 			this.selected = false;
 			this.DOM.classList.remove('selected');
@@ -355,7 +362,9 @@ ShoppingListModule._instance = (() => {
 
 		collect () {
 			if (this.selected) {
-				return { kolonialId: this.id, amount: parseInt(this.amount_dom.value) };
+				let dat = { kolonialId: this.id, amount: parseInt(this.amount_dom.value) };
+				this.unsetSelected();
+				return dat;
 			}
 		}
 
@@ -372,6 +381,15 @@ ShoppingListModule._instance = (() => {
 			}
 
 			this._saved = true;
+		}
+
+		hasChildWithId(id) {
+
+			for (let i of this.items) {
+				if (i.kolonialid === id) return true;
+			}
+			return false;
+
 		}
 
 		set Saved(value) {
@@ -432,6 +450,10 @@ ShoppingListModule._instance = (() => {
 
 		}
 
+		/**
+		 * # Async server communication
+		*/
+
 		async Save() {
 			module.ShoppingList.update();
 
@@ -468,17 +490,17 @@ ShoppingListModule._instance = (() => {
 
 		async createCustomList(name) {
 			try {
-			return await fetch(window.location.pathname + '/create', {
-				method: 'POST',
-				body: JSON.stringify({name}),
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				credentials: 'include'
-			});
-		} catch (e) {
-			console.log(e);
-		}
+				return await fetch(window.location.pathname + '/create', {
+					method: 'POST',
+					body: JSON.stringify({name}),
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					credentials: 'include'
+				});
+			} catch (e) {
+				console.log(e);
+			}
 
 		}
 
@@ -608,7 +630,7 @@ ShoppingListModule._instance = (() => {
 			callback(null, res.deleted);
 		}
 
-		async updateMeta (name, sharedWith, callback) {
+		async updateMeta (name, sharedWith) {
 			
 			let res;
 
@@ -623,11 +645,9 @@ ShoppingListModule._instance = (() => {
 
 			} catch (e) {
 				console.log(e);
-				callback(e);
 				return;
 			}
 
-			callback(null, res.updated);
 		}
 
 		async pushUpdate (body) {
@@ -653,7 +673,7 @@ ShoppingListModule._instance = (() => {
 			this.dom.sub_button = dom_element.querySelector('#sub-button');
 
 			this.pid = this.dom.root.dataset.pid;
-			this.kolonialid = this.dom.root.dataset.kolonialid;
+			this.kolonialid = parseInt(this.dom.root.dataset.kolonialid);
 			this._saved = true;
 
 			this.initEvents();
@@ -666,12 +686,14 @@ ShoppingListModule._instance = (() => {
 				this.dom.amount.stepUp();
 				this._saved = false;
 				module.ShoppingList.Saved = false;
+				this.OnChange();
 			});
 
 			this.dom.sub_button.addEventListener('click', e => {
 				this.dom.amount.stepDown();
 				this._saved = false;
 				module.ShoppingList.Saved = false;
+				this.OnChange();
 			});
 
 		}
@@ -687,6 +709,18 @@ ShoppingListModule._instance = (() => {
 				if (i > -1) {
 					module.ShoppingList.items.splice(i, 1);
 				}
+			}
+		}
+
+		OnChange () {
+			if (parseInt(this.dom.amount.value) === 0) {
+				let spinner = this.dom.root.querySelector('.spinner');
+				if (!spinner) this.dom.root.appendChild(createSpinner(80,80));
+				this.dom.root.classList.add('removing');
+			} else {
+				let spinner = this.dom.root.querySelector('.spinner');
+				if (spinner) this.dom.root.removeChild(spinner);
+				this.dom.root.classList.remove('removing');
 			}
 		}
 
@@ -711,6 +745,12 @@ ShoppingListModule._instance = (() => {
 		return createDOM._parser.parseFromString(str_html, 'text/html').body.firstChild;
 	}
 	createDOM._parser = new DOMParser();
+
+	function createSpinner(width, height) {
+		return createDOM(
+			`<div class="spinner" style="height: ${height}px; width: ${width}px;"></div>`
+		);
+	}
 
 	/**
 	 * ### OnLoad Init
