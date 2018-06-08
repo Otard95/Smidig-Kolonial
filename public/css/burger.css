@@ -41,6 +41,21 @@
     transition: 200ms all; }
   .side-overlay.show {
     right: 0; }
+  .side-overlay #burger-toggle-btn {
+    position: fixed;
+    z-index: 1005;
+    top: 3.3vh;
+    right: 3.5vh;
+    height: 70px;
+    width: 70px;
+    background-image: url("/imgs/icon/Handleliste.png");
+    background-size: cover;
+    -webkit-transition: all 300ms ease-in-out;
+    transition: all 300ms ease-in-out; }
+    .side-overlay #burger-toggle-btn.close {
+      background-image: url("/imgs/icon/Kryss ut.png");
+      height: 40px;
+      width: 40px; }
 
 .shoppinglist-hidden {
   opacity: 0;
@@ -94,9 +109,71 @@
   margin-left: 10%; }
 
 .burger-list-container {
-  font-size: 2vh;
-  width: 90%;
-  margin: 0 auto;
+  position: relative;
+  width: 100%;
   display: grid;
-  grid: repeat(4, auto)/1fr;
-  grid-gap: 2vh; }
+  grid-template-rows: 1fr 4fr 2fr 35vh 2fr;
+  grid-template-areas: "title" "add-img" "name" "empty" "save-btn";
+  grid-gap: 2vh;
+  justify-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding-top: 7vh;
+  font-size: 2vh; }
+  .burger-list-container .burger-title {
+    grid-area: title;
+    margin: 0;
+    font-size: 3rem; }
+  .burger-list-container .list-burger-save-btn {
+    grid-area: save-btn;
+    background: none;
+    border: none;
+    padding: 0;
+    background-image: url("/imgs/icon/V-gra.png");
+    background-size: cover;
+    height: 150px;
+    width: 155px; }
+    .burger-list-container .list-burger-save-btn.save {
+      background-image: url("/imgs/icon/V-lilla.png"); }
+  .burger-list-container span {
+    grid-area: name;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -ms-flex-pack: distribute;
+        justify-content: space-around; }
+    .burger-list-container span label {
+      font-size: 2.5rem; }
+    .burger-list-container span input[type="text"] {
+      width: 100%;
+      height: 50px;
+      background: none;
+      border: none;
+      border-bottom: 0px solid #ffa51e;
+      text-overflow: ellipsis;
+      text-align: center;
+      outline: none;
+      -webkit-transition: all 300ms cubic-bezier(0.28, 0.69, 0.51, 0.87);
+      transition: all 300ms cubic-bezier(0.28, 0.69, 0.51, 0.87); }
+      .burger-list-container span input[type="text"]:active {
+        border-bottom-width: 4px; }
+
+#delete-btn {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 100px;
+  width: 100%;
+  background-color: #ce4444;
+  color: #333;
+  font-size: 2rem;
+  font-weight: bold;
+  border: none; }

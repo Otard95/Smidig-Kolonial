@@ -104,6 +104,7 @@ ShoppingListModule._instance = (() => {
 			let toRender = module.ProductSelectionManager.path.pop();
 
 			if (toRender) toRender.render()();
+			else module.ProductSelectionManager.showEvent();
 
 		}
 
@@ -767,6 +768,8 @@ ShoppingListModule._instance = (() => {
 		init._called = true;
 		module.ShoppingList = new ShoppingList();
 		module.ProductSelectionManager = new ProductSelectionManager();
+		module.createSpinner = createSpinner;
+		module.createDOM = createDOM;
 	}
 	init._called = false;
 

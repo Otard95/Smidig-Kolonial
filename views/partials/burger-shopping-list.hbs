@@ -1,24 +1,31 @@
 {{#section 'head'}}
-    <link rel="stylesheet" href="/css/burger.css">
-    <script src="/js/burger.js"></script> 
+  <link rel="stylesheet" href="/css/burger.css">
+  <script src="/js/burger.js"></script>
 {{/section}}
-
 
 <div class="shadow"></div>
 
-
 <div class="side-overlay">
-<div class="burger-list-container">
-    <h1 class="burger-title">{{#if list}}Rediger liste{{else}}Opprett liste{{/if}}</h1>
-    <label>Navn på listen</label>
-    <input type="text" class="burger-list-name" value="{{#if list}}{{list.name}}{{/if}}">
 
+  <div id="burger-toggle-btn"></div>
+
+  <div class="burger-list-container">
+    <h1 class="burger-title">{{#if list}}Rediger liste{{else}}Opprett liste{{/if}}</h1>
+    <img id="add-image" src="/imgs/icon/Legg til bilde.png" alt="Legg til bilde">
+    
+    <span>
+      <label>Navn på listen</label>
+      <input type="text" class="burger-list-name" value="{{#if list}}{{list.name}}{{/if}}">
+    </span>
+    
     {{#if list}}
-    <label>Dato</label>
-    <div type="text" class="list-date">{{list.date}}</div>
-    <button class="list-update-btn">Lagre</button>
+      <button class="list-burger-save-btn" id="list-update-btn"></button>
     {{else}}
-        <button class="list-add-btn">Legg til liste</button>
-    {{/if}}  
-</div>
+      <button class="list-burger-save-btn" id="list-add-btn"></button>
+    {{/if}}
+
+  </div>
+
+  <button id="delete-btn">Slett Listen</button>
+
 </div>
