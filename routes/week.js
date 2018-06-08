@@ -191,6 +191,65 @@ router.post('/:mon-:day/create', async (req, res, next) => {
 
 });
 
+router.get('/:mon-:day/delete', async (req, res, next) => {
+
+  let mon = checkInt(req.params.mon);
+  let day = checkInt(req.params.day);
+
+  if (mon === undefined || day === undefined) {
+    next({
+      msg: 'parameter error'
+    });
+    return;
+  }
+
+  let encoded_date = 201800;
+  encoded_date += mon; encoded_date *= 100;
+  encoded_date += day;
+
+  let list = await GetListOnDate(encoded_date, req.user.lists);
+  list = list[0];
+  let prom = [];
+
+  if (!list) {
+    res.status(400);
+    res.json({
+      code: 105,
+      message: 'Det er ingen liste på denne dagen.'
+    })
+    return;
+  }
+
+  let SLres;
+  try {
+    SLres = shopping_list_service.deleteShoppingList(req.user.id, list.documentId);
+  } catch (e) {
+    res.status(400);
+    res.json({
+      code: 105,
+      message: 'Oops, det oppstod en feil under slettingen av listen.'
+    })
+    return;
+  }
+
+  if (!ShoppingListResponse.OK(SLres)) {
+    res.status(400);
+    res.json({
+      code: 105,
+      message: 'Oops, det oppstod en feil under slettingen av listen.'
+    })
+    return;
+  }
+
+  res.status(200);
+  res.json({
+    code: 0,
+    message: 'Listen ble slettet.'
+  })
+  return;
+
+});
+
 router.post('/:mon-:day/update', async (req, res, next) => {
 
   let mon = checkInt(req.params.mon);
