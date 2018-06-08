@@ -16,7 +16,9 @@
 
     {{#each upcoming}}
         <div class="shoppinglist-container upcoming">
-            <div class="shoppinglist-header"><img src="/imgs/icon/Slette handlelister.png" alt="delete-picture" class="icon"></div>
+            <div class="shoppinglist-header">
+              <img src="/imgs/icon/Slette handlelister.png" alt="delete-picture" class="icon" id="delete-list-btn" data-date="{{this.date}}">
+            </div>
             <div class="list-date">{{this.date}}</div>
             <div class="list-name">{{this.name}}</div>
         </div>
@@ -24,7 +26,9 @@
 
     {{#each passed}}
       <div class="shoppinglist-container shoppinglist-hidden passed">
-          <div class="shoppinglist-header"><img src="/imgs/icon/Slette handlelister.png" alt="delete-picture" class="icon"></div>
+          <div class="shoppinglist-header">
+            <img src="/imgs/icon/Slette handlelister.png" alt="delete-picture" class="icon" id="delete-list-btn" data-date="{{this.date}}">
+          </div>
           <div class="list-date">{{this.date}}</div>
           <div class="list-name">{{this.name}}</div>
       </div>

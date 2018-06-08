@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   DOM_shadow = document.querySelectorAll('.shadow')[0]
   DOM_burger_icon = document.querySelectorAll('.burgermenu-icon')[0]
   DOM_burger_icon_close = document.querySelectorAll('.burgermenu-icon-close')[0]
+  DOM_delete_list_btns = document.querySelectorAll('#delete-list-btn');
 
   DOM_burger_button.addEventListener('click', () => {
     DOM_burger_button.classList.toggle('close');
@@ -34,6 +35,44 @@ document.addEventListener("DOMContentLoaded", () => {
   
   let upcomingbtn = document.querySelector('.choice-one');
   let passedbtn = document.querySelector('.choice-two');
+
+  if (DOM_delete_list_btns) {
+    DOM_delete_list_btns.forEach(i => {
+      i.addEventListener('click', async e => {
+        
+        let el = e.target;
+
+        let encoded_date = parseInt(el.dataset.date);
+        let day = encoded_date % 100; encoded_date = Math.floor(encoded_date / 100);
+        let mon = encoded_date % 100; encoded_date = Math.floor(encoded_date / 100);
+        let year = encoded_date;
+
+        console.log(`day: ${day}; month: ${mon}; year: ${year};`);
+
+        if (typeof ShoppingListModule === 'function') {
+
+          let parent = el.parentElement;
+          
+          let spinner = ShoppingListModule().createSpinner(32, 32);
+          parentElement.appendChild(spinner);
+        }
+
+        let res;
+        try {
+          let http_res = await fetch(`/kalender/liste/${mon}-${day}/delete`, {
+            method: 'GET',
+            credentials: 'include'
+          });
+          let res = await http_res.json();
+        } catch (e) {
+          return;
+        }
+
+        window.location = '/kalender';
+
+      });
+    });
+  }
   
   if (delete_btn) delete_btn.addEventListener('click', async () => {
 
