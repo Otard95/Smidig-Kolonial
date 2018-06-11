@@ -438,11 +438,6 @@ ShoppingListModule._instance = (() => {
 			);
 
     }
-    
-    addItem (item) {
-      if (item instanceof ListProductItem)
-        this.items.push(item);
-    }
 
 		async createNewItem (data) {
 
