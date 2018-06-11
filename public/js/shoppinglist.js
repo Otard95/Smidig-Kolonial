@@ -386,7 +386,8 @@ ShoppingListModule._instance = (() => {
 
 			this.items = [];
 			for (let item of this.root.children) {
-				this.items.push(new ListProductItem(item));
+        if (item.classList.contains('product-list-container'))
+				  this.items.push(new ListProductItem(item));
 			}
 
 			this._saved = true;

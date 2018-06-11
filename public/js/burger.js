@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   DOM_burger_icon = document.querySelectorAll('.burgermenu-icon')[0]
   DOM_burger_icon_close = document.querySelectorAll('.burgermenu-icon-close')[0]
   DOM_delete_list_btns = document.querySelectorAll('#delete-list-btn');
+  DOM_list_name = document.querySelector('#list-name');
 
   DOM_burger_button.addEventListener('click', () => {
     DOM_burger_button.classList.toggle('close');
@@ -17,8 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
     DOM_side_overlay.classList.toggle('show');
     DOM_footer.classList.toggle('overlay');
     DOM_shadow.classList.toggle('show');
-    DOM_burger_icon.classList.toggle('display-sidebar');
-    DOM_burger_icon_close.classList.toggle('display-sidebar');
+    if (DOM_burger_icon) DOM_burger_icon.classList.toggle('display-sidebar');
+    if (DOM_burger_icon_close) DOM_burger_icon_close.classList.toggle('display-sidebar');
   })
 
   let addListBtn = document.querySelector('#list-add-btn');
@@ -35,6 +36,19 @@ document.addEventListener("DOMContentLoaded", () => {
   
   let upcomingbtn = document.querySelector('.choice-one');
   let passedbtn = document.querySelector('.choice-two');
+
+  if (DOM_list_name) {
+    DOM_list_name.addEventListener('click', () => {
+      DOM_burger_button.classList.toggle('close');
+      DOM_content.classList.toggle('overlay');
+      DOM_side_overlay.classList.toggle('show');
+      DOM_footer.classList.toggle('overlay');
+      DOM_shadow.classList.toggle('show');
+      if (DOM_burger_icon) DOM_burger_icon.classList.toggle('display-sidebar');
+      if (DOM_burger_icon_close) DOM_burger_icon_close.classList.toggle('display-sidebar');
+      burgerlistname.focus();
+    })
+  }
 
   if (DOM_delete_list_btns) {
     DOM_delete_list_btns.forEach(i => {

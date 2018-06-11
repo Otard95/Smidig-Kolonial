@@ -36,6 +36,9 @@
         </div>
       </div>
       <div class="week-list">
+        {{#if list}}
+          <div id="list-name">{{list.name}}</div>
+        {{/if}}
         {{#each list.products}}
           {{> product-list-item this }}
         {{/each}}
