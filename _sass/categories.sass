@@ -18,6 +18,7 @@
   margin: 0 auto
   width: 99%
   top: -7.5vh
+  // top: 6vh når du er inne i selve barnebursdagkategorien
   border-bottom-left-radius:  15px
   border-bottom-right-radius: 15px
   overflow: hidden
@@ -71,28 +72,46 @@
 .inspiration-container
   position: relative
   margin: 0 auto
-  width: 90%
+  width: 100%
   font-size: 2.2vh
-  opacity: 0
-
-.inspiration-container-show
   opacity: 1
 
 .inspiration-border
-  position: relative
   display: grid
-  grid-template-columns: repeat(5, 5fr)
   grid-gap: 2.5vh
   list-style: none
   overflow-x: scroll
+  padding-top: 1vh
+  border-top: solid 0.2vh $Lys-varmgra
+  grid-template-columns: repeat(5, 5fr)
 
-.inspiration-border li
+.inspiration-choise
+  position: relative
+  top: -1vh
+  display: grid
+  grid-gap: 2.5vh
+  list-style: none
+  overflow-x: scroll
+  padding-top: 1vh
+  border-top: solid 0.2vh $Lys-varmgra
+  grid-template-columns: 7.5vh auto auto 10vh
+
+.inspiration-container li
   border: $Lys-varmgra 3px solid
   padding: 1vh
   border-radius: 25px
 
-.selected-inspiration-border
+.activeEvent
   background-color: $Lys-varmgra
+
+.inspiration-header
+
+.inspiration-img
+  position: absolute
+  top: -10.7vh
+  width: 100%
+  z-index: 2
+  opacity: 0.3
 
 .categories
   position: absolute
@@ -136,7 +155,9 @@
 
   &.change-button
     background-color: $white
-    top: -10vh
+    width: 12vh
+    height: 12vh
+    top: -10.7vh
 
     .pluss-icon
       opacity: 0
@@ -154,8 +175,8 @@
   position: absolute
   left: 2vh
   top: 1vh
-  width: 50%
-  height: 40%
+  width: 55%
+  height: 50%
   opacity: 0
 
 .show-button
