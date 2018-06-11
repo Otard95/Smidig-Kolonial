@@ -6,9 +6,9 @@
 
 <div class="category-container">
   <!--Denne skal inn i selve barnebursdagkategorien-->
-  <!--<div class="inspiration-header">
+  <div class="inspiration-header">
     <img class="inspiration-img"src="/imgs/inspiration/insp-med-tekst.png" alt="">
-  </div>-->
+  </div>
   <div class="icon-button">
     <img class="pluss-icon" src="/imgs/icon/AddItemsPlusIcon.png">
     <img class="button-white" src="/imgs/icon/AddProductBlack.png" alt="">
@@ -18,14 +18,15 @@
     <div class="information-header">
       <img class="back-arrow" src="/imgs/icon/Pil.png" alt="">
       <h3 class="search-title">Varer</h3>
+      <img class="inspiration-filter" src="/imgs/icon/filter-knapp.png" alt="">
     </div>
     <!--
     <div class="search-container">
       <input type="text" id="search-t" onkeyup="searchTerm()" placeholder="Søk i tusenvis av varer">
     </div> -->
-    <!--<div class="inspiration-container">-->
+    <div class="inspiration-container">
       <!--Denne skal inn rett etter at man har trykket på en av kategoriene i inspirasjon -->
-      <!--<ul class="inspiration-border">
+  <!--    <ul class="inspiration-border">
         <li>Familiemiddag</li>
         <li>Helgekos</li>
         <li class="activeEvent">Selskap</li>
@@ -34,22 +35,31 @@
       </ul>-->
 
       <!--Denne skal inn i selve Barnebursdag kategorien -->
-      <!--<ul class="inspiration-choise">
+      <ul class="inspiration-choise">
         <span></span>
         <li class="activeEvent">Producter</li>
         <li>Oppskrifter</li>
         <span></span>
       </ul>
-    </div>-->
-
+    </div>
     <div class="categories">
-      <ul class="category-list">
+      <!--<ul class="category-list">
         <li class="inspiration">Inspirasjon</li>
         <li>Dine Varer</li>
         {{#each categories}}
           <li class="list-item" data-categoryid={{this.id}}>{{this.name}}</li>
         {{/each}}
-      </ul>
+      </ul>-->
+      <div class="recipe">
+        <img src="/imgs/inspiration/xmas.jpg" alt="">
+        <h2>Brownies med glasur</h2>
+        <h1>30min Lett</h1>
+      </div>
+      <div class="recipe">
+        <img src="/imgs/inspiration/xmas.jpg" alt="">
+        <h2>Torsk i hvit saus</h2>
+        <h1>45min Medium</h1>
+      </div>
     </div>
   </div>
 </div>

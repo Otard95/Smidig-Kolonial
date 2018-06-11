@@ -14,7 +14,7 @@
   height: 60vh;
   margin: 0 auto;
   width: 99%;
-  top: -7.5vh;
+  top: 6vh;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
   overflow: hidden; }
@@ -106,8 +106,13 @@
   position: absolute;
   top: -10.7vh;
   width: 100%;
-  z-index: 2;
-  opacity: 0.3; }
+  z-index: 3; }
+
+.inspiration-filter {
+  position: relative;
+  width: 7.5vh;
+  height: 3.5vh;
+  right: 2vh; }
 
 .categories {
   position: absolute;
@@ -192,3 +197,15 @@
 
 .changeButton {
   display: none; }
+
+.recipe {
+  border: #f0f0ec 3px solid;
+  margin: 0 auto;
+  width: 98%;
+  height: 20vh;
+  display: grid;
+  grid-template-rows: 5fr 2fr 1fr; }
+
+.recipe img {
+  width: 100%;
+  height: 10vh; }
