@@ -60,7 +60,7 @@ ShoppingListModule._instance = (() => {
 		initEvents () {
 
 			this.btn.addEventListener("click", this.showEvent.bind(this));
-			
+
 			this.backArrow.addEventListener("click", this.goBackEvent);
 
 			this.input.addEventListener("change", this.searchEvent);
@@ -83,9 +83,9 @@ ShoppingListModule._instance = (() => {
 		/**
 		 * ### Events
 		*/
-		
+
 		async showEvent (e) {
-			
+
 			this.btn.classList.toggle("change-button");
 			this.categoryBox.classList.toggle("show");
 			this.whiteIconGone.classList.toggle("hide-button");
@@ -104,7 +104,6 @@ ShoppingListModule._instance = (() => {
 			let toRender = module.ProductSelectionManager.path.pop();
 
 			if (toRender) toRender.render()();
-			else module.ProductSelectionManager.showEvent();
 
 		}
 
@@ -196,7 +195,7 @@ ShoppingListModule._instance = (() => {
 				`<li class="list-item" data-categoryid="${this.id}">Laster...</li>`
 			);
 
-			if (!this.name) 
+			if (!this.name)
 				this.getData();
 			else
 				this.init();
@@ -226,7 +225,7 @@ ShoppingListModule._instance = (() => {
 				}
 
 				this.name = json.name;
-	
+
 				this.init();
 				resolve();
 			}));
@@ -244,18 +243,12 @@ ShoppingListModule._instance = (() => {
 						if (json.children_id) {
 							json.children_id.forEach(id => this.children.push(new Category(undefined, id, this)));
 						} else {
-              json.products.forEach(id => {
-                let c = module.ShoppingList.getChildWithId(id)
-                if (c) {
-                  this.children.push(c);
-                } else
-                  this.children.push(new ProductItem(id));
-              });
+							json.products.forEach(id => this.children.push(new ProductItem(id)));
 						}
 						resolve();
 					})
 				);
-			
+
 		}
 
 		render () {
@@ -264,15 +257,13 @@ ShoppingListModule._instance = (() => {
 				el.getChildren()
 				.then(() => {
 					module.ProductSelectionManager.updateView(
-            el.children.map(c => {
-              return c.DOM;
-            }),
+						el.children.map(c => c.DOM),
 						el.name,
 						el.parent
 					);
 				});
 			}
-			
+
 		}
 
 		collect () {
@@ -292,7 +283,7 @@ ShoppingListModule._instance = (() => {
 	}
 
 	class ProductItem {
-		
+
 		constructor (id) {
 			this.id = id;
 
@@ -301,7 +292,7 @@ ShoppingListModule._instance = (() => {
 					<img id="product-image" src="/imgs/loading.gif" alt="">
 					<h1 id="product-name">Laster...</h1>
 					<h1 id="price-per-unit"></h1>
-					<img id="include-button" src="/imgs/icon/Velg vare.png" alt="">
+					${ module.ShoppingList.hasChildWithId(id) ? '' : '<img id="include-button" src="/imgs/icon/Velg vare.png" alt="">'}
 					<div id="quantity-block">
 						<img id="sub-button" src="/imgs/icon/minus-large.png" />
 						<input id="amount" type="number" value="1" min="0"></input>
@@ -386,8 +377,7 @@ ShoppingListModule._instance = (() => {
 
 			this.items = [];
 			for (let item of this.root.children) {
-        if (item.classList.contains('product-list-container'))
-				  this.items.push(new ListProductItem(item));
+				this.items.push(new ListProductItem(item));
 			}
 
 			this._saved = true;
@@ -400,15 +390,7 @@ ShoppingListModule._instance = (() => {
 			}
 			return false;
 
-    }
-    
-    getChildWithId(id) {
-
-      for (let i of this.items) {
-        if (i.kolonialid === id) return i;
-      }
-
-    }
+		}
 
 		set Saved(value) {
 			if (value) return;
@@ -437,12 +419,7 @@ ShoppingListModule._instance = (() => {
 				this.Save
 			);
 
-    }
-    
-    addItem (item) {
-      if (item instanceof ListProductItem)
-        this.items.push(item);
-    }
+		}
 
 		async createNewItem (data) {
 
@@ -450,7 +427,7 @@ ShoppingListModule._instance = (() => {
 
 			// Create the new item
 			let html;
-			
+
 			let param = new URLSearchParams(data);
 			let url = `/kalender/liste/render/product-list-item?${param.toString()}`
 
@@ -545,7 +522,7 @@ ShoppingListModule._instance = (() => {
 		}
 
 		async updateGroup (group, callback) {
-			
+
 			let res;
 
 			try {
@@ -591,7 +568,7 @@ ShoppingListModule._instance = (() => {
 		}
 
 		async deleteGroup(groupId, callback){
-			
+
 			let res;
 
 			try {
@@ -639,7 +616,7 @@ ShoppingListModule._instance = (() => {
 			try {
 				let http_response = await this.pushUpdate({
 					group_remove: {
-						productId: productId					
+						productId: productId
 					}
 				});
 				res = await http_response.json();
@@ -654,7 +631,7 @@ ShoppingListModule._instance = (() => {
 		}
 
 		async updateMeta (name, sharedWith) {
-			
+
 			let res;
 
 			try {
@@ -701,43 +678,25 @@ ShoppingListModule._instance = (() => {
 
 			this.initEvents();
 			this.update();
-    }
-    
-    get DOM () {
-      if (!this._clone) {
-        this._clone = this.dom.root.cloneNode(true);
-        this.initEvents(this._clone);
-      }
-      return this._clone;
-    }
+		}
 
-		initEvents(dom) {
+		initEvents() {
 
-      if (dom) {
-        dom.querySelector('#add-button').addEventListener('click', this.stepUp.bind(this));
-        dom.querySelector('#sub-button').addEventListener('click', this.stepDown.bind(this));
-      } else {
-        this.dom.add_button.addEventListener('click', this.stepUp.bind(this));
-        this.dom.sub_button.addEventListener('click', this.stepDown.bind(this));
-      }
+			this.dom.add_button.addEventListener('click', e => {
+				this.dom.amount.stepUp();
+				this._saved = false;
+				module.ShoppingList.Saved = false;
+				this.OnChange();
+			});
 
-    }
-    
-    stepUp () {
-      this.dom.amount.stepUp();
-      if (this._clone) this._clone.querySelector('#amount').stepUp();
-      this._saved = false;
-      module.ShoppingList.Saved = false;
-      this.OnChange();
-    }
+			this.dom.sub_button.addEventListener('click', e => {
+				this.dom.amount.stepDown();
+				this._saved = false;
+				module.ShoppingList.Saved = false;
+				this.OnChange();
+			});
 
-    stepDown () {
-      this.dom.amount.stepDown();
-      if (this._clone) this._clone.querySelector('#amount').stepDown();
-      this._saved = false;
-      module.ShoppingList.Saved = false;
-      this.OnChange();
-    }
+		}
 
 		update() {
 			this.amount = parseInt(this.dom.amount.value);
@@ -808,8 +767,6 @@ ShoppingListModule._instance = (() => {
 		init._called = true;
 		module.ShoppingList = new ShoppingList();
 		module.ProductSelectionManager = new ProductSelectionManager();
-		module.createSpinner = createSpinner;
-		module.createDOM = createDOM;
 	}
 	init._called = false;
 
