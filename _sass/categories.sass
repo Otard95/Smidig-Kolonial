@@ -24,21 +24,29 @@
   border-bottom-right-radius: 15px
   overflow: hidden
 
-  .inspiration-header
-    height: 0vh
-    overflow: hidden
-    transition: all 300ms ease-in-out
-
-    .inspiration-img
-      width: 100%
-      z-index: 3
-
   &.inspiration
+    .inspiration-view
+
+
     .inspiration-header
       height: 20vh
 
     .information-header
       margin-top: 0
+
+    .search-container
+      display: none
+
+.inspiration-header
+  position: relative
+  height: 0vh
+  margin-top: -5vh
+  z-index: 4
+  overflow: hidden
+  transition: all 300ms ease-in-out
+
+.inspiration-img
+  width: 100%
 
 .information-header
   width: 100%
@@ -73,10 +81,7 @@
   background-color: $Lys-varmgra
   border-radius: 40px
   font-size: 2.2vh
-  opacity: 1
-
-.hide-search-container
-  opacity: 0
+  display: block
 
 #search-t
   position: relative
