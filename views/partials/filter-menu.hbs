@@ -1,0 +1,40 @@
+{{#section 'head'}}
+<link rel="stylesheet" href="/css/burger.css">
+<script src="/js/burger.js"></script> {{/section}}
+
+
+<div class="shadow"></div>
+
+
+<div class="side-overlay">
+    <div class="burger-list-container">
+        <h1 class="burger-title">Filter</h1>
+
+        <label>{{filter.price.name}}</label>
+        <div class="slider-container">
+            <input type="range" min="1" max="100" value="{{filter.price.value}}" class="slider" id="price">
+        </div>
+
+        <label>{{filter.people.name}}</label>
+        <div class="slider-container">
+            <input type="range" min="1" max="100" value="{{filter.people.value}}" class="slider" id="people">
+        </div>
+
+        <label>{{filter.theme.name}}</label>
+        <div class="filter-options">
+             {{#each filter.theme.value}}
+                <li>{{this}}</li>
+                <img class="toggle-filter" src="/imgs/icon/V-lilla.png" />
+            {{/each}}
+        </div>
+
+        <label>{{filter.alergies.name}}</label>
+        <div class="filter-options">
+            {{#each filter.alergies.value}}
+            <li>{{this}}</li>
+            <img class="toggle-filter" src="/imgs/icon/V-lilla.png" /> {{/each}}
+        </div>
+
+        
+    </div>
+</div>
