@@ -1,35 +1,49 @@
 {{#section 'head'}}
-    <link rel="stylesheet" href="/css/filter-menu.css">
-    <script src="/js/filter.js"></script>
+  <link rel="stylesheet" href="/css/filter-menu.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <script src="/js/filter.js"></script>
 {{/section}}
 
-    <div class="filter-overlay">
-        <div class="filter-list-container">
+<div class="filter-overlay">
+  <div class="filter-list-container">
 
-            <h1 class="filter-title">Filter</h1>
+    <h1 class="filter-menu-title">Filter</h1>
 
-
-            <div class="filter-container">
-            {{#each filter}}
-                <label>{{this.name}}</label>
-                <div class="filter">
-                    {{#each this.children}}
-                        
-                        {{#condition this.type '==' 'slider'}}
-                            <input type="range" min="1" max="100" value="{{this.value}}" class="slider">
-                        {{/condition}}
-                        
-                        {{#condition this.type '==' 'checkbox'}}
-                            <input type="checkbox" />
-                            <label>{{this.name}}</label>
-                        {{/condition}}
-                    
-                    {{/each}}
-                </div>
-            {{/each}}
-            </div>
-
-            <img src="/imgs/icon/V-gra.png"/>
-
+    <div class="filter-container">
+      {{#each filter}}
+      
+      <div class="filter">
+        <div class="filter-header">
+          <h3>{{this.name}}</h3>
+          <img src="/imgs/icon/Pil.png" alt="" srcset="">
         </div>
+        {{#each this.children}}
+
+          {{#condition this.type '==' 'slider'}}
+            <input type="range" min="1" max="100" value="{{this.value}}" class="slider">
+          {{/condition}}
+
+          {{#condition this.type '==' 'checkbox'}}
+            <div class="checkbox-container">
+              <label class="label">
+                <input class="label__checkbox" id="{{this.name}}" type="checkbox" />
+                <span class="label__text">
+                  <span class="label__check">
+                    <i class="fa fa-check icon"></i>
+                  </span>
+                </span>
+              </label>
+              <label for="{{this.name}}">{{this.name}}</label>
+            </div>
+          {{/condition}}
+        
+        {{/each}}
+      </div>
+
+      {{/each}}
     </div>
+
+    <img src="/imgs/icon/V-gra.png" />
+
+  </div>
+</div>
