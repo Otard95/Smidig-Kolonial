@@ -33,7 +33,7 @@ ShoppingListModule._instance = (() => {
 			this.spinner = createSpinner(100,100);
 
 			this.categories = [
-				new Category('Inspirasjon', 'lol', this.renderable),
+				new Inspiration('Inspirasjon', 123, this.renderable),
 				new Category('Dine Varer', 'lmao', this.renderable)
 			];
 			this.category_container = document.querySelector(".category-list");
@@ -289,7 +289,100 @@ ShoppingListModule._instance = (() => {
 
 		}
 
-	}
+  }
+  
+  class Inspiration extends Category {
+
+    constructor (name, id, parent) {
+      super(name, 123, parent);
+    }
+
+    getChildren() {
+      return new Promise((resolve, reject) => {
+        this.children = [
+          new Selskap('Familiemiddag', 123, this),
+          new Selskap('Helgekos', 123, this),
+          new Selskap('Selskap', 123, this),
+          new Selskap('Gjester', 123, this),
+          new Selskap('Høytid', 123, this)
+        ];
+        resolve();
+      });
+    }
+
+    collect() { return undefined; }
+
+  }
+
+  class Selskap extends Category {
+
+    constructor(name, id, parent) {
+      super(name, id, parent);
+    }
+
+    getChildren() {
+      return new Promise((resolve, reject) => {
+        this.children = [
+          new InspirationBorder('Familiemiddag', 'Helgekos', 'Selskap', 'Gjester', 'Høytid'),
+          new Barnebursdag('Barnebursdag', 123, this),
+          new Barnebursdag('Fest', 123, this),
+          new Barnebursdag('Jubileum', 123, this)
+        ];
+        resolve();
+      });
+    }
+
+    collect() {
+      return undefined;
+    }
+
+  }
+
+  class Barnebursdag extends Category {
+
+    constructor(name, id, parent) {
+      super(name, id, parent);
+    }
+
+    getChildren() {
+      if (this.children.length > 0)
+        return new Promise((resolve, reject) => { resolve(); });
+      else
+        this.children.push(new InspirationBorder('Produkter', 'Oppskrifter'))
+        return fetch(`/API/item/search?name=${this.name}`)
+          .then(data => data.json())
+          .then(json => new Promise((resolve, rejects) => {
+            
+            json.forEach(item => {
+              let c = module.ShoppingList.getChildWithId(item.id)
+              if (c) {
+                this.children.push(c);
+              } else
+                this.children.push(new ProductItem(item.id));
+            });
+            
+            resolve();
+          }));
+    }
+
+    collect() {
+      return undefined;
+    }
+
+  }
+
+  class InspirationBorder {
+
+    constructor (...params) {
+      let dom_string = '<ul class="inspiration-border">';
+      for (let item of params) {
+        dom_string += `<li>${item}</li>`;
+      }
+      dom_string += '</ul>';
+      this.DOM = createDOM(dom_string);
+    }
+
+  }
 
 	class ProductItem {
 		
