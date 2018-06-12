@@ -1,0 +1,98 @@
+
+[
+    {
+            "name": "Pris",
+            "children": [
+            {
+                    "name": "Pris",
+                    "value": 0,
+                    "type": "slider"
+            }
+        ]
+    },
+    {
+            "name": "Personer",
+            "children": [
+            {
+                    "name" : "Personer",
+                    "value": 0,
+                    "type": "slider"
+            }
+        ]
+    },
+    {
+            "name": "Temaer",
+            "children": [
+            {
+                    "name": "Frost",
+                    "value": false,
+                    "type": "checkbox"
+            },
+            {
+                    "name": "Spiderman",
+                    "value": false,
+                    "type": "checkbox"
+            },
+            {
+                    "name": "Prinsesse",
+                    "value": false,
+                    "type": "checkbox"
+            },
+            {
+                    "name": "Pirat",
+                    "value": false,
+                    "type": "checkbox"
+            },
+            {
+                    "name": "Ballonger",
+                    "value": false,
+                    "type": "checkbox"
+            },
+            {
+                    "name": "Blå",
+                    "value": false,
+                    "type": "checkbox"
+            },
+            {
+                    "name": "Rosa",
+                    "value": false,
+                    "type": "checkbox"
+            }
+        ]
+    },
+    {
+            "name": "Allergier",
+            "children": [
+            {
+                    "name": "Gluten",
+                    "value": false,
+                    "type": "checkbox"
+            },
+            {
+                    "name": "Laktoseintoleranse",
+                    "value": false,
+                    "type": "checkbox"
+            },
+            {
+                    "name": "Egg",
+                    "value": false,
+                    "type": "checkbox"
+            },
+            {
+                    "name": "Nøtteallergi",
+                    "value": false,
+                    "type": "checkbox"
+            },
+            {
+                    "name": "Melk",
+                    "value": false,
+                    "type": "checkbox"
+            },
+            {
+                    "name": "Fisk og skalldyr",
+                    "value": false,
+                    "type": "checkbox"
+            }
+        ]
+    }
+]
