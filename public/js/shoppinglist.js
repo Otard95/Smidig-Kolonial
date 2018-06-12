@@ -82,7 +82,14 @@ ShoppingListModule._instance = (() => {
 
 		/**
 		 * ### Events
-		*/
+    */
+    
+    inspire (bool_show) {
+      if (bool_show)
+        document.querySelector('.information-view').classList.add('inspiration');
+      else
+        document.querySelector('.information-view').classList.remove('inspiration');
+    }
 
 		async showEvent (e) {
 
@@ -312,6 +319,8 @@ ShoppingListModule._instance = (() => {
     }
 
     getChildren() {
+
+      module.ProductSelectionManager.inspire(false);
       return new Promise((resolve, reject) => {
         this.children = [
           new InspirationBorder('Familiemiddag', 'Helgekos', 'Selskap', 'Gjester', 'Høytid'),
@@ -321,6 +330,7 @@ ShoppingListModule._instance = (() => {
         ];
         resolve();
       });
+
     }
 
     collect() {
@@ -336,6 +346,9 @@ ShoppingListModule._instance = (() => {
     }
 
     getChildren() {
+
+      module.ProductSelectionManager.inspire(true);
+
       if (this.children.length > 0)
         return new Promise((resolve, reject) => { resolve(); });
       else
@@ -354,6 +367,7 @@ ShoppingListModule._instance = (() => {
             
             resolve();
           }));
+          
     }
 
     collect() {
