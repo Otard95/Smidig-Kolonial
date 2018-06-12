@@ -11,8 +11,8 @@
 
 {{> burger-shopping-list}}
 
-  {{> headerplanner}}
 <div class="container">
+{{> headerplanner}}
   <div class="content">
     <div class="week-container">
       <div class="week-header">
@@ -36,6 +36,9 @@
         </div>
       </div>
       <div class="week-list">
+        {{#if list}}
+          <div id="list-name">{{list.name}}</div>
+        {{/if}}
         {{#each list.products}}
           {{> product-list-item this }}
         {{/each}}

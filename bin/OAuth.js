@@ -262,20 +262,23 @@ class OAuth {
 			}
 
 			// check database response
-			if (!DBResponse.OK(db_res_user) && !DBResponse.OK(db_res_lists)) {
+			if (!DBResponse.OK(db_res_user)) {
 				// database query failed
 				req.status(500);
 				next({ status: 500, DBResponseErr: {db_res_user, db_res_lists} });
 				return;
+			}
 
-			} 
 
 			// db response OK
 			// add user referance to request object
-			req.user.ref = db_res_user.data[0].ref;
-			req.user.lists = db_res_lists.data.map( p => {
-				return p.data().shoppingListId;
-			});
+      req.user.ref = db_res_user.data[0].ref;
+      if (DBResponse.OK(db_res_lists))
+        req.user.lists = db_res_lists.data.map( p => {
+          return p.data().shoppingListId;
+        });
+      else
+        req.user.lists = [];
 
 			next();
 

@@ -69,7 +69,7 @@ function SortShoppingLists(allLists) {
   encoded_date *= 100;
   encoded_date += new Date().getDate();
 
-  let upcommingLists = allLists.filter(list => list.date > encoded_date);
+  let upcommingLists = allLists.filter(list => list.date >= encoded_date);
   let passedLists = allLists.filter(list => list.date < encoded_date);
 
   upcommingLists.sort((a, b) => {

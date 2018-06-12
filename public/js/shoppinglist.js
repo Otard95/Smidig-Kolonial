@@ -104,6 +104,7 @@ ShoppingListModule._instance = (() => {
 			let toRender = module.ProductSelectionManager.path.pop();
 
 			if (toRender) toRender.render()();
+			else module.ProductSelectionManager.showEvent();
 
 		}
 
@@ -243,7 +244,13 @@ ShoppingListModule._instance = (() => {
 						if (json.children_id) {
 							json.children_id.forEach(id => this.children.push(new Category(undefined, id, this)));
 						} else {
-							json.products.forEach(id => this.children.push(new ProductItem(id)));
+              json.products.forEach(id => {
+                let c = module.ShoppingList.getChildWithId(id)
+                if (c) {
+                  this.children.push(c);
+                } else
+                  this.children.push(new ProductItem(id));
+              });
 						}
 						resolve();
 					})
@@ -257,7 +264,9 @@ ShoppingListModule._instance = (() => {
 				el.getChildren()
 				.then(() => {
 					module.ProductSelectionManager.updateView(
-						el.children.map(c => c.DOM),
+            el.children.map(c => {
+              return c.DOM;
+            }),
 						el.name,
 						el.parent
 					);
@@ -292,7 +301,7 @@ ShoppingListModule._instance = (() => {
 					<img id="product-image" src="/imgs/loading.gif" alt="">
 					<h1 id="product-name">Laster...</h1>
 					<h1 id="price-per-unit"></h1>
-					${ module.ShoppingList.hasChildWithId(id) ? '' : '<img id="include-button" src="/imgs/icon/Velg vare.png" alt="">'}
+					<img id="include-button" src="/imgs/icon/Velg vare.png" alt="">
 					<div id="quantity-block">
 						<img id="sub-button" src="/imgs/icon/minus-large.png" />
 						<input id="amount" type="number" value="1" min="0"></input>
@@ -377,7 +386,8 @@ ShoppingListModule._instance = (() => {
 
 			this.items = [];
 			for (let item of this.root.children) {
-				this.items.push(new ListProductItem(item));
+        if (item.classList.contains('product-list-container'))
+				  this.items.push(new ListProductItem(item));
 			}
 
 			this._saved = true;
@@ -390,7 +400,15 @@ ShoppingListModule._instance = (() => {
 			}
 			return false;
 
-		}
+    }
+    
+    getChildWithId(id) {
+
+      for (let i of this.items) {
+        if (i.kolonialid === id) return i;
+      }
+
+    }
 
 		set Saved(value) {
 			if (value) return;
@@ -419,7 +437,7 @@ ShoppingListModule._instance = (() => {
 				this.Save
 			);
 
-		}
+    }
 
 		async createNewItem (data) {
 
@@ -678,25 +696,43 @@ ShoppingListModule._instance = (() => {
 
 			this.initEvents();
 			this.update();
-		}
+    }
+    
+    get DOM () {
+      if (!this._clone) {
+        this._clone = this.dom.root.cloneNode(true);
+        this.initEvents(this._clone);
+      }
+      return this._clone;
+    }
 
-		initEvents() {
+		initEvents(dom) {
 
-			this.dom.add_button.addEventListener('click', e => {
-				this.dom.amount.stepUp();
-				this._saved = false;
-				module.ShoppingList.Saved = false;
-				this.OnChange();
-			});
+      if (dom) {
+        dom.querySelector('#add-button').addEventListener('click', this.stepUp.bind(this));
+        dom.querySelector('#sub-button').addEventListener('click', this.stepDown.bind(this));
+      } else {
+        this.dom.add_button.addEventListener('click', this.stepUp.bind(this));
+        this.dom.sub_button.addEventListener('click', this.stepDown.bind(this));
+      }
 
-			this.dom.sub_button.addEventListener('click', e => {
-				this.dom.amount.stepDown();
-				this._saved = false;
-				module.ShoppingList.Saved = false;
-				this.OnChange();
-			});
+    }
+    
+    stepUp () {
+      this.dom.amount.stepUp();
+      if (this._clone) this._clone.querySelector('#amount').stepUp();
+      this._saved = false;
+      module.ShoppingList.Saved = false;
+      this.OnChange();
+    }
 
-		}
+    stepDown () {
+      this.dom.amount.stepDown();
+      if (this._clone) this._clone.querySelector('#amount').stepDown();
+      this._saved = false;
+      module.ShoppingList.Saved = false;
+      this.OnChange();
+    }
 
 		update() {
 			this.amount = parseInt(this.dom.amount.value);
@@ -767,6 +803,8 @@ ShoppingListModule._instance = (() => {
 		init._called = true;
 		module.ShoppingList = new ShoppingList();
 		module.ProductSelectionManager = new ProductSelectionManager();
+		module.createSpinner = createSpinner;
+		module.createDOM = createDOM;
 	}
 	init._called = false;
 

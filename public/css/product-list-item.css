@@ -4,9 +4,11 @@
   height: 8vh;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 15% 60% 25%;
+  grid-template-columns: 8vh auto 12vh;
   grid-template-rows: 50% 50%;
   grid-template-areas: "prodImg name amount" "prodImg price amount";
+  -webkit-column-gap: 10px;
+          column-gap: 10px;
   border-bottom: 1px solid #d7d7d2; }
   .product-list-container.removing {
     background-color: #f0f0ec; }
@@ -22,7 +24,7 @@
     grid-area: name;
     max-width: 100%;
     margin: 0;
-    font-size: 2em;
+    font-size: 2.3rem;
     line-height: 2.2em;
     padding-right: 20px;
     overflow: hidden;
@@ -32,7 +34,7 @@
     grid-area: price;
     margin: 0;
     color: #d7d7d2;
-    font-size: 1.5em;
+    font-size: 2rem;
     line-height: 2em; }
   .product-list-container #quantity-block {
     grid-area: amount;
@@ -49,4 +51,4 @@
       border: none;
       width: 100%;
       text-align: center;
-      font-size: 2em; }
+      font-size: 2rem; }
