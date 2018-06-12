@@ -1,0 +1,50 @@
+.filter-overlay {
+  position: fixed;
+  height: 100%;
+  width: 59%;
+  background: white;
+  border-left: 1px solid #d7d7d2;
+  top: 0;
+  right: -59%;
+  z-index: 1000;
+  -webkit-transition: right 500ms ease-in-out h2;
+  transition: right 500ms ease-in-out h2;
+  font-size: 2vh;
+  border: 2px solid #f0f0ec;
+  border-radius: 10px;
+  -webkit-transition: 200ms all;
+  transition: 200ms all; }
+  .filter-overlay.show {
+    right: 0; }
+  .filter-overlay h2 {
+    margin: 0 10%;
+    font-size: 2vh;
+    border: 2px solid #f0f0ec;
+    border-radius: 10px;
+    -webkit-transition: 200ms all;
+    transition: 200ms all; }
+  .filter-overlay .slider-container {
+    width: 100%;
+    /* Mouse-over effects */ }
+    .filter-overlay .slider-container .slider {
+      -webkit-appearance: none;
+      /* Override default CSS styles */
+      -moz-appearance: none;
+           appearance: none;
+      width: 100%;
+      /* Full-width */
+      height: 25px;
+      /* Specified height */
+      background: #d3d3d3;
+      /* Grey background */
+      outline: none;
+      /* Remove outline */
+      opacity: 0.7;
+      /* Set transparency (for mouse-over effects on hover) */
+      -webkit-transition: .2s;
+      /* 0.2 seconds transition on hover */
+      -webkit-transition: opacity .2s;
+      transition: opacity .2s; }
+    .filter-overlay .slider-container .slider:hover {
+      opacity: 1;
+      /* Fully shown on mouse-over */ }
