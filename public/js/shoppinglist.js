@@ -912,7 +912,8 @@ ShoppingListModule._instance = (() => {
 		if (init._called) return;
 		init._called = true;
 		module.ShoppingList = new ShoppingList();
-		module.ProductSelectionManager = new ProductSelectionManager();
+    module.ProductSelectionManager = new ProductSelectionManager();
+    module.createSpinner = createSpinner;
 	}
 	init._called = false;
 
