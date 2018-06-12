@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     categoryBox.classList.toggle("show");
     whiteIconGone.classList.toggle("hide-button");
     blackIconShow.classList.toggle("show-button");
-    
+
     if (btn.classList.contains("change-button")) {
       let result = await fetch('/api/categories')
       let json = await result.json()
@@ -203,4 +203,3 @@ document.addEventListener("DOMContentLoaded", () => {
   searchTerm()
   goBack()
 })
-*/

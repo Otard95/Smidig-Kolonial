@@ -70,28 +70,49 @@
 .inspiration-container {
   position: relative;
   margin: 0 auto;
-  width: 90%;
+  width: 100%;
   font-size: 2.2vh;
-  opacity: 0; }
-
-.inspiration-container-show {
   opacity: 1; }
 
 .inspiration-border {
-  position: relative;
   display: grid;
-  grid-template-columns: repeat(5, 5fr);
   grid-gap: 2.5vh;
   list-style: none;
-  overflow-x: scroll; }
+  overflow-x: scroll;
+  padding-top: 1vh;
+  border-top: solid 0.2vh #f0f0ec;
+  grid-template-columns: repeat(5, 5fr); }
 
-.inspiration-border li {
+.inspiration-choise {
+  position: relative;
+  top: -1vh;
+  display: grid;
+  grid-gap: 2.5vh;
+  list-style: none;
+  overflow-x: scroll;
+  padding-top: 1vh;
+  border-top: solid 0.2vh #f0f0ec;
+  grid-template-columns: 7.5vh auto auto 10vh; }
+
+.inspiration-container li {
   border: #f0f0ec 3px solid;
   padding: 1vh;
   border-radius: 25px; }
 
-.selected-inspiration-border {
+.activeEvent {
   background-color: #f0f0ec; }
+
+.inspiration-img {
+  position: absolute;
+  top: -10.7vh;
+  width: 100%;
+  z-index: 3; }
+
+.inspiration-filter {
+  position: relative;
+  width: 7.5vh;
+  height: 3.5vh;
+  right: 2vh; }
 
 .categories {
   position: absolute;
@@ -106,9 +127,6 @@
   .categories ul {
     margin: 0;
     padding: 0; }
-
-.inspiration-categories {
-  margin-top: -7vh; }
 
 .categories li {
   display: -webkit-box;
@@ -139,7 +157,9 @@
   transition: all 300ms ease-in-out; }
   .icon-button.change-button {
     background-color: white;
-    top: -10vh; }
+    width: 12vh;
+    height: 12vh;
+    top: -10.7vh; }
     .icon-button.change-button .pluss-icon {
       opacity: 0; }
   .icon-button .pluss-icon {
@@ -154,8 +174,8 @@
   position: absolute;
   left: 2vh;
   top: 1vh;
-  width: 50%;
-  height: 40%;
+  width: 55%;
+  height: 50%;
   opacity: 0; }
 
 .show-button {
@@ -174,3 +194,31 @@
 
 .changeButton {
   display: none; }
+
+.recipe-container {
+  position: absolute;
+  width: 100%;
+  top: 19vh;
+  overflow: scroll;
+  height: 28vh; }
+
+.recipe {
+  margin: 0 auto;
+  width: 96%;
+  height: 24vh;
+  display: grid;
+  grid-template-rows: 13vh 4vh 3vh; }
+
+.recipe img {
+  margin: 0 auto;
+  width: 100%;
+  height: 15vh;
+  border-radius: 25px;
+  -o-object-fit: cover;
+     object-fit: cover; }
+
+.recipe-title {
+  font-size: 2.7vh; }
+
+.recipe-description {
+  font-size: 2.3vh; }
