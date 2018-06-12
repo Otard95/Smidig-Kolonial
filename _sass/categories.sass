@@ -25,24 +25,37 @@
   overflow: hidden
 
   &.inspiration
-    .inspiration-view
-
+    overflow: visible
 
     .inspiration-header
       height: 20vh
 
     .information-header
-      margin-top: 0
+      margin-top: -3vh
 
     .search-container
       display: none
 
+    .inspiration-filter
+      height: 3.5vh
+      overflow: visible
+
+    .categories
+      top: 22vh
+      height: 36vh
+
+    .inspiration-border
+      grid-template-columns: repeat(2, 2fr)
+      margin: 0 auto
+      width: 60%
+
+
 .inspiration-header
   position: relative
   height: 0vh
-  margin-top: -5vh
-  z-index: 4
+  top: -3.2vh
   overflow: hidden
+  z-index: 3
   transition: all 300ms ease-in-out
 
 .inspiration-img
@@ -95,44 +108,30 @@
 
 .inspiration-container
   position: relative
+  top: 0vh
   margin: 0 auto
-  width: 100%
   font-size: 2.2vh
-  opacity: 1
 
 .inspiration-border
   display: grid
-  grid-gap: 2.5vh
+  overflow: scroll
+  grid-gap: 2vh
   list-style: none
-  overflow-x: scroll
-  padding-top: 1vh
-  border-top: solid 0.2vh $Lys-varmgra
+  padding-top: 2vh
+  text-align: center
   grid-template-columns: repeat(5, 5fr)
 
-.inspiration-choise
-  position: relative
-  top: -1vh
-  display: grid
-  grid-gap: 2.5vh
-  list-style: none
-  overflow-x: scroll
-  padding-top: 1vh
-  border-top: solid 0.2vh $Lys-varmgra
-  grid-template-columns: 7.5vh auto auto 10vh
-
-.inspiration-container li
+.inspiration-event
   border: $Lys-varmgra 3px solid
   padding: 1vh
   border-radius: 25px
 
-.activeEvent
-  background-color: $Lys-varmgra
-
 .inspiration-filter
   position: relative
   width: 7.5vh
-  height: 3.5vh
+  height: 0vh
   right: 2vh
+  overflow: hidden
 
 .categories
   position: absolute
@@ -141,7 +140,7 @@
   height: 45vh
   list-style: none
   font-size: 2.5vh
-  overflow: scroll
+  overflow-x: visible
   display: grid
   grid-template-rows: repeat(1, 7fr)
 
@@ -149,7 +148,7 @@
     margin: 0
     padding: 0
 
-.categories li
+.list-item
   display: flex
   position: relative
   margin: 0 auto

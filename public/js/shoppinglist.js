@@ -83,7 +83,7 @@ ShoppingListModule._instance = (() => {
 		/**
 		 * ### Events
     */
-    
+
     inspire(bool_show) {
       if (bool_show)
           document.querySelector('.information-view').classList.add('inspiration');
@@ -296,7 +296,7 @@ ShoppingListModule._instance = (() => {
     }
 
   }
-  
+
   class Inspiration extends Category {
 
     constructor (name, id, parent) {
@@ -363,7 +363,7 @@ ShoppingListModule._instance = (() => {
         return fetch(`/API/item/search?name=${this.name}`)
           .then(data => data.json())
           .then(json => new Promise((resolve, rejects) => {
-            
+
             json.forEach(item => {
               let c = module.ShoppingList.getChildWithId(item.id)
               if (c) {
@@ -371,10 +371,10 @@ ShoppingListModule._instance = (() => {
               } else
                 this.children.push(new ProductItem(item.id));
             });
-            
+
             resolve();
           }));
-          
+
     }
 
     collect() {
@@ -386,11 +386,11 @@ ShoppingListModule._instance = (() => {
   class InspirationBorder {
 
     constructor (...params) {
-      let dom_string = '<ul class="inspiration-border">';
+      let dom_string = '<div class="inspiration-container"><ul class="inspiration-border">';
       for (let item of params) {
-        dom_string += `<li>${item}</li>`;
+        dom_string += `<li class="inspiration-event">${item}</li>`;
       }
-      dom_string += '</ul>';
+      dom_string += '</ul></div>';
       this.DOM = createDOM(dom_string);
     }
 
