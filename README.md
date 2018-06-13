@@ -21,7 +21,7 @@ Your going to need [NodeJS](https://nodejs.org/en/ "NodeJS Home Page") version 8
 > - Now go to where you downloaded it to and open it (double click).  
 > ![Find and open the .zip file](https://puu.sh/AEygE/e4aa323052.png)
 >
-> - Extract the folder in the .zip to any folder you like and open it.  
+> - Extract the folder in the .zip to any folder you like, and open it.  
 > ![Extract content to Destop](https://puu.sh/AEyl7/0361b15157.png)
 > ![Open the extracted folder](https://puu.sh/AEyrN/8cc79a65e2.png)
 >
@@ -42,7 +42,7 @@ Your going to need [NodeJS](https://nodejs.org/en/ "NodeJS Home Page") version 8
 > - You need to find the file called `tokens.json` in our itslearning delivery, and copy it to the `configs` folder.  
 > ![Image of the 'configs' folder](https://puu.sh/AEA83/0d587ad047.png)
 >
-> - Next up. Go to `Runnables => <your system (win or unix - mac is unix)>` and run (double click) the `Install` file. You will see a terminal/console open that's the installer don't close it.  
+> - Next up. Go to `Runnables => <win|unix>` (win is for windows, unix is for mac and linux) and run (double click) the `Install` file. You will see a terminal/console open that's the installer don't close it.  
 > ![Go to install file and run it](https://puu.sh/AEySf/bcaff6458b.png)
 >
 > - Now run the `RunServer` file. Your browser should open and go to the web page automatically.  
