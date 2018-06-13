@@ -55,7 +55,26 @@ ShoppingListModule._instance = (() => {
 
 		/**
 		 * ### Init
-		*/
+    */
+    
+    get UniqueSelected() {
+      return this.items_to_add_count;
+    }
+
+    set UniqueSelected(value) {
+      this.items_to_add_count = value
+      if (value === 0) {
+        unsetLeave();
+      } else if (value < 0) {
+        this.items_to_add_count = 0;
+        unsetLeave();
+      } else {
+        setLeave(
+          'De valgte varene har ikke blidt lagt til i lista.',
+          this.showEvent.bind(this)
+        );
+      }
+    }
 
 		initEvents () {
 
@@ -98,7 +117,7 @@ ShoppingListModule._instance = (() => {
 			this.whiteIconGone.classList.toggle("hide-button");
 			this.blackIconShow.classList.toggle("show-button");
 
-			if (this.open && this.items_to_add_count > 0) {
+			if (this.open && this.UniqueSelected > 0) {
 				this.addToList();
 			}
 
@@ -185,7 +204,8 @@ ShoppingListModule._instance = (() => {
 			let prom = [];
 			data.forEach(i => prom.push(module.ShoppingList.createNewItem(i)) );
 			Promise.all(prom).then(res => {
-				module.ShoppingList.root.removeChild(this.spinner);
+        module.ShoppingList.root.removeChild(this.spinner);
+        unsetLeave();
 			});
 
 		}
@@ -464,13 +484,13 @@ ShoppingListModule._instance = (() => {
 		}
 
 		setSelected () {
-			module.ProductSelectionManager.items_to_add_count++;
+			module.ProductSelectionManager.UniqueSelected++;
 			this.selected = true;
 			this.DOM.classList.add('selected');
 		}
 		unsetSelected() {
 			this.amount_dom.value = 1;
-			module.ProductSelectionManager.items_to_add_count--;
+			module.ProductSelectionManager.UniqueSelected--;
 			this.selected = false;
 			this.DOM.classList.remove('selected');
 		}
