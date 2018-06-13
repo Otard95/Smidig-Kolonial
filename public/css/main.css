@@ -66,9 +66,6 @@ footer {
   text-align: center;
   grid-gap: .5%;
   grid-template-areas: "pil . text text text text chat handleliste"; }
-  .planner-grid img {
-    height: 100%;
-    width: auto; }
   .planner-grid #pil-icon {
     grid-area: pil;
     margin: 0 auto; }
