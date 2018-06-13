@@ -265,7 +265,7 @@ ShoppingListModule._instance = (() => {
 
     }
 
-    render(going_back) {
+    render(going_back = false) {
       let el = this;
       return () => {
         el.getChildren()
