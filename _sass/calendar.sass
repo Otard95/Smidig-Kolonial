@@ -5,6 +5,9 @@ hr
 
 .burgermenu-icon
   position: absolute
+  width: 3vh
+  height: 3.5vh
+  left: 2vh
   top: 0
   opacity: 1
   transition-delay: 0.15s
@@ -15,6 +18,7 @@ hr
 .burgermenu-icon-close
   position: absolute
   top: 0
+  left: 2vh
   opacity: 0
 
   &.display-sidebar
@@ -32,13 +36,14 @@ hr
   width: 100%
   text-align: center
   font-size: 2.8vh
-  margin-top: 5%
+  margin-top: 12%
 
   p
     margin: 0 auto
 
 .calendar-container
   margin: 5%
+  margin-top: 5vh
   width: 90%
   height: 52%
   background-color: $Lys-varmgra
@@ -70,7 +75,7 @@ hr
   display: flex
   justify-content: space-around
   color: grey
-  font-size: 2.3vh
+  font-size: 2.35vh
 
 
 #this-year, #this-month
@@ -90,13 +95,13 @@ hr
   margin: -30px auto
   width: 90%
   height: 67%
-  font-size: 2.3vh
+  font-size: 2.35vh
   text-align: center
 
   .week-label
     grid-area: corner
     color: grey
-    font-size: 2.3vh
+    font-size: 2.35vh
 
   .weeks
     grid-area: weeks
@@ -104,7 +109,7 @@ hr
     grid: repeat(5, 1fr)/1fr
     align-items: center
     color: grey
-    font-size: 2.3vh
+    font-size: 2.35vh
 
 
 
@@ -140,5 +145,5 @@ hr
     position: absolute
     background: $Mork-aubergine
     color: white
-    border-radius: 5px
-    margin: 0 5px
+    border-radius: 15px
+    margin: 0 4px

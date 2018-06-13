@@ -59,13 +59,14 @@ li#vare {
   border-bottom: 1px solid #d7d7d2; }
 
 .week-days {
-  font-size: 2.3vh;
+  font-size: 2.35vh;
   text-align: center;
   margin: .10em;
   margin-top: -1.5%; }
 
 .this-week {
-  font-size: 2.3vh;
+  font-size: 2.35vh;
+  font-weight: normal;
   margin: 0; }
 
 .week-days ul {

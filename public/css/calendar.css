@@ -3,6 +3,9 @@ hr {
 
 .burgermenu-icon {
   position: absolute;
+  width: 3vh;
+  height: 3.5vh;
+  left: 2vh;
   top: 0;
   opacity: 1;
   -webkit-transition-delay: 0.15s;
@@ -13,6 +16,7 @@ hr {
 .burgermenu-icon-close {
   position: absolute;
   top: 0;
+  left: 2vh;
   opacity: 0; }
   .burgermenu-icon-close.display-sidebar {
     opacity: 1;
@@ -30,12 +34,13 @@ hr {
   width: 100%;
   text-align: center;
   font-size: 2.8vh;
-  margin-top: 5%; }
+  margin-top: 12%; }
   .calendar-text p {
     margin: 0 auto; }
 
 .calendar-container {
   margin: 5%;
+  margin-top: 5vh;
   width: 90%;
   height: 52%;
   background-color: #f0f0ec;
@@ -79,7 +84,7 @@ hr {
   -ms-flex-pack: distribute;
       justify-content: space-around;
   color: grey;
-  font-size: 2.3vh; }
+  font-size: 2.35vh; }
 
 #this-year, #this-month {
   font-size: 2.7vh;
@@ -98,12 +103,12 @@ hr {
   margin: -30px auto;
   width: 90%;
   height: 67%;
-  font-size: 2.3vh;
+  font-size: 2.35vh;
   text-align: center; }
   .cal .week-label {
     grid-area: corner;
     color: grey;
-    font-size: 2.3vh; }
+    font-size: 2.35vh; }
   .cal .weeks {
     grid-area: weeks;
     display: grid;
@@ -112,7 +117,7 @@ hr {
         -ms-flex-align: center;
             align-items: center;
     color: grey;
-    font-size: 2.3vh; }
+    font-size: 2.35vh; }
   .cal .date {
     grid-area: month;
     width: 100%;
@@ -144,5 +149,5 @@ hr {
     position: absolute;
     background: #413746;
     color: white;
-    border-radius: 5px;
-    margin: 0 5px; }
+    border-radius: 15px;
+    margin: 0 4px; }

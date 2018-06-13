@@ -31,15 +31,19 @@ footer {
         -ms-flex-align: center;
             align-items: center; }
     footer .footer-menu #handlekurv-icon {
-      margin: auto 10px; }
+      margin: auto 10px;
+      padding-bottom: 10px; }
     footer .footer-menu .footer-text-output {
       position: absolute;
+      font-size: 2.2vh;
       left: 25px; }
     footer .footer-menu .footer-price {
       position: absolute;
+      font-size: 2.2vh;
       right: 25px; }
   footer .nav-menu {
     width: 100%;
+    height: 7vh;
     display: grid;
     text-align: center;
     grid: 1fr/repeat(5, 1fr);
@@ -102,7 +106,7 @@ footer {
   font-style: normal; }
 
 body, html {
-  font-family: 'GT Walsheim Medium';
+  font-family: 'GT Walsheim Regular';
   margin: 0;
   padding: 0;
   height: 88%;
