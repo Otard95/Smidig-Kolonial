@@ -12,11 +12,15 @@ Smidig prosjekt - Kolonial
  - [Install and run](#install-and-run)
  - [Aditional notes](#aditional-notes)
 
+---
+
 ### Requirements
 
 Your going to need [NodeJS](https://nodejs.org/en/ "NodeJS Home Page") version 8.9.4 or later. You will also need Git, [GitHub Desktop](https://desktop.github.com/ "GitHub Desktop Home Page") is easy to use tool for this. You will also need a file from the our delivery on itslearning.
 
-### Download as Zip <sub> [:arrow_heading_up: Back to top](#smidig-kolonial)</sub>
+---
+
+### Download as Zip <sub style="float: right;"> [:arrow_heading_up: Back to top](#smidig-kolonial)</sub>
 
 > - Head to the [GitHub Repository](https://github.com/Westerdals/PRO200-17-17) and find the green button that sais "Clone or download" and click it.  
 > ![Image pointing to a green button saing "Clone or download"](https://puu.sh/AEy1Q/21c444b9f3.png)
@@ -32,7 +36,9 @@ Your going to need [NodeJS](https://nodejs.org/en/ "NodeJS Home Page") version 8
 > ![Open the extracted folder](https://puu.sh/AEyrN/8cc79a65e2.png)
 >
 
-### Download using Git <sub> [:arrow_heading_up: Back to top](#smidig-kolonial)</sub>
+---
+
+### Download using Git <sub style="float: right;"> [:arrow_heading_up: Back to top](#smidig-kolonial)</sub>
 
 > - Head to the [GitHub Repository](https://github.com/Westerdals/PRO200-17-17) and find the green button that sais "Clone or download" and click it.  
 > ![Image pointing to a green button saing "Clone or download"](https://puu.sh/AEy1Q/21c444b9f3.png)
@@ -42,8 +48,11 @@ Your going to need [NodeJS](https://nodejs.org/en/ "NodeJS Home Page") version 8
 > 
 > - The GitHub Desktop app will open. Now you may choose where you want to clone the repository to. Then click the button saing "Clone".  
 > ![Clone to aelected folder](https://puu.sh/AEA1s/6f0596cd68.png)
+>
 
-### Install and run <sub> [:arrow_heading_up: Back to top](#smidig-kolonial)</sub>
+---
+
+### Install and run <sub style="float: right;"> [:arrow_heading_up: Back to top](#smidig-kolonial)</sub>
 
 > - You need to find the file called `tokens.json` in our itslearning delivery, and copy it to the `configs` folder.  
 > ![Image of the 'configs' folder](https://puu.sh/AEA83/0d587ad047.png)
@@ -53,8 +62,11 @@ Your going to need [NodeJS](https://nodejs.org/en/ "NodeJS Home Page") version 8
 >
 > - Now run the `RunServer` file. Your browser should open and go to the web page automatically.  
 > ![Server and Client running](https://puu.sh/AEzGM/f0d4ade7c7.png)
+>
 
-### Aditional notes <sub style="text-align: right"> [:arrow_heading_up: Back to top](#smidig-kolonial)</sub>
+---
+
+### Aditional notes <sub style="float: right;"> [:arrow_heading_up: Back to top](#smidig-kolonial)</sub>
 
 > Our website was made to best fit a mobile phone. Now you can simulate this in your browser (provided you have `Goolge Chrome`). To use this feature.  
 > - Either press `Ctrl + Shift + i` or right click any anywhere on the page and select `Inspect` or `Inspiser`.  
@@ -66,4 +78,4 @@ Your going to need [NodeJS](https://nodejs.org/en/ "NodeJS Home Page") version 8
 > - You can also select a device to emulate.  
 > ![Select device to emulate](https://puu.sh/AEAxT/da3276e37d.png)
 
-<sub>[:arrow_heading_up: Back to top](#smidig-kolonial)</sub>
+<sub style="float: right; font-size: 1rem; font-weight: 500;">[:arrow_heading_up: Back to top](#smidig-kolonial)</sub>
