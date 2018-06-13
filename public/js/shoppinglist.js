@@ -331,7 +331,7 @@ ShoppingListModule._instance = (() => {
       module.ProductSelectionManager.inspire(false);
       return new Promise((resolve, reject) => {
         this.children = [
-          new InspirationBorder('Familiemiddag', 'Helgekos', 'Selskap', 'Gjester', 'Høytid'),
+          new InspirationBorder('Helgekos', 'Selskap', 'Gjester', 'Høytid'),
           new Barnebursdag('Barnebursdag', 123, this),
           new Barnebursdag('Fest', 123, this),
           new Barnebursdag('Jubileum', 123, this)
