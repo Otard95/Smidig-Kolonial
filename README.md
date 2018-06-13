@@ -20,7 +20,7 @@ Your going to need [NodeJS](https://nodejs.org/en/ "NodeJS Home Page") version 8
 
 ---
 
-### Download as Zip <sub style="float: right;"> [:arrow_heading_up: Back to top](#smidig-kolonial)</sub>
+### Download as Zip <div align="right"><sub> [:arrow_heading_up: Back to top](#smidig-kolonial)</sub></div>
 
 > - Head to the [GitHub Repository](https://github.com/Westerdals/PRO200-17-17) and find the green button that sais "Clone or download" and click it.  
 > ![Image pointing to a green button saing "Clone or download"](https://puu.sh/AEy1Q/21c444b9f3.png)
@@ -38,7 +38,7 @@ Your going to need [NodeJS](https://nodejs.org/en/ "NodeJS Home Page") version 8
 
 ---
 
-### Download using Git <sub style="float: right;"> [:arrow_heading_up: Back to top](#smidig-kolonial)</sub>
+### Download using Git <div align="right"><sub> [:arrow_heading_up: Back to top](#smidig-kolonial)</sub></div>
 
 > - Head to the [GitHub Repository](https://github.com/Westerdals/PRO200-17-17) and find the green button that sais "Clone or download" and click it.  
 > ![Image pointing to a green button saing "Clone or download"](https://puu.sh/AEy1Q/21c444b9f3.png)
@@ -52,7 +52,7 @@ Your going to need [NodeJS](https://nodejs.org/en/ "NodeJS Home Page") version 8
 
 ---
 
-### Install and run <sub style="float: right;"> [:arrow_heading_up: Back to top](#smidig-kolonial)</sub>
+### Install and run <div align="right"><sub> [:arrow_heading_up: Back to top](#smidig-kolonial)</sub></div>
 
 > - You need to find the file called `tokens.json` in our itslearning delivery, and copy it to the `configs` folder.  
 > ![Image of the 'configs' folder](https://puu.sh/AEA83/0d587ad047.png)
@@ -66,7 +66,7 @@ Your going to need [NodeJS](https://nodejs.org/en/ "NodeJS Home Page") version 8
 
 ---
 
-### Aditional notes <sub style="float: right;"> [:arrow_heading_up: Back to top](#smidig-kolonial)</sub>
+### Aditional notes <div align="right"><sub> [:arrow_heading_up: Back to top](#smidig-kolonial)</sub></div>
 
 > Our website was made to best fit a mobile phone. Now you can simulate this in your browser (provided you have `Goolge Chrome`). To use this feature.  
 > - Either press `Ctrl + Shift + i` or right click any anywhere on the page and select `Inspect` or `Inspiser`.  
@@ -78,4 +78,4 @@ Your going to need [NodeJS](https://nodejs.org/en/ "NodeJS Home Page") version 8
 > - You can also select a device to emulate.  
 > ![Select device to emulate](https://puu.sh/AEAxT/da3276e37d.png)
 
-<sub style="float: right; font-size: 1rem; font-weight: 500;">[:arrow_heading_up: Back to top](#smidig-kolonial)</sub>
+### <div align="right"><sub>[:arrow_heading_up: Back to top](#smidig-kolonial)</sub></div>
