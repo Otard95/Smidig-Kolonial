@@ -201,4 +201,5 @@ document.addEventListener("DOMContentLoaded", () => {
     let year = date.substring(2, 4), month = date.substring(4, 6), day = date.substring(6, 8)
     element.innerHTML = `${day}.${month}.${year}`
   })
+
 })

@@ -110,7 +110,8 @@ ShoppingListModule._instance = (() => {
 
 			let toRender = module.ProductSelectionManager.path.pop();
 
-			if (toRender) toRender.render()();
+      if (toRender) toRender.render(true)();
+      else module.ProductSelectionManager.showEvent();
 
 		}
 
@@ -264,7 +265,7 @@ ShoppingListModule._instance = (() => {
 
     }
 
-    render() {
+    render(going_back = false) {
       let el = this;
       return () => {
         el.getChildren()
@@ -274,7 +275,7 @@ ShoppingListModule._instance = (() => {
                 return c.DOM;
               }),
               el.name,
-              el.parent
+              going_back ? undefined : el.parent
             );
           });
       }
@@ -912,7 +913,8 @@ ShoppingListModule._instance = (() => {
 		if (init._called) return;
 		init._called = true;
 		module.ShoppingList = new ShoppingList();
-		module.ProductSelectionManager = new ProductSelectionManager();
+    module.ProductSelectionManager = new ProductSelectionManager();
+    module.createSpinner = createSpinner;
 	}
 	init._called = false;
 

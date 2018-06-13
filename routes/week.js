@@ -10,6 +10,7 @@ const ShoppingListResponse  = require('../models/shopping-list-response');
 const ShoppingListDocument  = require('../models/shopping-list-document');
 const ProductDocument       = require('../models/product-document');
 const GroupDocument         = require("../models/group-document");
+const filter                = require('../helpers/filter.json');
 
 function checkInt (val) {
   
@@ -165,7 +166,8 @@ router.get('/:mon-:day', async (req, res, next) => {
     chosen_day: day,
     categories,
     list,
-    encoded_date
+    encoded_date,
+    filter
   })
 });
 
