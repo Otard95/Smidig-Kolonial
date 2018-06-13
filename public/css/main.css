@@ -32,7 +32,8 @@ footer {
             align-items: center; }
     footer .footer-menu #handlekurv-icon {
       margin: auto 10px;
-      padding-bottom: 10px; }
+      height: 3.1vh;
+      margin-bottom: 5px; }
     footer .footer-menu .footer-text-output {
       position: absolute;
       font-size: 2.2vh;
@@ -72,14 +73,19 @@ footer {
   grid-template-areas: "pil . text text text text chat handleliste"; }
   .planner-grid #pil-icon {
     grid-area: pil;
-    margin: 0 auto; }
+    margin: 0 auto;
+    width: 2vh;
+    height: 3.5vh; }
   .planner-grid .header-text {
     grid-area: text;
-    font-size: 3em;
+    font-size: 2.7em;
+    font-weight: 200;
     margin: 0; }
   .planner-grid #chat-icon {
     grid-area: chat;
-    margin: 0 auto; }
+    margin: 0 auto;
+    width: 3vh;
+    height: 3.5vh; }
   .planner-grid .handleliste-icon {
     grid-area: handleliste;
     margin: 0 auto; }
