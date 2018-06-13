@@ -166,24 +166,24 @@
   z-index: 2;
   -webkit-transition: all 300ms ease-in-out;
   transition: all 300ms ease-in-out; }
-
-@supports (-webkit-overflow-scrolling: touch) {
-  .icon-button {
-    top: -49vh; }
-  .change-button {
+  .icon-button.change-button {
     background-color: white;
     width: 12vh;
     height: 12vh;
     top: -10.7vh; }
-    .change-button .pluss-icon {
+    .icon-button.change-button .pluss-icon {
       opacity: 0; }
-  .pluss-icon {
+  .icon-button .pluss-icon {
     position: absolute;
     height: 35%;
     top: 0;
     right: 0;
     -webkit-transition: all 300ms ease-in-out;
-    transition: all 300ms ease-in-out; } }
+    transition: all 300ms ease-in-out; }
+
+@supports (-webkit-overflow-scrolling: touch) {
+  .icon-button {
+    top: -49vh; } }
 
 .button-white {
   position: absolute;
