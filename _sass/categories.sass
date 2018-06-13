@@ -188,6 +188,11 @@
     right: 0
     transition: all 300ms ease-in-out
 
+@supports (-webkit-overflow-scrolling: touch)
+  // CSS specific to iOS devices
+  .icon-button
+    top: -49vh
+
 .button-white
   position: absolute
   left: 2vh
