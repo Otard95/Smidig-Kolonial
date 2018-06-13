@@ -54,7 +54,7 @@ Your going to need [NodeJS](https://nodejs.org/en/ "NodeJS Home Page") version 8
 > - Now run the `RunServer` file. Your browser should open and go to the web page automatically.  
 > ![Server and Client running](https://puu.sh/AEzGM/f0d4ade7c7.png)
 
-### Aditional notes <sub> [:arrow_heading_up: Back to top](#smidig-kolonial)</sub>
+### Aditional notes <sub style="text-align: right"> [:arrow_heading_up: Back to top](#smidig-kolonial)</sub>
 
 > Our website was made to best fit a mobile phone. Now you can simulate this in your browser (provided you have `Goolge Chrome`). To use this feature.  
 > - Either press `Ctrl + Shift + i` or right click any anywhere on the page and select `Inspect` or `Inspiser`.  
@@ -65,3 +65,5 @@ Your going to need [NodeJS](https://nodejs.org/en/ "NodeJS Home Page") version 8
 >
 > - You can also select a device to emulate.  
 > ![Select device to emulate](https://puu.sh/AEAxT/da3276e37d.png)
+
+<sub>[:arrow_heading_up: Back to top](#smidig-kolonial)</sub>
