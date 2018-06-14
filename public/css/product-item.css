@@ -8,7 +8,7 @@
   grid-template-areas: "prodImg name pricePerUnit iconImg" "prodImg description price iconImg";
   -webkit-column-gap: 10px;
           column-gap: 10px;
-  border-bottom: 1px solid #d7d7d2; }
+  border-bottom: 1px solid; }
   .product-container.selected {
     grid-template-columns: 8vh 6vh auto 12vh;
     grid-template-areas: "prodImg name name iconImg" "prodImg pricePerUnit price iconImg"; }

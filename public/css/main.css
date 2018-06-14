@@ -70,7 +70,8 @@ footer {
   grid: 12%/repeat(8, 1fr);
   text-align: center;
   grid-gap: .5%;
-  grid-template-areas: "pil . text text text text chat handleliste"; }
+  grid-template-areas: "pil . text text text text chat handleliste";
+  padding-bottom: 2vh; }
   .planner-grid #pil-icon {
     grid-area: pil;
     margin: 0 auto;
@@ -89,6 +90,8 @@ footer {
   .planner-grid .handleliste-icon {
     grid-area: handleliste;
     margin: 0 auto; }
+  .planner-grid hr {
+    width: 100%; }
 
 @font-face {
   font-family: 'GT Walsheim Regular';

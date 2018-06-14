@@ -32,11 +32,15 @@
       display: none; }
     .information-view.inspiration .categories {
       top: 22vh;
-      height: 36vh; }
+      height: 34vh; }
     .information-view.inspiration .inspiration-border {
       grid-template-columns: repeat(2, 2fr);
       margin: 0 auto;
       width: 60%; }
+    .information-view.inspiration .inspiration-filter {
+      height: 3.5vh;
+      width: 7.5vh;
+      overflow: visible; }
 
 .inspiration-header {
   position: relative;
@@ -74,6 +78,7 @@
 .search-title {
   position: relative;
   text-align: center;
+  left: 0.8vh;
   z-index: 2;
   font-size: 2.3vh; }
 
@@ -92,11 +97,19 @@
   position: relative;
   top: 0.7vh;
   text-align: left;
-  left: 7vh;
-  color: grey;
+  left: 3vh;
+  font-size: 2vh;
+  color: #d2ebfa;
   border: 0; }
   #search-t:active {
     border: 0; }
+
+.search-img {
+  position: relative;
+  left: 2vh;
+  top: 0.4vh;
+  width: 2vh;
+  height: 2vh; }
 
 .inspiration-container {
   position: relative;
@@ -124,8 +137,8 @@
 
 .inspiration-filter {
   position: relative;
-  width: 7.5vh;
   height: 3.5vh;
+  width: 7.5vh;
   right: 2vh;
   overflow: hidden; }
 
@@ -133,7 +146,7 @@
   position: absolute;
   width: 100%;
   margin-top: 2vh;
-  height: 45vh;
+  height: 42vh;
   list-style: none;
   font-size: 2.5vh;
   overflow-y: scroll;
@@ -213,31 +226,3 @@
 
 .changeButton {
   display: none; }
-
-.recipe-container {
-  position: absolute;
-  width: 100%;
-  top: 19vh;
-  overflow: scroll;
-  height: 28vh; }
-
-.recipe {
-  margin: 0 auto;
-  width: 96%;
-  height: 24vh;
-  display: grid;
-  grid-template-rows: 13vh 4vh 3vh; }
-
-.recipe img {
-  margin: 0 auto;
-  width: 100%;
-  height: 15vh;
-  border-radius: 25px;
-  -o-object-fit: cover;
-     object-fit: cover; }
-
-.recipe-title {
-  font-size: 2.7vh; }
-
-.recipe-description {
-  font-size: 2.3vh; }
