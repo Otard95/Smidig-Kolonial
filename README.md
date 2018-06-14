@@ -8,8 +8,8 @@ Smidig prosjekt - Kolonial
    - [Download using Git](#download-using-git)
    - [Use copy from itslearning delivery](#Use-copy-from-itslearning-delivery)
    - [Install and run](#install-and-run)
- - [I don't want to install anything](#I-don-t-want-to-install-anything)
- - [How do I login?](#how-do-i-login-)
+ - [I don't want to install anything](#I-dont-want-to-install-anything)
+ - [How do I login?](#how-do-i-login)
  - [Additional notes](#additional-notes)
 
 ## Download and Install
