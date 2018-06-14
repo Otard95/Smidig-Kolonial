@@ -202,4 +202,4 @@ document.addEventListener("DOMContentLoaded", () => {
   setEventListener()
   searchTerm()
   goBack()
-})
+})**/
