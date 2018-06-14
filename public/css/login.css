@@ -1,0 +1,56 @@
+.login-container, form {
+  position: absolute;
+  top: 10vh;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  height: 60vh;
+  width: 70vw;
+  min-width: 700px;
+  max-width: 900px;
+  margin: 0;
+  border: 2px solid #aaaaaa;
+  font-size: 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+  .login-container form, form form {
+    position: relative;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-transform: none;
+            transform: none;
+    height: auto;
+    top: auto;
+    left: auto;
+    border: none;
+    margin: 0;
+    padding: 0; }
+  .login-container span, form span {
+    display: block;
+    text-align: center; }
+  .login-container input, form input {
+    width: 80%;
+    height: 60px;
+    border: 2px solid #ccc;
+    border-radius: 15px;
+    margin: 5px 0;
+    padding: 5px 10px 5px 0;
+    text-align: center; }
+    .login-container input[type="submit"], form input[type="submit"] {
+      line-height: 25px;
+      margin-top: 20px;
+      padding: 0; }

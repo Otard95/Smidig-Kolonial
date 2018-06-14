@@ -1,15 +1,24 @@
+{{#section 'head'}}
+  <link rel="stylesheet" href="/css/login.css">
+{{/section}}
 
 {{#> layout }}
 
-<form action={{action}} method="POST">
+<div class="login-container">
 
-	{{#if message}}
-		<span class="message bad">{{message}}</span><br>
-	{{/if}}
+  <h1>Login</h1>
 
-	<input type="email" name="email"><br>
-	<input type="password" name="password"><br>
-	<input type="submit" value="Login">
-</form>
+  <form action={{action}} method="POST">
+
+    {{#if message}}
+      <span class="message bad">{{message}}</span><br>
+    {{/if}}
+
+    <input type="email" name="email" placeholder="Epost-addresse">
+    <input type="password" name="password" placeholder="Passord">
+    <input type="submit" value="Login">
+  </form>
+
+</div>
 
  {{/layout}}
