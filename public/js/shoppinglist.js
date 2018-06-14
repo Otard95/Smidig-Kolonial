@@ -31,6 +31,8 @@ ShoppingListModule._instance = (() => {
 			this.open = false;
 			this.items_to_add_count = 0;
       this.spinner = createSpinner(100,100);
+
+      this.curently_rendered = this.renderable;
       this.search_controller = new Search();
 
 			this.categories = [
@@ -215,21 +217,28 @@ ShoppingListModule._instance = (() => {
     constructor () {
 
       this._renderable_parent = null;
+      this.previously_rendered = null;
+      this.previous_search = '';
       this.dom = {};
       this.dom.search_field = document.getElementById('search-t');
       this.results = [];
+
+      this.initEvents();
 
     }
 
     get RenderableParent () {
       if (!this._renderable_parent) {
+        let el = this;
         this._renderable_parent = {
           render() {
             return () => {
-              module.ProductSelectionManager.category_container.innerHTML = this.previous_DOM;
-              this.previous_DOM = undefined;
-              this._renderable_parent = undefined;
-              this.dom.search_field.value = '';
+              el.previously_rendered.render(true)();
+              el.previously_rendered = undefined;
+              el._renderable_parent = undefined;
+              el.results = [];
+              el.previous_search = '';
+              el.dom.search_field.value = '';
             }
           }
         }
@@ -259,23 +268,27 @@ ShoppingListModule._instance = (() => {
         this.search_timeout = undefined;
       }
 
-      if (!this.previous_DOM) this.savePrevious();
+      if (!this.previously_rendered) this.savePrevious();
 
       // do seach
       let search_text = this.dom.search_field.value;
+
+      if (search_text === this.previous_search) return;
       if (search_text.length === 0) {
+        this.previous_search = '';
         module.ProductSelectionManager.goBackEvent();
         return;
       }
 
+      this.previous_search = search_text;
       let encoded = encodeURIComponent(search_text);
 
       fetch(`/api/item/search?name=${encoded}`)
       .then( res => res.json() )
-      .then( json => json.forEach(id => {
+      .then( json => json.forEach(item => {
 
-        let c = module.ShoppingList.getChildWithId(id);
-        this.results.push(c || new ProductItem(id));
+        let c = module.ShoppingList.getChildWithId(item.id);
+        this.results.push(c || new ProductItem(item));
 
       }))
       .then( this.render.bind(this) )
@@ -288,7 +301,7 @@ ShoppingListModule._instance = (() => {
     }
 
     savePrevious () {
-      this.previous_DOM = module.ProductSelectionManager.category_container.innerHTML;
+      this.previously_rendered = module.ProductSelectionManager.curently_rendered;
     }
 
     render () {
@@ -378,6 +391,7 @@ ShoppingListModule._instance = (() => {
       return () => {
         el.getChildren()
           .then(() => {
+            module.ProductSelectionManager.curently_rendered = el;
             module.ProductSelectionManager.updateView(
               el.children.map(c => c.DOM ),
               el.name,
@@ -506,27 +520,45 @@ ShoppingListModule._instance = (() => {
 	class ProductItem {
 
 		constructor (id) {
-			this.id = id;
 
-			this.DOM = createDOM(
-				`<div class="product-container">
-					<img id="product-image" src="/imgs/loading.gif" alt="">
-					<h1 id="product-name">Laster...</h1>
-					<h1 id="price-per-unit"></h1>
-					<img id="include-button" src="/imgs/icon/Velg vare.png" alt="">
-					<div id="quantity-block">
-						<img id="sub-button" src="/imgs/icon/minus-large.png" />
-						<input id="amount" type="number" value="1" min="0"></input>
-						<img id="add-button" src="/imgs/icon/pluss-large.png" />
-					</div>
-					<h2 id="price-quantity"></h2>
-				</div>`
-			);
+      this.id = id;
 
-			this.selected = false;
-			this.amount_dom = this.DOM.querySelector('#amount');
+      this.DOM = createDOM(
+        `<div class="product-container">
+            <img id="product-image" src="/imgs/loading.gif" alt="">
+            <h1 id="product-name">Laster...</h1>
+            <h1 id="price-per-unit"></h1>
+            <img id="include-button" src="/imgs/icon/Velg vare.png" alt="">
+            <div id="quantity-block">
+              <img id="sub-button" src="/imgs/icon/minus-large.png" />
+              <input id="amount" type="number" value="1" min="0"></input>
+              <img id="add-button" src="/imgs/icon/pluss-large.png" />
+            </div>
+            <h2 id="price-quantity"></h2>
+          </div>`
+      );
 
-			this.getData();
+      this.selected = false;
+      this.amount_dom = this.DOM.querySelector('#amount');
+
+      if (typeof id === 'object' && !Array.isArray(id)) {
+        // Create from existing data.
+
+        this.name = id.name;
+        if (id.images)
+          this.thumbnail = id.images.thumbnail;
+        else
+          this.thumbnail = '/imgs/icon/no_img.png'
+        this.price = id.price.gross;
+        this.unit_price = id.price.gross_unit;
+
+        this.init();
+
+      } else {
+  
+        this.getData();
+
+      }
 
 		}
 
@@ -557,7 +589,10 @@ ShoppingListModule._instance = (() => {
 				.then(json => new Promise((resolve, rejects) => {
 
 					this.name = json.name;
-					this.thumbnail = json.images.thumbnail;
+          if (json.images)
+            this.thumbnail = json.images.thumbnail;
+          else
+            this.thumbnail = '/imgs/icon/no_img.png'
 					this.price = json.price.gross;
 					this.unit_price = json.price.gross_unit;
 
