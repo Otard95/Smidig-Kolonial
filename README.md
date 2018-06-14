@@ -83,7 +83,7 @@ To set it up, just move or copy the included copy anywhere you want on your comp
 ## I don't want to install anything
 ##### <div align="right"><sub> [:arrow_heading_up: Back to top](#smidig-kolonial)</sub></div>
 
-That's just fine we have uploaded the product to a live [web-server](https://planleggeren.azurewebsites.net/). Now the site is somewhat slow so be patient with it. It's also recommended to still read the [adidtional notes](#additional-notes).
+That's just fine. We have uploaded the product to a live [web-server](https://planleggeren.azurewebsites.net/). Now the site is somewhat slow so be patient with it. It's also recommended to still read the [adidtional notes](#additional-notes).
 
 ---
 
