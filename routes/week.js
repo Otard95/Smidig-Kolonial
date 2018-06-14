@@ -24,6 +24,39 @@ function checkInt (val) {
 
 }
 
+function format_num(num_to_format, num_decimals = 2) {
+
+  let num_string = '';
+
+  // add the decimals
+  let dec = num_to_format - Math.floor(num_to_format);
+  num_to_format = Math.floor(num_to_format)
+
+  while (num_to_format > 0) {
+    num_string = (num_to_format % 1000) + ' ' + num_string;
+    num_to_format /= 1000;
+    num_to_format = Math.floor(num_to_format);
+  }
+
+  num_string = num_string.substr(0, num_string.length - 1);
+
+  if (num_string.length === 0) num_string = '0';
+
+  let dec_str = '';
+  dec *= Math.pow(10, num_decimals);
+  dec = Math.round(dec);
+  while (dec > 0 && dec_str.length < num_decimals) {
+    dec_str = (dec % 10) + dec_str;
+    dec /= 10;
+    dec = Math.floor(dec);
+  }
+
+  while (dec_str.length < num_decimals) dec_str += 0;
+
+  return num_string + ',' + dec_str;
+
+}
+
 async function GetListOnDate (num_date, arr_list_ids) {
 
   if (!num_date) return false;
@@ -136,29 +169,38 @@ router.get('/:mon-:day', async (req, res, next) => {
   
   let list = await GetListOnDate(encoded_date, req.user.lists);
   list = list[0];
-  let prom = [];
+  let total_sum = 0;
+  let num_products;
 
   if (list) {
+    let prom = [];
     list.products.forEach(item => {
       prom.push(api.GetItemById(item.kolonialId));
     });
     let products = await Promise.all(prom);
 
+    num_products = 0;
     list.products.forEach((item, index) => {
       item.data = products[index];
+      total_sum += parseFloat(item.data.price.gross) * item.amount;
+      num_products += item.amount;
     });
+
   }
 
-  // Required  to pass month and day down to render successfully
-  let categories = await api.GetAllCategories()
-  //let product = await api.GetItemById(520)
-  let months = ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember']
+  if (num_products === 0) num_products = undefined;
 
-  let uke_num = getWeekNumber(mon - 1, day)
-  let days_arr = getNumbersInWeek(2018, mon - 1, day)
+  // Required  to pass month and day down to render successfully
+  let categories = await api.GetAllCategories();
+  //let product = await api.GetItemById(520)
+  let months = ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'];
+
+  let uke_num = getWeekNumber(mon - 1, day);
+  let days_arr = getNumbersInWeek(2018, mon - 1, day);
 
   res.render('week', {
     title: `Calendar: ${day} ${months[mon - 1]}`,
+    total_sum: format_num(total_sum, 2),
     month: mon,
     uke_num,
     daysstring: ['Man', 'Tis', 'Ons', 'Tor', 'Fre', 'Lor', 'Son'],
@@ -166,6 +208,7 @@ router.get('/:mon-:day', async (req, res, next) => {
     chosen_day: day,
     categories,
     list,
+    num_products,
     encoded_date,
     filter
   })
