@@ -30,7 +30,10 @@ ShoppingListModule._instance = (() => {
 
 			this.open = false;
 			this.items_to_add_count = 0;
-			this.spinner = createSpinner(100,100);
+      this.spinner = createSpinner(100,100);
+
+      this.curently_rendered = this.renderable;
+      this.search_controller = new Search();
 
 			this.categories = [
 				new Inspiration('Inspirasjon', 123, this.renderable),
@@ -44,26 +47,42 @@ ShoppingListModule._instance = (() => {
 			this.blackIconShow = document.querySelector(".button-white");
 			this.headerName = document.querySelector(".search-title");
 			this.headerContainer = document.querySelector(".information-header");
-			this.input = document.getElementById("search-t");
 
 			this.path = [];
 
 			this.initEvents();
-			this.initCategories();
+      this.initCategories();
 
 		}
 
 		/**
 		 * ### Init
-		*/
+    */
+    
+    get UniqueSelected() {
+      return this.items_to_add_count;
+    }
+
+    set UniqueSelected(value) {
+      this.items_to_add_count = value
+      if (value === 0) {
+        unsetLeave();
+      } else if (value < 0) {
+        this.items_to_add_count = 0;
+        unsetLeave();
+      } else {
+        setLeave(
+          'De valgte varene har ikke blidt lagt til i lista.',
+          this.showEvent.bind(this)
+        );
+      }
+    }
 
 		initEvents () {
 
 			this.btn.addEventListener("click", this.showEvent.bind(this));
 
 			this.backArrow.addEventListener("click", this.goBackEvent);
-
-			this.input.addEventListener("change", this.searchEvent);
 
 		}
 
@@ -98,7 +117,7 @@ ShoppingListModule._instance = (() => {
 			this.whiteIconGone.classList.toggle("hide-button");
 			this.blackIconShow.classList.toggle("show-button");
 
-			if (this.open && this.items_to_add_count > 0) {
+			if (this.open && this.UniqueSelected > 0) {
 				this.addToList();
 			}
 
@@ -185,12 +204,120 @@ ShoppingListModule._instance = (() => {
 			let prom = [];
 			data.forEach(i => prom.push(module.ShoppingList.createNewItem(i)) );
 			Promise.all(prom).then(res => {
-				module.ShoppingList.root.removeChild(this.spinner);
+        module.ShoppingList.root.removeChild(this.spinner);
+        unsetLeave();
 			});
 
 		}
 
-	}
+  }
+  
+  class Search {
+
+    constructor () {
+
+      this._renderable_parent = null;
+      this.previously_rendered = null;
+      this.previous_search = '';
+      this.dom = {};
+      this.dom.search_field = document.getElementById('search-t');
+      this.results = [];
+
+      this.initEvents();
+
+    }
+
+    get RenderableParent () {
+      if (!this._renderable_parent) {
+        let el = this;
+        this._renderable_parent = {
+          render() {
+            return () => {
+              el.previously_rendered.render(true)();
+              el.previously_rendered = undefined;
+              el._renderable_parent = undefined;
+              el.results = [];
+              el.previous_search = '';
+              el.dom.search_field.value = '';
+            }
+          }
+        }
+        return this._renderable_parent;
+      } else return undefined;
+    }
+
+    initEvents () {
+      this.dom.search_field.addEventListener('keyup', this.scheduleSearch.bind(this));
+      this.dom.search_field.addEventListener('change', this.search.bind(this));
+    }
+
+    scheduleSearch () {
+
+      if (this.search_timeout) {
+        clearTimeout(this.search_timeout);
+      }
+
+      this.search_timeout = setTimeout(this.search.bind(this), 800);
+
+    }
+
+    search () {
+
+      if (this.search_timeout) {
+        clearTimeout(this.search_timeout);
+        this.search_timeout = undefined;
+      }
+
+      if (!this.previously_rendered) this.savePrevious();
+
+      // do seach
+      let search_text = this.dom.search_field.value;
+
+      if (search_text === this.previous_search) return;
+      if (search_text.length === 0) {
+        this.previous_search = '';
+        module.ProductSelectionManager.goBackEvent();
+        return;
+      }
+
+      this.previous_search = search_text;
+      let encoded = encodeURIComponent(search_text);
+
+      // clear previous search results
+      this.results = [];
+
+      fetch(`/api/item/search?name=${encoded}`)
+      .then( res => res.json() )
+      .then( json => json.forEach(item => {
+
+        let c = module.ShoppingList.getChildWithId(item.id);
+        this.results.push(c || new ProductItem(item));
+
+      }))
+      .then( this.render.bind(this) )
+      .catch( err => {
+
+        console.log( err );
+
+      });
+
+    }
+
+    savePrevious () {
+      this.previously_rendered = module.ProductSelectionManager.curently_rendered;
+    }
+
+    render () {
+
+      module.ProductSelectionManager.updateView(
+        this.results.map(c => c.DOM ),
+        `Søk på ${this.dom.search_field.value}`,
+        this.RenderableParent
+      );
+
+    }
+
+  }
 
   class Category {
 
@@ -252,11 +379,8 @@ ShoppingListModule._instance = (() => {
               json.children_id.forEach(id => this.children.push(new Category(undefined, id, this)));
             } else {
               json.products.forEach(id => {
-                let c = module.ShoppingList.getChildWithId(id)
-                if (c) {
-                  this.children.push(c);
-                } else
-                  this.children.push(new ProductItem(id));
+                let c = module.ShoppingList.getChildWithId(id);
+                this.children.push(c || new ProductItem(id));
               });
             }
             resolve();
@@ -270,10 +394,9 @@ ShoppingListModule._instance = (() => {
       return () => {
         el.getChildren()
           .then(() => {
+            module.ProductSelectionManager.curently_rendered = el;
             module.ProductSelectionManager.updateView(
-              el.children.map(c => {
-                return c.DOM;
-              }),
+              el.children.map(c => c.DOM ),
               el.name,
               going_back ? undefined : el.parent
             );
@@ -400,27 +523,45 @@ ShoppingListModule._instance = (() => {
 	class ProductItem {
 
 		constructor (id) {
-			this.id = id;
 
-			this.DOM = createDOM(
-				`<div class="product-container">
-					<img id="product-image" src="/imgs/loading.gif" alt="">
-					<h1 id="product-name">Laster...</h1>
-					<h1 id="price-per-unit"></h1>
-					${ module.ShoppingList.hasChildWithId(id) ? '' : '<img id="include-button" src="/imgs/icon/Velg vare.png" alt="">'}
-					<div id="quantity-block">
-						<img id="sub-button" src="/imgs/icon/minus-large.png" />
-						<input id="amount" type="number" value="1" min="0"></input>
-						<img id="add-button" src="/imgs/icon/pluss-large.png" />
-					</div>
-					<h2 id="price-quantity"></h2>
-				</div>`
-			);
+      this.id = id;
 
-			this.selected = false;
-			this.amount_dom = this.DOM.querySelector('#amount');
+      this.DOM = createDOM(
+        `<div class="product-container">
+            <img id="product-image" src="/imgs/loading.gif" alt="">
+            <h1 id="product-name">Laster...</h1>
+            <h1 id="price-per-unit"></h1>
+            <img id="include-button" src="/imgs/icon/Velg vare.png" alt="">
+            <div id="quantity-block">
+              <img id="sub-button" src="/imgs/icon/minus-large.png" />
+              <input id="amount" type="number" value="1" min="0"></input>
+              <img id="add-button" src="/imgs/icon/pluss-large.png" />
+            </div>
+            <h2 id="price-quantity"></h2>
+          </div>`
+      );
 
-			this.getData();
+      this.selected = false;
+      this.amount_dom = this.DOM.querySelector('#amount');
+
+      if (typeof id === 'object' && !Array.isArray(id)) {
+        // Create from existing data.
+
+        this.name = id.name;
+        if (id.images)
+          this.thumbnail = id.images.thumbnail;
+        else
+          this.thumbnail = '/imgs/icon/no_img.png'
+        this.price = id.price.gross;
+        this.unit_price = id.price.gross_unit;
+
+        this.init();
+
+      } else {
+  
+        this.getData();
+
+      }
 
 		}
 
@@ -451,7 +592,10 @@ ShoppingListModule._instance = (() => {
 				.then(json => new Promise((resolve, rejects) => {
 
 					this.name = json.name;
-					this.thumbnail = json.images.thumbnail;
+          if (json.images)
+            this.thumbnail = json.images.thumbnail;
+          else
+            this.thumbnail = '/imgs/icon/no_img.png'
 					this.price = json.price.gross;
 					this.unit_price = json.price.gross_unit;
 
@@ -464,13 +608,13 @@ ShoppingListModule._instance = (() => {
 		}
 
 		setSelected () {
-			module.ProductSelectionManager.items_to_add_count++;
+			module.ProductSelectionManager.UniqueSelected++;
 			this.selected = true;
 			this.DOM.classList.add('selected');
 		}
 		unsetSelected() {
 			this.amount_dom.value = 1;
-			module.ProductSelectionManager.items_to_add_count--;
+			module.ProductSelectionManager.UniqueSelected--;
 			this.selected = false;
 			this.DOM.classList.remove('selected');
 		}
