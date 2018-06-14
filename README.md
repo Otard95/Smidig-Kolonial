@@ -7,10 +7,10 @@ Smidig prosjekt - Kolonial
 
  - [Overview](#overview)
  - [Requirements](#requirements)
- - [Download as ZIP](#download-as-zip)
- - [Download using Git](#download-using-git)
- - [Install and run](#install-and-run)
- - [Aditional notes](#aditional-notes)
+ - [Download as ZIP](#download-as-zip--arrow_heading_up-back-to-top)
+ - [Download using Git](#download-using-git--arrow_heading_up-back-to-top)
+ - [Install and run](#install-and-run--arrow_heading_up-back-to-top)
+ - [Aditional notes](#aditional-notes--arrow_heading_up-back-to-top)
 
 ---
 
