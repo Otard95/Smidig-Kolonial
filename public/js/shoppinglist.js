@@ -30,7 +30,8 @@ ShoppingListModule._instance = (() => {
 
 			this.open = false;
 			this.items_to_add_count = 0;
-			this.spinner = createSpinner(100,100);
+      this.spinner = createSpinner(100,100);
+      this.search_controller = new Search();
 
 			this.categories = [
 				new Inspiration('Inspirasjon', 123, this.renderable),
@@ -44,12 +45,11 @@ ShoppingListModule._instance = (() => {
 			this.blackIconShow = document.querySelector(".button-white");
 			this.headerName = document.querySelector(".search-title");
 			this.headerContainer = document.querySelector(".information-header");
-			this.input = document.getElementById("search-t");
 
 			this.path = [];
 
 			this.initEvents();
-			this.initCategories();
+      this.initCategories();
 
 		}
 
@@ -62,8 +62,6 @@ ShoppingListModule._instance = (() => {
 			this.btn.addEventListener("click", this.showEvent.bind(this));
 
 			this.backArrow.addEventListener("click", this.goBackEvent);
-
-			this.input.addEventListener("change", this.searchEvent);
 
 		}
 
@@ -189,7 +187,100 @@ ShoppingListModule._instance = (() => {
 
 		}
 
-	}
+  }
+  
+  class Search {
+
+    constructor () {
+
+      this._renderable_parent = null;
+      this.dom = {};
+      this.dom.search_field = document.getElementById('search-t');
+      this.results = [];
+
+    }
+
+    get RenderableParent () {
+      if (!this._renderable_parent) {
+        this._renderable_parent = {
+          render() {
+            return () => {
+              module.ProductSelectionManager.category_container.innerHTML = this.previous_DOM;
+              this.previous_DOM = undefined;
+              this._renderable_parent = undefined;
+              this.dom.search_field.value = '';
+            }
+          }
+        }
+        return this._renderable_parent;
+      } else return undefined;
+    }
+
+    initEvents () {
+      this.dom.search_field.addEventListener('keyup', this.scheduleSearch.bind(this));
+      this.dom.search_field.addEventListener('change', this.search.bind(this));
+    }
+
+    scheduleSearch () {
+
+      if (this.search_timeout) {
+        clearTimeout(this.search_timeout);
+      }
+
+      this.search_timeout = setTimeout(this.search.bind(this), 800);
+
+    }
+
+    search () {
+
+      if (this.search_timeout) {
+        clearTimeout(this.search_timeout);
+        this.search_timeout = undefined;
+      }
+
+      if (!this.previous_DOM) this.savePrevious();
+
+      // do seach
+      let search_text = this.dom.search_field.value;
+      if (search_text.length === 0) {
+        module.ProductSelectionManager.goBackEvent();
+        return;
+      }
+
+      let encoded = encodeURIComponent(search_text);
+
+      fetch(`/api/item/search?name=${encoded}`)
+      .then( res => res.json() )
+      .then( json => json.forEach(id => {
+
+        let c = module.ShoppingList.getChildWithId(id);
+        this.results.push(c || new ProductItem(id));
+
+      }))
+      .then( this.render.bind(this) )
+      .catch( err => {
+
+        console.log( err );
+
+      });
+
+    }
+
+    savePrevious () {
+      this.previous_DOM = module.ProductSelectionManager.category_container.innerHTML;
+    }
+
+    render () {
+
+      module.ProductSelectionManager.updateView(
+        this.results.map(c => c.DOM ),
+        `Søk på ${this.dom.search_field.value}`,
+        this.RenderableParent
+      );
+
+    }
+
+  }
 
   class Category {
 
@@ -251,11 +342,8 @@ ShoppingListModule._instance = (() => {
               json.children_id.forEach(id => this.children.push(new Category(undefined, id, this)));
             } else {
               json.products.forEach(id => {
-                let c = module.ShoppingList.getChildWithId(id)
-                if (c) {
-                  this.children.push(c);
-                } else
-                  this.children.push(new ProductItem(id));
+                let c = module.ShoppingList.getChildWithId(id);
+                this.children.push(c || new ProductItem(id));
               });
             }
             resolve();
@@ -270,9 +358,7 @@ ShoppingListModule._instance = (() => {
         el.getChildren()
           .then(() => {
             module.ProductSelectionManager.updateView(
-              el.children.map(c => {
-                return c.DOM;
-              }),
+              el.children.map(c => c.DOM ),
               el.name,
               el.parent
             );
@@ -406,7 +492,7 @@ ShoppingListModule._instance = (() => {
 					<img id="product-image" src="/imgs/loading.gif" alt="">
 					<h1 id="product-name">Laster...</h1>
 					<h1 id="price-per-unit"></h1>
-					${ module.ShoppingList.hasChildWithId(id) ? '' : '<img id="include-button" src="/imgs/icon/Velg vare.png" alt="">'}
+					<img id="include-button" src="/imgs/icon/Velg vare.png" alt="">
 					<div id="quantity-block">
 						<img id="sub-button" src="/imgs/icon/minus-large.png" />
 						<input id="amount" type="number" value="1" min="0"></input>
