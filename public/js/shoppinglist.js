@@ -283,6 +283,9 @@ ShoppingListModule._instance = (() => {
       this.previous_search = search_text;
       let encoded = encodeURIComponent(search_text);
 
+      // clear previous search results
+      this.results = [];
+
       fetch(`/api/item/search?name=${encoded}`)
       .then( res => res.json() )
       .then( json => json.forEach(item => {
