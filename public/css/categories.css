@@ -181,6 +181,10 @@
     -webkit-transition: all 300ms ease-in-out;
     transition: all 300ms ease-in-out; }
 
+@supports (-webkit-overflow-scrolling: touch) {
+  .icon-button {
+    top: -49vh; } }
+
 .button-white {
   position: absolute;
   left: 2vh;
