@@ -3,7 +3,6 @@
 .category-container
   position: absolute
   top: 100vh
-  //vises ved 22.1
   height: 80vh
   width: 100%
   transition: all 300ms ease-in-out
@@ -22,8 +21,6 @@
   margin: 0 auto
   width: 99%
   top: -7.5vh
-  //-7.5vh
-  //top: 6vh når du er inne i selve barnebursdagkategorien
   border-bottom-left-radius:  15px
   border-bottom-right-radius: 15px
   overflow: hidden
@@ -173,6 +170,15 @@
   text-align: left
   height: 7vh
   border-bottom: 1px solid $Varmgra
+
+  &::after
+    content: ''
+    display: block
+    position: absolute
+    height: 4vh
+    width: 3vh
+    right: 0
+    background-image: url(../imgs/icon/kategori-pil.png)
 
 .icon-button
   position: absolute

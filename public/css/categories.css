@@ -169,6 +169,14 @@
   text-align: left;
   height: 7vh;
   border-bottom: 1px solid #d7d7d2; }
+  .list-item::after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 4vh;
+    width: 3vh;
+    right: 0;
+    background-image: url(../imgs/icon/kategori-pil.png); }
 
 .icon-button {
   position: absolute;
