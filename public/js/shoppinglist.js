@@ -376,7 +376,7 @@ ShoppingListModule._instance = (() => {
           .then(data => data.json())
           .then(json => new Promise((resolve, rejects) => {
             if (json.children_id) {
-              json.children_id.forEach(id => this.children.push(new Category(undefined, id, this)));
+              json.children_id.forEach(item => this.children.push(new Category(item.name, item.id, this)));
             } else {
               json.products.forEach(id => {
                 let c = module.ShoppingList.getChildWithId(id);
